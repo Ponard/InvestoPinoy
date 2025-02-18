@@ -30,7 +30,7 @@ class MainWindow(QWidget):
         self = uic.loadUi("QtGUI/form.ui", self)
         
         # connect to DB
-        db_func.connect()
+        # db_func.connect()
         
         # connect button to function
         self.navigation_home_button.clicked.connect(self.on_home_button_clicked)
@@ -45,7 +45,8 @@ class MainWindow(QWidget):
         self.archived_clients_delete_button.clicked.connect(self.on_clients_delete_button_clicked)
         self.expired_bin_restore_button.clicked.connect(self.on_bin_restore_button_clicked)
         self.expired_bin_delete_button.clicked.connect(self.on_bin_delete_button_clicked)
-              
+
+
         # REVISE: move to separate functions later
         # resize cols to header/content
         self.expired_bin_table.resizeColumnsToContents()
@@ -78,6 +79,7 @@ class MainWindow(QWidget):
         self.company_expenses_count.setText( str(self.company_expenses_table.rowCount()) )
         self.commission_count.setText( str(self.commission_table.rowCount()) )
     
+    
     #### Navigation Tab Button Functions
     def on_home_button_clicked(self):
         self.current_active_tab.setCurrentIndex(0)
@@ -97,7 +99,7 @@ class MainWindow(QWidget):
     def on_archives_button_clicked(self):
         self.current_active_tab.setCurrentIndex(5)
     
-    #### Archive Tab Functions
+    
     # function for archive button on View Client & Policy
     def on_archive_button_clicked(self):
         # check if self.current_active_tab index == Client
@@ -110,6 +112,8 @@ class MainWindow(QWidget):
         # isArchived: True/False
         pass
 
+
+    #### Archive Tab Functions
     def on_policies_restore_button_clicked(self):
         # send back to policy db
         pass
