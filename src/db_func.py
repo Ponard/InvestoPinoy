@@ -20,7 +20,6 @@ def connect():
     
 
 # update row/s
-# havent tested for postgresql yet, but it should work?
 def update_row(table: str, **data):
     try:
         connection = connect()
@@ -31,7 +30,7 @@ def update_row(table: str, **data):
         new_values = tuple(data["new"].values())
         old_values = tuple(data["old"].values())
         values = new_values + old_values
-        cursor.execute(f"UPDATE {currentTable} SET {set_clause} WHERE {where_clause}", values)
+        cursor.execute(f"UPDATE {table} SET {set_clause} WHERE {where_clause}", values)
         
         connection.commit()
         QMessageBox.information(None, "Success", f"Data updated from {table} successfully")
@@ -90,7 +89,7 @@ def insert_row(table: str, **data):
             connection.close()
 
 
-def select_rows(table: str, **condition):
+def select_row(table: str, **condition):
     try:
         connection = connect()
         cursor = connection.cursor()

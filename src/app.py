@@ -96,31 +96,36 @@ class MainWindow(QWidget):
     
     # function for archive button on View Client & Policy
     def on_archive_button_clicked(self):
-        current_table = None
+        current_table_widget = None
+        current_table_db = None
         
         # check if current tab is Client/Policy
         # NOTE: Tables for Client/Policy currently doesn't exist
         # so this might give an error for now
-        # but this will work correctly when the tables are made
+        # but this will work correctly when the tables are made, already tested
         if self.current_active_tab.currentIndex() == 1:
-            current_table = self.clients_table
+            current_table_widget = self.clients_table
+            current_table_db = "public.clients"
         elif self.current_active_tab.currentIndex() == 2:
-            current_table = self.policies_table
+            current_table_widget = self.policies_table
+            current_table_db = "public.policies"
             
         # NOTE: need bool in Original Client/Policy db
         # isArchived: True/False
-        selected_rows = set(index.row() for index in current_table.selectedIndexes())
+        selected_rows = set(index.row() for index in current_table_widget.selectedIndexes())
   
         for row in selected_rows:
-            formatted_data = self.format_data(current_table, row)
+            formatted_data = self.format_data(current_table_widget, row)
             merged_dict = {"old" : {**formatted_data, "isArchived" : False},
                            "new" : {**formatted_data, "isArchived" : True}
                         }
-            db_func.update_row( **merged_dict )
+            db_func.update_row( current_table_db, **merged_dict )
 
 
     #### Archive Tab Functions
     def on_policies_restore_button_clicked(self):
+        current_table_db = "public.policies"
+        
         # send back to policy db
         selected_rows = set(index.row() for index in self.archived_policies_table.selectedIndexes())
   
@@ -129,15 +134,22 @@ class MainWindow(QWidget):
             merged_dict = {"old" : {**formatted_data, "isArchived" : True},
                            "new" : {**formatted_data, "isArchived" : False}
                         }
-            db_func.update_row( **merged_dict )
+            db_func.update_row( current_table_db, **merged_dict )
     
     def on_policies_delete_button_clicked(self):
+        current_table_db = "public.policies"
+        
         selected_rows = set(index.row() for index in self.archived_policies_table.selectedIndexes())
   
         for row in selected_rows:
-            db_func.delete_row( **self.format_data(self.archived_policies_table, row) )
+            db_func.delete_row( current_table_db, **self.format_data(self.archived_policies_table, row) )
 
     def on_clients_restore_button_clicked(self):
+        # current_table_db = "public.clients"
+        current_table_db = "public.test" # NOTE: For test, to remove
+        
+        
+        
         # send back to client db
         selected_rows = set(index.row() for index in self.archived_clients_table.selectedIndexes())
   
@@ -146,13 +158,16 @@ class MainWindow(QWidget):
             merged_dict = {"old" : {**formatted_data, "isArchived" : True},
                            "new" : {**formatted_data, "isArchived" : False}
                         }
-            db_func.update_row( **merged_dict )
+            db_func.update_row( current_table_db, **merged_dict )
     
     def on_clients_delete_button_clicked(self):
+        current_table_db = "public.clients"
+        
         selected_rows = set(index.row() for index in self.archived_clients_table.selectedIndexes())
         
         for row in selected_rows:
-            db_func.delete_row( **self.format_data(self.archived_clients_table, row) )
+            db_func.delete_row( current_table_db, **self.format_data(self.archived_clients_table, row) )
+    
     
     #### General functions
     # format tablewidget row to dict
