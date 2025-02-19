@@ -2,7 +2,7 @@ import psycopg2
 from PyQt6.QtWidgets import QMessageBox
 
 # change this to db pass, leaving it blank for now
-dbPass = ""
+dbPass = "qazwsx"
 currentTable = "public.test"
 
 # connect to db, return connection if successful else error

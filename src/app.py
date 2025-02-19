@@ -47,8 +47,6 @@ class MainWindow(QWidget):
 
         # REVISE: move to separate functions later
         # resize cols to header/content
-        self.expired_bin_table.resizeColumnsToContents()
-        self.expired_bin_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         self.archived_clients_table.resizeColumnsToContents()
         self.archived_clients_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         self.archived_policies_table.resizeColumnsToContents()
@@ -61,7 +59,6 @@ class MainWindow(QWidget):
         self.commission_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
 
         # sort data when header is clicked
-        self.expired_bin_table.setSortingEnabled(True)
         self.archived_clients_table.setSortingEnabled(True)
         self.archived_policies_table.setSortingEnabled(True)
         self.client_payments_table.setSortingEnabled(True)
@@ -70,7 +67,6 @@ class MainWindow(QWidget):
         
         # REVISE: move to separate functions later
         # display result count per table
-        self.expired_bin_count.setText( str(self.expired_bin_table.rowCount()) )
         self.archived_clients_count.setText( str(self.archived_clients_table.rowCount()) )
         self.archived_policies_count.setText( str(self.archived_policies_table.rowCount()) )
         self.client_payments_count.setText( str(self.client_payments_table.rowCount()) )
@@ -166,7 +162,6 @@ class MainWindow(QWidget):
         # get text for each cell in a row
         for col in range(table_widget.columnCount()):
             data = table_widget.item(selected_row, col)
-            # formatted_data[headers[col]] = data.text()
             formatted_data[table_widget.horizontalHeaderItem(col).text()] = data.text()
         
         return formatted_data
