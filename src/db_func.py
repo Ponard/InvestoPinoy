@@ -3,7 +3,6 @@ from PyQt6.QtWidgets import QMessageBox
 
 # change this to db pass, leaving it blank for now
 dbPass = "qazwsx"
-currentTable = "public.test"
 
 # connect to db, return connection if successful else error
 def connect():
@@ -22,7 +21,7 @@ def connect():
 
 # update row/s
 # havent tested for postgresql yet, but it should work?
-def update_row(**data):
+def update_row(table: str, **data):
     try:
         connection = connect()
         cursor = connection.cursor()
@@ -35,10 +34,10 @@ def update_row(**data):
         cursor.execute(f"UPDATE {currentTable} SET {set_clause} WHERE {where_clause}", values)
         
         connection.commit()
-        QMessageBox.information(None, "Success", f"Data updated from {currentTable} successfully")
+        QMessageBox.information(None, "Success", f"Data updated from {table} successfully")
         return True
     except Exception as e:
-        QMessageBox.critical(None, "Error", f"Error updating data from table {currentTable}: {e}")
+        QMessageBox.critical(None, "Error", f"Error updating data from table {table}: {e}")
         return False
     finally:
         if connection:
@@ -47,7 +46,7 @@ def update_row(**data):
             
             
 # delete row/s
-def delete_row(**data):
+def delete_row(table: str, **data):
     try:
         connection = connect()
         cursor = connection.cursor()
@@ -56,12 +55,57 @@ def delete_row(**data):
         where_clause = " AND ".join([f'"{column}" = %s' for column in data.keys()])
         values = tuple(data.values())
 
-        cursor.execute(f"DELETE FROM {currentTable} WHERE {where_clause}", values)
+        cursor.execute(f"DELETE FROM {table} WHERE {where_clause}", values)
         
         connection.commit()
-        QMessageBox.information(None, "Success", f"Data deleted from {currentTable} successfully")
+        QMessageBox.information(None, "Success", f"Data deleted from {table} successfully")
     except Exception as e:
-        QMessageBox.critical(None, "Error", f"Error deleting data from table {currentTable}: {e}")
+        QMessageBox.critical(None, "Error", f"Error deleting data from table {table}: {e}")
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+
+
+def insert_row(table: str, **data):
+    try:
+        connection = connect()
+        cursor = connection.cursor()
+        
+        columns = ", ".join([f'"{column}"' for column in data.keys()])
+        placeholders = ", ".join(["%s"] * len(data))
+        values = tuple(data.values())
+        
+        cursor.execute(f"INSERT INTO {table} ({columns}) VALUES ({placeholders})", values)
+        connection.commit()
+        
+        QMessageBox.information(None, "Success", f"Data inserted into {table} successfully")
+        return True
+    except Exception as e:
+        QMessageBox.critical(None, "Error", f"Error inserting data into table {table}: {e}")
+        return False
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+
+
+def select_rows(table: str, **condition):
+    try:
+        connection = connect()
+        cursor = connection.cursor()
+        if condition:
+            where_clause = " AND ".join([f'"{column}" = %s' for column in condition.keys()])
+            values = tuple(condition.values())
+            cursor.execute(f"SELECT * FROM {table} WHERE {where_clause}", values)
+        else:
+            cursor.execute(f"SELECT * FROM {table}")
+        
+        rows = cursor.fetchall()
+        return rows
+    except Exception as e:
+        QMessageBox.critical(None, "Error", f"Error fetching data from table {table}: {e}")
+        return None
     finally:
         if connection:
             cursor.close()
