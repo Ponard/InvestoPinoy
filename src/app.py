@@ -30,7 +30,7 @@ class MainWindow(QWidget):
         self = uic.loadUi("QtGUI/form.ui", self)
         
         # connect to DB
-        # db_func.connect()
+        db_func.connect()
         
         # connect button to function
         self.navigation_home_button.clicked.connect(self.on_home_button_clicked)
@@ -43,8 +43,6 @@ class MainWindow(QWidget):
         self.archived_policies_delete_button.clicked.connect(self.on_policies_delete_button_clicked)
         self.archived_clients_restore_button.clicked.connect(self.on_clients_restore_button_clicked)
         self.archived_clients_delete_button.clicked.connect(self.on_clients_delete_button_clicked)
-        self.expired_bin_restore_button.clicked.connect(self.on_bin_restore_button_clicked)
-        self.expired_bin_delete_button.clicked.connect(self.on_bin_delete_button_clicked)
 
 
         # REVISE: move to separate functions later
@@ -102,40 +100,76 @@ class MainWindow(QWidget):
     
     # function for archive button on View Client & Policy
     def on_archive_button_clicked(self):
-        # check if self.current_active_tab index == Client
-            # add to Archived Client db
-        # check if self.current_active_tab index == Policy
-            # add to Archived Policy db
+        current_table = None
+        
+        # check if current tab is Client/Policy
+        # NOTE: Tables for Client/Policy currently doesn't exist
+        # so this might give an error for now
+        # but this will work correctly when the tables are made
+        if self.current_active_tab.currentIndex() == 1:
+            current_table = self.clients_table
+        elif self.current_active_tab.currentIndex() == 2:
+            current_table = self.policies_table
             
-        ## OR
-        # have a bool in Original Client/Policy db
+        # NOTE: need bool in Original Client/Policy db
         # isArchived: True/False
-        pass
+        selected_rows = set(index.row() for index in current_table.selectedIndexes())
+  
+        for row in selected_rows:
+            formatted_data = self.format_data(current_table, row)
+            merged_dict = {"old" : {**formatted_data, "isArchived" : False},
+                           "new" : {**formatted_data, "isArchived" : True}
+                        }
+            db_func.update_row( **merged_dict )
 
 
     #### Archive Tab Functions
     def on_policies_restore_button_clicked(self):
         # send back to policy db
-        pass
+        selected_rows = set(index.row() for index in self.archived_policies_table.selectedIndexes())
+  
+        for row in selected_rows:
+            formatted_data = self.format_data(self.archived_policies_table, row)
+            merged_dict = {"old" : {**formatted_data, "isArchived" : True},
+                           "new" : {**formatted_data, "isArchived" : False}
+                        }
+            db_func.update_row( **merged_dict )
     
     def on_policies_delete_button_clicked(self):
-        # send to bin
-        pass
-    
+        selected_rows = set(index.row() for index in self.archived_policies_table.selectedIndexes())
+  
+        for row in selected_rows:
+            db_func.delete_row( **self.format_data(self.archived_policies_table, row) )
+
     def on_clients_restore_button_clicked(self):
         # send back to client db
-        pass
+        selected_rows = set(index.row() for index in self.archived_clients_table.selectedIndexes())
+  
+        for row in selected_rows:
+            formatted_data = self.format_data(self.archived_clients_table, row)
+            merged_dict = {"old" : {**formatted_data, "isArchived" : True},
+                           "new" : {**formatted_data, "isArchived" : False}
+                        }
+            db_func.update_row( **merged_dict )
     
     def on_clients_delete_button_clicked(self):
-        # send to bin
-        pass
+        selected_rows = set(index.row() for index in self.archived_clients_table.selectedIndexes())
+        
+        for row in selected_rows:
+            db_func.delete_row( **self.format_data(self.archived_clients_table, row) )
     
-    def on_bin_restore_button_clicked(self):
-        # check if selected is Client/Policy before restoring
-        pass
-    
-    def on_bin_delete_button_clicked(self):
-        pass
+    #### General functions
+    # format tablewidget row to dict
+    def format_data (self, table_widget, selected_row):
+        formatted_data = {}
+        
+        # get text for each cell in a row
+        for col in range(table_widget.columnCount()):
+            data = table_widget.item(selected_row, col)
+            # formatted_data[headers[col]] = data.text()
+            formatted_data[table_widget.horizontalHeaderItem(col).text()] = data.text()
+        
+        return formatted_data
     
 
 if __name__ == '__main__':
