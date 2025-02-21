@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>848</width>
-    <height>649</height>
+    <height>654</height>
    </rect>
   </property>
   <property name="palette">
@@ -1056,7 +1056,7 @@ font-weight: bold;</string>
       <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="home_tab">
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1659,7 +1659,7 @@ font-weight: bold;</string>
           <item>
            <widget class="QTabWidget" name="collection_tab_widget">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -2146,6 +2146,12 @@ font-weight: bold;</string>
              <layout class="QVBoxLayout" name="verticalLayout_24">
               <item>
                <widget class="QFrame" name="client_payments_frame">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="styleSheet">
                  <string notr="true"/>
                 </property>
