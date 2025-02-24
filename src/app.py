@@ -1,6 +1,5 @@
 from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView
 from PyQt6 import uic
-from .
 
 import sys
 import db_func
@@ -31,8 +30,6 @@ class MainWindow(QWidget):
         
         # connect to DB
         db_func.connect()
-        self.home = Home()
-        self.layout().addWidget(self.home_page)  # Ensures Home is part of MainWindow
 
         # connect button to function
         self.navigation_home_button.clicked.connect(self.on_home_button_clicked)
