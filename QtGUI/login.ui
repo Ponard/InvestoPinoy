@@ -528,13 +528,42 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <family>Futura</family>
+          <pointsize>-1</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="styleSheet">
          <string notr="true">font-size: 36px;
-color: black</string>
+color: #432d60;</string>
         </property>
         <property name="text">
-         <string>InvestoPinoy Insurance
-Management System</string>
+         <string>INVESTOPINOY</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="login_header_2">
+        <property name="font">
+         <font>
+          <family>Al Nile</family>
+          <pointsize>18</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #706a7a;</string>
+        </property>
+        <property name="text">
+         <string>INSURANCE MANAGEMENT SYSTEM</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -555,7 +584,7 @@ Management System</string>
         <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
-          <height>40</height>
+          <height>20</height>
          </size>
         </property>
        </spacer>
@@ -580,7 +609,19 @@ Management System</string>
            <bool>false</bool>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgba(60,54,82,204);</string>
+           <string notr="true">QLineEdit {
+    background-color: rgba(60, 54, 82, 204);
+    border: 2px solid transparent;
+}
+QLineEdit:hover {
+    border: 2px solid rgba(60,54,82,204);
+}
+QLineFocus:focus {
+	border: 2px solid black;
+}</string>
+          </property>
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>
@@ -603,7 +644,16 @@ Management System</string>
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgba(60,54,82,204);</string>
+           <string notr="true">QLineEdit {
+    background-color: rgba(60, 54, 82, 204);
+    border: 2px solid transparent;
+}
+QLineEdit:hover {
+    border: 2px solid rgba(60,54,82,204);
+}
+QLineFocus:focus {
+	border: 2px solid black;
+}</string>
           </property>
           <property name="echoMode">
            <enum>QLineEdit::EchoMode::Password</enum>
