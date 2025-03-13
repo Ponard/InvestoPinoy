@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>968</width>
-    <height>681</height>
+    <width>1280</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="palette">
@@ -1082,6 +1082,65 @@ font-weight: bold;</string>
       </layout>
      </widget>
      <widget class="QWidget" name="clients_tab">
+      <property name="styleSheet">
+       <string notr="true">#clients_frame {
+	background-color: rgb(224, 222, 232);
+	border: 10px solid white;
+	border-radius: 10%;
+	padding: 15px;
+}
+#clients_non_life_tab {
+	background-color: rgb(224, 222, 232);
+}
+#clients_non_life_frame {
+	background-color: rgb(224, 222, 232);
+}
+#clients_non_life_add_client_frame {
+	background-color: #E0DEE8;
+	border: 1px solid black;
+	border-radius: 10%;
+	color: black;
+}
+#clients_non_life_add_client_upper_frame {
+	background-color: rgba(255, 255, 255, 0.5);
+}
+#clients_non_life_add_client_lower_frame {
+	background-color: #E0DEE8;
+}
+#clients_non_life_dashboard_table {
+	background-color: white;
+	border: 10px solid rgb(243, 243, 243);
+	border-radius: 10%;
+	padding: 15px;
+}
+#clients_hmo_tab {
+	background-color: rgb(224, 222, 232);
+}
+#clients_hmo_frame {
+	background-color: rgb(224, 222, 232);
+}
+#clients_hmo_dashboard_table {
+	background-color: white;
+	border: 10px solid rgb(243, 243, 243);
+	border-radius: 10%;
+	padding: 15px;
+}
+QLineEdit {
+	background-color: white;
+	color: black;
+}
+QTextEdit {
+	background-color: white;
+	color: black;
+}
+QComboBox {
+	background-color: white;
+	color: black;
+}
+QLabel {
+	color: black;
+}</string>
+      </property>
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
         <widget class="QFrame" name="clients_frame">
@@ -1114,7 +1173,7 @@ font-weight: bold;</string>
                  <item>
                   <widget class="QTabWidget" name="clients_non_life_tab_widget">
                    <property name="currentIndex">
-                    <number>0</number>
+                    <number>1</number>
                    </property>
                    <widget class="QWidget" name="clients_non_life_dashboard_tab">
                     <attribute name="title">
@@ -1727,7 +1786,338 @@ font-weight: bold;</string>
                        <property name="frameShadow">
                         <enum>QFrame::Shadow::Raised</enum>
                        </property>
-                       <layout class="QVBoxLayout" name="verticalLayout_13"/>
+                       <layout class="QVBoxLayout" name="verticalLayout_13">
+                        <item>
+                         <widget class="QFrame" name="clients_non_life_add_client_upper_frame">
+                          <property name="frameShape">
+                           <enum>QFrame::Shape::StyledPanel</enum>
+                          </property>
+                          <property name="frameShadow">
+                           <enum>QFrame::Shadow::Raised</enum>
+                          </property>
+                          <layout class="QGridLayout" name="gridLayout">
+                           <item row="1" column="0">
+                            <layout class="QVBoxLayout" name="verticalLayout_33">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_add_client_contact_number_label">
+                               <property name="text">
+                                <string>Contact Number</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_add_client_contact_number_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Contact Number</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="0" column="0">
+                            <layout class="QVBoxLayout" name="verticalLayout_32">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_add_client_assured_name_label">
+                               <property name="text">
+                                <string>Assured Name</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_add_client_assured_name_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Assured Name</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="2" column="0">
+                            <layout class="QVBoxLayout" name="verticalLayout_36">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_add_client_email_label">
+                               <property name="text">
+                                <string>Email</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_add_client_email_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Email Address</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="3" column="0">
+                            <layout class="QVBoxLayout" name="verticalLayout_39">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_add_client_birthday_label">
+                               <property name="text">
+                                <string>Birthday</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_add_client_birthday_line_edit">
+                               <property name="placeholderText">
+                                <string>MM/DD/YY</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="0" column="1">
+                            <layout class="QVBoxLayout" name="verticalLayout_34">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_add_client_inception_date_label">
+                               <property name="text">
+                                <string>Inception Date</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_add_client_inception_date_line_edit">
+                               <property name="placeholderText">
+                                <string>MM/DD/YR</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="1" column="1">
+                            <layout class="QVBoxLayout" name="verticalLayout_42">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_add_client_expiry_date_label">
+                               <property name="text">
+                                <string>Expiry Date</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_add_client_expiry_date_line_edit">
+                               <property name="placeholderText">
+                                <string>MM/DD/YR</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="2" column="1">
+                            <layout class="QVBoxLayout" name="verticalLayout_37">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_add_client_net_premium_label">
+                               <property name="text">
+                                <string>Net Premium</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_add_client_net_premium_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Net Premium</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="3" column="1">
+                            <layout class="QVBoxLayout" name="verticalLayout_40">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_add_client_gross_premium_label">
+                               <property name="text">
+                                <string>Gross Premium</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_add_client_gross_premium_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Gross Premium</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="0" column="2">
+                            <layout class="QVBoxLayout" name="verticalLayout_43">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_add_client_policy_number_label">
+                               <property name="text">
+                                <string>Policy Number</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_add_client_policy_number_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Policy Number</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="1" column="2">
+                            <layout class="QVBoxLayout" name="verticalLayout_35">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_add_client_agent_code_label">
+                               <property name="text">
+                                <string>Agent Code</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_add_client_agent_code_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Agent Code</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="2" column="2">
+                            <layout class="QVBoxLayout" name="verticalLayout_38">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_add_client_payment_invoice_label">
+                               <property name="text">
+                                <string>Payment Invoice</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_add_client_payment_invoice_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Payment Invoice</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="3" column="2">
+                            <layout class="QVBoxLayout" name="verticalLayout_41">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_add_client_commission_label">
+                               <property name="text">
+                                <string>Commission</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_add_client_commission_line_edit">
+                               <property name="readOnly">
+                                <bool>true</bool>
+                               </property>
+                               <property name="placeholderText">
+                                <string>Commission will automatically appear here.</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QFrame" name="clients_non_life_add_client_lower_frame">
+                          <property name="frameShape">
+                           <enum>QFrame::Shape::StyledPanel</enum>
+                          </property>
+                          <property name="frameShadow">
+                           <enum>QFrame::Shadow::Raised</enum>
+                          </property>
+                          <layout class="QGridLayout" name="gridLayout_2">
+                           <item row="0" column="1">
+                            <layout class="QVBoxLayout" name="verticalLayout_44">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_add_client_insurance_type_label">
+                               <property name="text">
+                                <string>Type of Insurance</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QComboBox" name="clients_non_life_add_client_insurance_type_combo_box">
+                               <property name="placeholderText">
+                                <string>Select Insurance Type</string>
+                               </property>
+                               <item>
+                                <property name="text">
+                                 <string>Motor</string>
+                                </property>
+                               </item>
+                               <item>
+                                <property name="text">
+                                 <string>Fire</string>
+                                </property>
+                               </item>
+                               <item>
+                                <property name="text">
+                                 <string>HMO</string>
+                                </property>
+                               </item>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="0" column="2">
+                            <layout class="QVBoxLayout" name="verticalLayout_45">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_add_client_insurance_company_label">
+                               <property name="text">
+                                <string>Insurance Company</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_add_client_insurance_company_line_edit">
+                               <property name="placeholderText">
+                                <string>Select Insurance Company</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="0" column="3">
+                            <layout class="QVBoxLayout" name="verticalLayout_46">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_add_client_amount_covered_label">
+                               <property name="text">
+                                <string>Amount Covered</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_add_client_amount_covered_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Amount Covered</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="2" column="2" colspan="2">
+                            <layout class="QVBoxLayout" name="verticalLayout_47">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_add_client_notes_label">
+                               <property name="text">
+                                <string>Client</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QTextEdit" name="clients_non_life_add_client_notes_text_edit">
+                               <property name="placeholderText">
+                                <string>Add Notes</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                       </layout>
                       </widget>
                      </item>
                     </layout>
