@@ -2117,6 +2117,30 @@ QLabel {
                           </layout>
                          </widget>
                         </item>
+                        <item>
+                         <layout class="QHBoxLayout" name="horizontalLayout_2">
+                          <item>
+                           <spacer name="horizontalSpacer">
+                            <property name="orientation">
+                             <enum>Qt::Orientation::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>40</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="clients_non_life_add_client_submit_push_button">
+                            <property name="text">
+                             <string>Submit</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </item>
                        </layout>
                       </widget>
                      </item>
