@@ -60,6 +60,10 @@ class MainWindow(QWidget):
         self.company_expenses_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         self.commission_table.resizeColumnsToContents()
         self.commission_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+        self.policies_non_life_dashboard_table.resizeColumnsToContents()
+        self.policies_non_life_dashboard_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.policies_hmo_dashboard_table.resizeColumnsToContents()
+        self.policies_hmo_dashboard_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
 
         # sort data when header is clicked
         self.archived_clients_table.setSortingEnabled(True)
