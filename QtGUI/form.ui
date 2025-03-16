@@ -4445,57 +4445,51 @@ QComboBox {
 	border-radius: 10%;
 	padding: 15px;
 }
+#policies_hmo_tab,
 #policies_non_life_tab {
 	background-color: rgb(224, 222, 232);
 }
+#policies_hmo_frame,
 #policies_non_life_frame {
 	background-color: rgb(224, 222, 232);
 }
-#policies_non_life_add_client_frame {
+#policies_hmo_add_policy_individual_frame,
+#policies_hmo_add_policy_corporate_frame,
+#policies_non_life_add_policy_frame {
 	background-color: #E0DEE8;
 	border: 1px solid black;
 	border-radius: 10%;
 	color: black;
 }
-#policies_non_life_add_client_upper_frame {
+#policies_hmo_add_policy_individual_upper_frame,
+#policies_hmo_add_policy_corporate_upper_frame,
+#policies_non_life_add_policy_upper_frame {
 	background-color: rgba(255, 255, 255, 0.5);
 }
-#policies_non_life_add_client_lower_frame {
+#policies_hmo_add_policy_individual_lower_frame,
+#policies_hmo_add_policy_corporate_lower_frame,
+#policies_non_life_add_policy_lower_frame {
 	background-color: #E0DEE8;
 }
+#policies_hmo_dashboard_table,
 #policies_non_life_dashboard_table {
 	background-color: white;
 	border: 10px solid rgb(243, 243, 243);
 	border-radius: 10%;
 	padding: 15px;
 }
-#policies_hmo_tab {
-	background-color: rgb(224, 222, 232);
-}
-#policies_hmo_frame {
-	background-color: rgb(224, 222, 232);
-}
-#policies_hmo_dashboard_table {
-	background-color: white;
-	border: 10px solid rgb(243, 243, 243);
-	border-radius: 10%;
-	padding: 15px;
-}
-QLineEdit {
-	background-color: white;
+#policies_hmo_add_policy_individual_frame QLabel,
+#policies_hmo_add_policy_corporate_frame QLabel,
+#policies_non_life_add_policy_frame QLabel {
 	color: black;
 }
-QTextEdit {
-	background-color: white;
-	color: black;
-}
+QLineEdit,
+QTextEdit,
 QComboBox {
 	background-color: white;
 	color: black;
 }
-#policies_non_life_add_client_frame QLabel {
-	color: black;
-}</string>
+</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_77">
        <item>
@@ -5184,13 +5178,13 @@ QComboBox {
                      </item>
                     </layout>
                    </widget>
-                   <widget class="QWidget" name="policies_non_life_add_client_tab">
+                   <widget class="QWidget" name="policies_non_life_add_policy_tab">
                     <attribute name="title">
                      <string>Add Policy</string>
                     </attribute>
                     <layout class="QVBoxLayout" name="verticalLayout_52">
                      <item>
-                      <widget class="QFrame" name="policies_non_life_add_client_frame">
+                      <widget class="QFrame" name="policies_non_life_add_policy_frame">
                        <property name="frameShape">
                         <enum>QFrame::Shape::StyledPanel</enum>
                        </property>
@@ -5199,7 +5193,7 @@ QComboBox {
                        </property>
                        <layout class="QVBoxLayout" name="verticalLayout_53">
                         <item>
-                         <widget class="QFrame" name="policies_non_life_add_client_upper_frame">
+                         <widget class="QFrame" name="policies_non_life_add_policy_upper_frame">
                           <property name="frameShape">
                            <enum>QFrame::Shape::StyledPanel</enum>
                           </property>
@@ -5210,14 +5204,14 @@ QComboBox {
                            <item row="1" column="0">
                             <layout class="QVBoxLayout" name="verticalLayout_54">
                              <item>
-                              <widget class="QLabel" name="policies_non_life_add_client_contact_number_label">
+                              <widget class="QLabel" name="policies_non_life_add_policy_contact_number_label">
                                <property name="text">
                                 <string>Contact Number</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="policies_non_life_add_client_contact_number_line_edit">
+                              <widget class="QLineEdit" name="policies_non_life_add_policy_contact_number_line_edit">
                                <property name="placeholderText">
                                 <string>Enter Contact Number</string>
                                </property>
@@ -5228,14 +5222,14 @@ QComboBox {
                            <item row="0" column="0">
                             <layout class="QVBoxLayout" name="verticalLayout_55">
                              <item>
-                              <widget class="QLabel" name="policies_non_life_add_client_assured_name_label">
+                              <widget class="QLabel" name="policies_non_life_add_policy_assured_name_label">
                                <property name="text">
                                 <string>Assured Name</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="policies_non_life_add_client_assured_name_line_edit">
+                              <widget class="QLineEdit" name="policies_non_life_add_policy_assured_name_line_edit">
                                <property name="placeholderText">
                                 <string>Enter Assured Name</string>
                                </property>
@@ -5246,14 +5240,14 @@ QComboBox {
                            <item row="2" column="0">
                             <layout class="QVBoxLayout" name="verticalLayout_56">
                              <item>
-                              <widget class="QLabel" name="policies_non_life_add_client_email_label">
+                              <widget class="QLabel" name="policies_non_life_add_policy_email_label">
                                <property name="text">
                                 <string>Email</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="policies_non_life_add_client_email_line_edit">
+                              <widget class="QLineEdit" name="policies_non_life_add_policy_email_line_edit">
                                <property name="placeholderText">
                                 <string>Enter Email Address</string>
                                </property>
@@ -5264,14 +5258,14 @@ QComboBox {
                            <item row="3" column="0">
                             <layout class="QVBoxLayout" name="verticalLayout_57">
                              <item>
-                              <widget class="QLabel" name="policies_non_life_add_client_birthday_label">
+                              <widget class="QLabel" name="policies_non_life_add_policy_birthday_label">
                                <property name="text">
                                 <string>Birthday</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="policies_non_life_add_client_birthday_line_edit">
+                              <widget class="QLineEdit" name="policies_non_life_add_policy_birthday_line_edit">
                                <property name="placeholderText">
                                 <string>MM/DD/YY</string>
                                </property>
@@ -5282,14 +5276,14 @@ QComboBox {
                            <item row="0" column="1">
                             <layout class="QVBoxLayout" name="verticalLayout_58">
                              <item>
-                              <widget class="QLabel" name="policies_non_life_add_client_inception_date_label">
+                              <widget class="QLabel" name="policies_non_life_add_policy_inception_date_label">
                                <property name="text">
                                 <string>Inception Date</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="policies_non_life_add_client_inception_date_line_edit">
+                              <widget class="QLineEdit" name="policies_non_life_add_policy_inception_date_line_edit">
                                <property name="placeholderText">
                                 <string>MM/DD/YR</string>
                                </property>
@@ -5300,14 +5294,14 @@ QComboBox {
                            <item row="1" column="1">
                             <layout class="QVBoxLayout" name="verticalLayout_59">
                              <item>
-                              <widget class="QLabel" name="policies_non_life_add_client_expiry_date_label">
+                              <widget class="QLabel" name="policies_non_life_add_policy_expiry_date_label">
                                <property name="text">
                                 <string>Expiry Date</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="policies_non_life_add_client_expiry_date_line_edit">
+                              <widget class="QLineEdit" name="policies_non_life_add_policy_expiry_date_line_edit">
                                <property name="placeholderText">
                                 <string>MM/DD/YR</string>
                                </property>
@@ -5318,14 +5312,14 @@ QComboBox {
                            <item row="2" column="1">
                             <layout class="QVBoxLayout" name="verticalLayout_60">
                              <item>
-                              <widget class="QLabel" name="policies_non_life_add_client_net_premium_label">
+                              <widget class="QLabel" name="policies_non_life_add_policy_net_premium_label">
                                <property name="text">
                                 <string>Net Premium</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="policies_non_life_add_client_net_premium_line_edit">
+                              <widget class="QLineEdit" name="policies_non_life_add_policy_net_premium_line_edit">
                                <property name="placeholderText">
                                 <string>Enter Net Premium</string>
                                </property>
@@ -5336,14 +5330,14 @@ QComboBox {
                            <item row="3" column="1">
                             <layout class="QVBoxLayout" name="verticalLayout_61">
                              <item>
-                              <widget class="QLabel" name="policies_non_life_add_client_gross_premium_label">
+                              <widget class="QLabel" name="policies_non_life_add_policy_gross_premium_label">
                                <property name="text">
                                 <string>Gross Premium</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="policies_non_life_add_client_gross_premium_line_edit">
+                              <widget class="QLineEdit" name="policies_non_life_add_policy_gross_premium_line_edit">
                                <property name="placeholderText">
                                 <string>Enter Gross Premium</string>
                                </property>
@@ -5354,14 +5348,14 @@ QComboBox {
                            <item row="0" column="2">
                             <layout class="QVBoxLayout" name="verticalLayout_62">
                              <item>
-                              <widget class="QLabel" name="policies_non_life_add_client_policy_number_label">
+                              <widget class="QLabel" name="policies_non_life_add_policy_policy_number_label">
                                <property name="text">
                                 <string>Policy Number</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="policies_non_life_add_client_policy_number_line_edit">
+                              <widget class="QLineEdit" name="policies_non_life_add_policy_policy_number_line_edit">
                                <property name="placeholderText">
                                 <string>Enter Policy Number</string>
                                </property>
@@ -5372,14 +5366,14 @@ QComboBox {
                            <item row="1" column="2">
                             <layout class="QVBoxLayout" name="verticalLayout_63">
                              <item>
-                              <widget class="QLabel" name="policies_non_life_add_client_agent_code_label">
+                              <widget class="QLabel" name="policies_non_life_add_policy_agent_code_label">
                                <property name="text">
                                 <string>Agent Code</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="policies_non_life_add_client_agent_code_line_edit">
+                              <widget class="QLineEdit" name="policies_non_life_add_policy_agent_code_line_edit">
                                <property name="placeholderText">
                                 <string>Enter Agent Code</string>
                                </property>
@@ -5390,14 +5384,14 @@ QComboBox {
                            <item row="2" column="2">
                             <layout class="QVBoxLayout" name="verticalLayout_64">
                              <item>
-                              <widget class="QLabel" name="policies_non_life_add_client_payment_invoice_label">
+                              <widget class="QLabel" name="policies_non_life_add_policy_payment_invoice_label">
                                <property name="text">
                                 <string>Payment Invoice</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="policies_non_life_add_client_payment_invoice_line_edit">
+                              <widget class="QLineEdit" name="policies_non_life_add_policy_payment_invoice_line_edit">
                                <property name="placeholderText">
                                 <string>Enter Payment Invoice</string>
                                </property>
@@ -5408,14 +5402,14 @@ QComboBox {
                            <item row="3" column="2">
                             <layout class="QVBoxLayout" name="verticalLayout_65">
                              <item>
-                              <widget class="QLabel" name="policies_non_life_add_client_commission_label">
+                              <widget class="QLabel" name="policies_non_life_add_policy_commission_label">
                                <property name="text">
                                 <string>Commission</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="policies_non_life_add_client_commission_line_edit">
+                              <widget class="QLineEdit" name="policies_non_life_add_policy_commission_line_edit">
                                <property name="readOnly">
                                 <bool>true</bool>
                                </property>
@@ -5430,7 +5424,7 @@ QComboBox {
                          </widget>
                         </item>
                         <item>
-                         <widget class="QFrame" name="policies_non_life_add_client_lower_frame">
+                         <widget class="QFrame" name="policies_non_life_add_policy_lower_frame">
                           <property name="frameShape">
                            <enum>QFrame::Shape::StyledPanel</enum>
                           </property>
@@ -5441,14 +5435,14 @@ QComboBox {
                            <item row="0" column="1">
                             <layout class="QVBoxLayout" name="verticalLayout_66">
                              <item>
-                              <widget class="QLabel" name="policies_non_life_add_client_insurance_type_label">
+                              <widget class="QLabel" name="policies_non_life_add_policy_insurance_type_label">
                                <property name="text">
                                 <string>Type of Insurance</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QComboBox" name="policies_non_life_add_client_insurance_type_combo_box">
+                              <widget class="QComboBox" name="policies_non_life_add_policy_insurance_type_combo_box">
                                <property name="placeholderText">
                                 <string>Select Insurance Type</string>
                                </property>
@@ -5474,14 +5468,14 @@ QComboBox {
                            <item row="0" column="2">
                             <layout class="QVBoxLayout" name="verticalLayout_67">
                              <item>
-                              <widget class="QLabel" name="policies_non_life_add_client_insurance_company_label">
+                              <widget class="QLabel" name="policies_non_life_add_policy_insurance_company_label">
                                <property name="text">
                                 <string>Insurance Company</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="policies_non_life_add_client_insurance_company_line_edit">
+                              <widget class="QLineEdit" name="policies_non_life_add_policy_insurance_company_line_edit">
                                <property name="placeholderText">
                                 <string>Select Insurance Company</string>
                                </property>
@@ -5492,14 +5486,14 @@ QComboBox {
                            <item row="0" column="3">
                             <layout class="QVBoxLayout" name="verticalLayout_68">
                              <item>
-                              <widget class="QLabel" name="policies_non_life_add_client_amount_covered_label">
+                              <widget class="QLabel" name="policies_non_life_add_policy_amount_covered_label">
                                <property name="text">
                                 <string>Amount Covered</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="policies_non_life_add_client_amount_covered_line_edit">
+                              <widget class="QLineEdit" name="policies_non_life_add_policy_amount_covered_line_edit">
                                <property name="placeholderText">
                                 <string>Enter Amount Covered</string>
                                </property>
@@ -5510,14 +5504,14 @@ QComboBox {
                            <item row="2" column="2" colspan="2">
                             <layout class="QVBoxLayout" name="verticalLayout_69">
                              <item>
-                              <widget class="QLabel" name="policies_non_life_add_client_notes_label">
+                              <widget class="QLabel" name="policies_non_life_add_policy_notes_label">
                                <property name="text">
                                 <string>Client</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QTextEdit" name="policies_non_life_add_client_notes_text_edit">
+                              <widget class="QTextEdit" name="policies_non_life_add_policy_notes_text_edit">
                                <property name="placeholderText">
                                 <string>Add Notes</string>
                                </property>
@@ -5544,7 +5538,7 @@ QComboBox {
                            </spacer>
                           </item>
                           <item>
-                           <widget class="QPushButton" name="policies_non_life_add_client_submit_push_button">
+                           <widget class="QPushButton" name="policies_non_life_add_policy_submit_push_button">
                             <property name="text">
                              <string>Submit</string>
                             </property>
@@ -6239,7 +6233,659 @@ QComboBox {
                        <property name="frameShadow">
                         <enum>QFrame::Shadow::Raised</enum>
                        </property>
-                       <layout class="QVBoxLayout" name="verticalLayout_75"/>
+                       <layout class="QVBoxLayout" name="verticalLayout_75">
+                        <item>
+                         <widget class="QTabWidget" name="policies_hmo_add_client_tab_widget">
+                          <property name="currentIndex">
+                           <number>0</number>
+                          </property>
+                          <widget class="QWidget" name="policies_hmo_add_policy_individual_tab">
+                           <attribute name="title">
+                            <string>Individual</string>
+                           </attribute>
+                           <layout class="QVBoxLayout" name="verticalLayout_120">
+                            <item>
+                             <widget class="QFrame" name="policies_hmo_add_policy_individual_frame">
+                              <property name="frameShape">
+                               <enum>QFrame::Shape::StyledPanel</enum>
+                              </property>
+                              <property name="frameShadow">
+                               <enum>QFrame::Shadow::Raised</enum>
+                              </property>
+                              <layout class="QVBoxLayout" name="verticalLayout_121">
+                               <item>
+                                <widget class="QFrame" name="policies_hmo_add_policy_individual_upper_frame">
+                                 <property name="frameShape">
+                                  <enum>QFrame::Shape::StyledPanel</enum>
+                                 </property>
+                                 <property name="frameShadow">
+                                  <enum>QFrame::Shadow::Raised</enum>
+                                 </property>
+                                 <layout class="QGridLayout" name="gridLayout_9">
+                                  <item row="3" column="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_122">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_individual_gross_premium_label">
+                                      <property name="text">
+                                       <string>Gross Premium</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_individual_gross_premium_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Gross Premium</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="0" column="0">
+                                   <layout class="QVBoxLayout" name="verticalLayout_123">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_individual_assured_name_label">
+                                      <property name="text">
+                                       <string>Assured Name</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_individual_assured_name_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Assured Name</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="0" column="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_124">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_individual_policy_number_label">
+                                      <property name="text">
+                                       <string>Policy Number</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_individual_policy_number_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Policy Number</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="2" column="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_125">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_individual_net_premium_label">
+                                      <property name="text">
+                                       <string>Net Premium</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_individual_net_premium_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Net Premium</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="1" column="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_126">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_individual_mbl_abl_label">
+                                      <property name="text">
+                                       <string>MBL/ABL</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_individual_mbl_abl_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter MBL/ABL</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="1" column="0">
+                                   <layout class="QVBoxLayout" name="verticalLayout_127">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_individual_contact_number_label">
+                                      <property name="text">
+                                       <string>Contact Number</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_individual_contact_number_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Contact Number</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="2" column="0">
+                                   <layout class="QVBoxLayout" name="verticalLayout_128">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_individual_email_label">
+                                      <property name="text">
+                                       <string>Email</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_individual_email_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Email Address</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="3" column="0">
+                                   <layout class="QVBoxLayout" name="verticalLayout_129">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_individual_birthday_label">
+                                      <property name="text">
+                                       <string>Birthday</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_individual_birthday_line_edit">
+                                      <property name="placeholderText">
+                                       <string>MM/DD/YY</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="2" column="1">
+                                   <layout class="QVBoxLayout" name="verticalLayout_130">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_individual_expiry_date_label">
+                                      <property name="text">
+                                       <string>Expiry Date</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_individual_expiry_date_line_edit">
+                                      <property name="placeholderText">
+                                       <string>MM/DD/YR</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="3" column="1">
+                                   <layout class="QVBoxLayout" name="verticalLayout_131">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_individual_agent_code_label">
+                                      <property name="text">
+                                       <string>Agent Code</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_individual_agent_code_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Agent Code</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="1" column="1">
+                                   <layout class="QVBoxLayout" name="verticalLayout_132">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_individual_inception_date_label">
+                                      <property name="text">
+                                       <string>Inception Date</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_individual_inception_date_line_edit">
+                                      <property name="placeholderText">
+                                       <string>MM/DD/YR</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="0" column="1">
+                                   <layout class="QVBoxLayout" name="verticalLayout_133">
+                                    <item>
+                                     <widget class="QLabel" name="label_4">
+                                      <property name="text">
+                                       <string>HMO Company</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="lineEdit_3">
+                                      <property name="placeholderText">
+                                       <string>Enter HMO Company</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                 </layout>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QFrame" name="policies_hmo_add_policy_individual_lower_frame">
+                                 <property name="frameShape">
+                                  <enum>QFrame::Shape::StyledPanel</enum>
+                                 </property>
+                                 <property name="frameShadow">
+                                  <enum>QFrame::Shadow::Raised</enum>
+                                 </property>
+                                 <layout class="QGridLayout" name="gridLayout_10">
+                                  <item row="1" column="1" colspan="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_134">
+                                    <item>
+                                     <layout class="QVBoxLayout" name="verticalLayout_135">
+                                      <item>
+                                       <widget class="QLabel" name="policies_hmo_add_policy_individual_commission_label">
+                                        <property name="text">
+                                         <string>Commission</string>
+                                        </property>
+                                       </widget>
+                                      </item>
+                                      <item>
+                                       <widget class="QLineEdit" name="policies_hmo_add_policy_individual_commission_line_edit">
+                                        <property name="readOnly">
+                                         <bool>true</bool>
+                                        </property>
+                                        <property name="placeholderText">
+                                         <string>Commission will automatically appear here.</string>
+                                        </property>
+                                       </widget>
+                                      </item>
+                                     </layout>
+                                    </item>
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_individual_notes_label">
+                                      <property name="text">
+                                       <string>Client</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QTextEdit" name="policies_hmo_add_policy_individual_notes_text_edit">
+                                      <property name="placeholderText">
+                                       <string>Add Notes</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                 </layout>
+                                </widget>
+                               </item>
+                               <item>
+                                <layout class="QHBoxLayout" name="horizontalLayout_17">
+                                 <item>
+                                  <spacer name="horizontalSpacer_6">
+                                   <property name="orientation">
+                                    <enum>Qt::Orientation::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>40</width>
+                                     <height>20</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item>
+                                  <widget class="QPushButton" name="policies_hmo_add_policy_individual_submit_push_button">
+                                   <property name="text">
+                                    <string>Submit</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                </layout>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                           </layout>
+                          </widget>
+                          <widget class="QWidget" name="policies_hmo_add_policy_corporate_tab">
+                           <attribute name="title">
+                            <string>Corporate</string>
+                           </attribute>
+                           <layout class="QVBoxLayout" name="verticalLayout_136">
+                            <item>
+                             <widget class="QFrame" name="policies_hmo_add_policy_corporate_frame">
+                              <property name="frameShape">
+                               <enum>QFrame::Shape::StyledPanel</enum>
+                              </property>
+                              <property name="frameShadow">
+                               <enum>QFrame::Shadow::Raised</enum>
+                              </property>
+                              <layout class="QVBoxLayout" name="verticalLayout_137">
+                               <item>
+                                <widget class="QFrame" name="policies_hmo_add_policy_corporate_upper_frame">
+                                 <property name="frameShape">
+                                  <enum>QFrame::Shape::StyledPanel</enum>
+                                 </property>
+                                 <property name="frameShadow">
+                                  <enum>QFrame::Shadow::Raised</enum>
+                                 </property>
+                                 <layout class="QGridLayout" name="gridLayout_11">
+                                  <item row="0" column="1">
+                                   <layout class="QVBoxLayout" name="verticalLayout_138">
+                                    <item>
+                                     <widget class="QLabel" name="label_5">
+                                      <property name="text">
+                                       <string>HMO Company</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="lineEdit_4">
+                                      <property name="placeholderText">
+                                       <string>Enter HMO Company</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="0" column="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_139">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_corporate_policy_number_label">
+                                      <property name="text">
+                                       <string>Policy Number</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_corporate_policy_number_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Policy Number</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="0" column="0">
+                                   <layout class="QVBoxLayout" name="verticalLayout_140">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_corporate_company_name_label">
+                                      <property name="text">
+                                       <string>Company Name</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_corporate_company_name_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Company Name</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="3" column="0">
+                                   <layout class="QVBoxLayout" name="verticalLayout_141">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_corporate_email_label">
+                                      <property name="text">
+                                       <string>Email</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_corporate_email_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Email Address</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="2" column="0">
+                                   <layout class="QVBoxLayout" name="verticalLayout_142">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_corporate_contact_number_label">
+                                      <property name="text">
+                                       <string>Contact Number</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_corporate_contact_number_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Contact Number</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="1" column="0">
+                                   <layout class="QVBoxLayout" name="verticalLayout_143">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_corporate_number_of_enrollees_label">
+                                      <property name="text">
+                                       <string>Number of Enrollees</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_corporate_number_of_enrollees_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Number of Enrollees</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="1" column="1">
+                                   <layout class="QVBoxLayout" name="verticalLayout_144">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_corporate_inception_date_label">
+                                      <property name="text">
+                                       <string>Inception Date</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_corporate_inception_date_line_edit">
+                                      <property name="placeholderText">
+                                       <string>MM/DD/YR</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="2" column="1">
+                                   <layout class="QVBoxLayout" name="verticalLayout_145">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_corporate_expiry_date_label">
+                                      <property name="text">
+                                       <string>Expiry Date</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_corporate_expiry_date_line_edit">
+                                      <property name="placeholderText">
+                                       <string>MM/DD/YR</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="3" column="1">
+                                   <layout class="QVBoxLayout" name="verticalLayout_146">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_corporate_agent_code_label">
+                                      <property name="text">
+                                       <string>Agent Code</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_corporate_agent_code_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Agent Code</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="1" column="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_147">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_corporate_mbl_abl_label">
+                                      <property name="text">
+                                       <string>MBL/ABL</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_corporate_mbl_abl_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter MBL/ABL</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="2" column="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_148">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_corporate_net_premium_label">
+                                      <property name="text">
+                                       <string>Net Premium</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_corporate_net_premium_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Net Premium</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="3" column="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_149">
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_corporate_gross_premium_label">
+                                      <property name="text">
+                                       <string>Gross Premium</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="policies_hmo_add_policy_corporate_gross_premium_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Gross Premium</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                 </layout>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QFrame" name="policies_hmo_add_policy_corporate_lower_frame">
+                                 <property name="frameShape">
+                                  <enum>QFrame::Shape::StyledPanel</enum>
+                                 </property>
+                                 <property name="frameShadow">
+                                  <enum>QFrame::Shadow::Raised</enum>
+                                 </property>
+                                 <layout class="QGridLayout" name="gridLayout_12">
+                                  <item row="1" column="1" colspan="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_150">
+                                    <item>
+                                     <layout class="QVBoxLayout" name="verticalLayout_151">
+                                      <item>
+                                       <widget class="QLabel" name="policies_hmo_add_policy_corporate_commission_label">
+                                        <property name="text">
+                                         <string>Commission</string>
+                                        </property>
+                                       </widget>
+                                      </item>
+                                      <item>
+                                       <widget class="QLineEdit" name="policies_hmo_add_policy_corporate_commission_line_edit">
+                                        <property name="readOnly">
+                                         <bool>true</bool>
+                                        </property>
+                                        <property name="placeholderText">
+                                         <string>Commission will automatically appear here.</string>
+                                        </property>
+                                       </widget>
+                                      </item>
+                                     </layout>
+                                    </item>
+                                    <item>
+                                     <widget class="QLabel" name="policies_hmo_add_policy_corporate_notes_label">
+                                      <property name="text">
+                                       <string>Client</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QTextEdit" name="policies_hmo_add_policy_corporate_notes_text_edit">
+                                      <property name="placeholderText">
+                                       <string>Add Notes</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                 </layout>
+                                </widget>
+                               </item>
+                               <item>
+                                <layout class="QHBoxLayout" name="horizontalLayout_18">
+                                 <item>
+                                  <spacer name="horizontalSpacer_7">
+                                   <property name="orientation">
+                                    <enum>Qt::Orientation::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>40</width>
+                                     <height>20</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item>
+                                  <widget class="QPushButton" name="policies_hmo_add_policy_corporate_submit_push_button">
+                                   <property name="text">
+                                    <string>Submit</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                </layout>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                           </layout>
+                          </widget>
+                         </widget>
+                        </item>
+                       </layout>
                       </widget>
                      </item>
                     </layout>
