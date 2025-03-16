@@ -1065,7 +1065,7 @@ font-weight: bold;</string>
       <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="home_tab">
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -2739,7 +2739,7 @@ QLabel {
                           </column>
                           <column>
                            <property name="text">
-                            <string>Type of Insurance</string>
+                            <string>Type of HMO</string>
                            </property>
                           </column>
                           <column>
@@ -2759,7 +2759,7 @@ QLabel {
                           </item>
                           <item row="0" column="1">
                            <property name="text">
-                            <string>Motor</string>
+                            <string>Individual</string>
                            </property>
                           </item>
                           <item row="0" column="2">
