@@ -1065,7 +1065,7 @@ font-weight: bold;</string>
       <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="home_tab">
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1146,7 +1146,7 @@ QComboBox {
 	background-color: white;
 	color: black;
 }
-QLabel {
+#clients_non_life_add_client_frame QLabel {
 	color: black;
 }</string>
       </property>
@@ -1776,6 +1776,51 @@ QLabel {
                            </property>
                           </item>
                          </widget>
+                        </item>
+                        <item>
+                         <layout class="QFormLayout" name="clients_non_life_dashboard_container">
+                          <property name="rowWrapPolicy">
+                           <enum>QFormLayout::RowWrapPolicy::DontWrapRows</enum>
+                          </property>
+                          <property name="labelAlignment">
+                           <set>Qt::AlignmentFlag::AlignCenter</set>
+                          </property>
+                          <property name="formAlignment">
+                           <set>Qt::AlignmentFlag::AlignCenter</set>
+                          </property>
+                          <item row="0" column="0">
+                           <widget class="QLabel" name="clients_non_life_dashboard_count">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="text">
+                             <string>0</string>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                            </property>
+                            <property name="wordWrap">
+                             <bool>false</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="1">
+                           <widget class="QLabel" name="clients_non_life_dashboard_label">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="text">
+                             <string>Results</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
                         </item>
                        </layout>
                       </widget>
@@ -2774,6 +2819,51 @@ QLabel {
                           </item>
                          </widget>
                         </item>
+                        <item>
+                         <layout class="QFormLayout" name="clients_hmo_dashboard_container">
+                          <property name="rowWrapPolicy">
+                           <enum>QFormLayout::RowWrapPolicy::DontWrapRows</enum>
+                          </property>
+                          <property name="labelAlignment">
+                           <set>Qt::AlignmentFlag::AlignCenter</set>
+                          </property>
+                          <property name="formAlignment">
+                           <set>Qt::AlignmentFlag::AlignCenter</set>
+                          </property>
+                          <item row="0" column="0">
+                           <widget class="QLabel" name="clients_hmo_dashboard_count">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="text">
+                             <string>0</string>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                            </property>
+                            <property name="wordWrap">
+                             <bool>false</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="1">
+                           <widget class="QLabel" name="clients_hmo_dashboard_label">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="text">
+                             <string>Results</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </item>
                        </layout>
                       </widget>
                      </item>
@@ -2885,7 +2975,7 @@ QComboBox {
 	background-color: white;
 	color: black;
 }
-QLabel {
+#policies_non_life_add_client_frame QLabel {
 	color: black;
 }</string>
       </property>
@@ -3525,6 +3615,51 @@ QLabel {
                            </property>
                           </item>
                          </widget>
+                        </item>
+                        <item>
+                         <layout class="QFormLayout" name="policies_non_life_dashboard_container">
+                          <property name="rowWrapPolicy">
+                           <enum>QFormLayout::RowWrapPolicy::DontWrapRows</enum>
+                          </property>
+                          <property name="labelAlignment">
+                           <set>Qt::AlignmentFlag::AlignCenter</set>
+                          </property>
+                          <property name="formAlignment">
+                           <set>Qt::AlignmentFlag::AlignCenter</set>
+                          </property>
+                          <item row="0" column="0">
+                           <widget class="QLabel" name="policies_non_life_dashboard_count">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="text">
+                             <string>0</string>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                            </property>
+                            <property name="wordWrap">
+                             <bool>false</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="1">
+                           <widget class="QLabel" name="policies_non_life_dashboard_label">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="text">
+                             <string>Results</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
                         </item>
                        </layout>
                       </widget>
@@ -4523,6 +4658,51 @@ QLabel {
                           </item>
                          </widget>
                         </item>
+                        <item>
+                         <layout class="QFormLayout" name="policies_hmo_dashboard_container">
+                          <property name="rowWrapPolicy">
+                           <enum>QFormLayout::RowWrapPolicy::DontWrapRows</enum>
+                          </property>
+                          <property name="labelAlignment">
+                           <set>Qt::AlignmentFlag::AlignCenter</set>
+                          </property>
+                          <property name="formAlignment">
+                           <set>Qt::AlignmentFlag::AlignCenter</set>
+                          </property>
+                          <item row="0" column="0">
+                           <widget class="QLabel" name="policies_hmo_dashboard_count">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="text">
+                             <string>0</string>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                            </property>
+                            <property name="wordWrap">
+                             <bool>false</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="1">
+                           <widget class="QLabel" name="policies_hmo_dashboard_label">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="text">
+                             <string>Results</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </item>
                        </layout>
                       </widget>
                      </item>
@@ -4602,9 +4782,6 @@ QTextEdit {
 }
 QComboBox {
 	background-color: white;
-	color: black;
-}
-QLabel {
 	color: black;
 }</string>
       </property>
@@ -5235,6 +5412,51 @@ QLabel {
                           </item>
                          </widget>
                         </item>
+                        <item>
+                         <layout class="QFormLayout" name="companies_non_life_dashboard_container">
+                          <property name="rowWrapPolicy">
+                           <enum>QFormLayout::RowWrapPolicy::DontWrapRows</enum>
+                          </property>
+                          <property name="labelAlignment">
+                           <set>Qt::AlignmentFlag::AlignCenter</set>
+                          </property>
+                          <property name="formAlignment">
+                           <set>Qt::AlignmentFlag::AlignCenter</set>
+                          </property>
+                          <item row="0" column="0">
+                           <widget class="QLabel" name="companies_non_life_dashboard_count">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="text">
+                             <string>0</string>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                            </property>
+                            <property name="wordWrap">
+                             <bool>false</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="1">
+                           <widget class="QLabel" name="companies_non_life_dashboard_label">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="text">
+                             <string>Results</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </item>
                        </layout>
                       </widget>
                      </item>
@@ -5279,7 +5501,7 @@ QLabel {
                        <property name="frameShadow">
                         <enum>QFrame::Shadow::Raised</enum>
                        </property>
-                       <layout class="QVBoxLayout" name="verticalLayout_104">
+                       <layout class="QVBoxLayout" name="verticalLayout_83">
                         <item>
                          <widget class="QTableWidget" name="companies_hmo_dashboard_table">
                           <property name="sizePolicy">
@@ -5858,6 +6080,51 @@ QLabel {
                            </property>
                           </item>
                          </widget>
+                        </item>
+                        <item>
+                         <layout class="QFormLayout" name="companies_hmo_dashboard_container">
+                          <property name="rowWrapPolicy">
+                           <enum>QFormLayout::RowWrapPolicy::DontWrapRows</enum>
+                          </property>
+                          <property name="labelAlignment">
+                           <set>Qt::AlignmentFlag::AlignCenter</set>
+                          </property>
+                          <property name="formAlignment">
+                           <set>Qt::AlignmentFlag::AlignCenter</set>
+                          </property>
+                          <item row="0" column="1">
+                           <widget class="QLabel" name="companies_hmo_dashboard_label">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="text">
+                             <string>Results</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="0">
+                           <widget class="QLabel" name="companies_hmo_dashboard_count">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="text">
+                             <string>0</string>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                            </property>
+                            <property name="wordWrap">
+                             <bool>false</bool>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
                         </item>
                        </layout>
                       </widget>

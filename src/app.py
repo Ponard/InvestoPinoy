@@ -83,6 +83,12 @@ class MainWindow(QWidget):
         self.client_payments_count.setText( str(self.client_payments_table.rowCount()) )
         self.company_expenses_count.setText( str(self.company_expenses_table.rowCount()) )
         self.commission_count.setText( str(self.commission_table.rowCount()) )
+        self.clients_hmo_dashboard_count.setText( str(self.clients_hmo_dashboard_table.rowCount()) )
+        self.clients_non_life_dashboard_count.setText( str(self.clients_non_life_dashboard_table.rowCount()) )
+        self.companies_hmo_dashboard_count.setText( str(self.companies_hmo_dashboard_table.rowCount()) )
+        self.companies_non_life_dashboard_count.setText( str(self.companies_non_life_dashboard_table.rowCount()) )
+        self.policies_hmo_dashboard_count.setText( str(self.policies_hmo_dashboard_table.rowCount()) )
+        self.policies_non_life_dashboard_count.setText( str(self.policies_non_life_dashboard_table.rowCount()) )
     
     
     #### Navigation Tab Button Functions
