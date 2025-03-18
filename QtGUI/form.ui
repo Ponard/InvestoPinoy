@@ -7508,7 +7508,7 @@ QComboBox {
                            <number>16</number>
                           </property>
                           <property name="rowCount">
-                           <number>1</number>
+                           <number>2</number>
                           </property>
                           <property name="columnCount">
                            <number>4</number>
@@ -7528,6 +7528,7 @@ QComboBox {
                           <attribute name="horizontalHeaderStretchLastSection">
                            <bool>false</bool>
                           </attribute>
+                          <row/>
                           <row/>
                           <column>
                            <property name="text">
@@ -7556,22 +7557,42 @@ QComboBox {
                           </column>
                           <item row="0" column="0">
                            <property name="text">
-                            <string>Philip Dunphy</string>
+                            <string>Gloria Pritchett</string>
                            </property>
                           </item>
                           <item row="0" column="1">
                            <property name="text">
-                            <string>Motor</string>
+                            <string>Fire (Residential)</string>
                            </property>
                           </item>
                           <item row="0" column="2">
                            <property name="text">
-                            <string>Philippine British Insurance</string>
+                            <string>Mercantile Insurance</string>
                            </property>
                           </item>
                           <item row="0" column="3">
                            <property name="text">
-                            <string>02/14/26</string>
+                            <string>2028/10/14</string>
+                           </property>
+                          </item>
+                          <item row="1" column="0">
+                           <property name="text">
+                            <string>Philip Dunphy</string>
+                           </property>
+                          </item>
+                          <item row="1" column="1">
+                           <property name="text">
+                            <string>Motor</string>
+                           </property>
+                          </item>
+                          <item row="1" column="2">
+                           <property name="text">
+                            <string>Philippine British Insurance</string>
+                           </property>
+                          </item>
+                          <item row="1" column="3">
+                           <property name="text">
+                            <string>2026/02/14</string>
                            </property>
                           </item>
                          </widget>
@@ -8177,7 +8198,7 @@ QComboBox {
                            <number>16</number>
                           </property>
                           <property name="rowCount">
-                           <number>1</number>
+                           <number>2</number>
                           </property>
                           <property name="columnCount">
                            <number>4</number>
@@ -8197,6 +8218,7 @@ QComboBox {
                           <attribute name="horizontalHeaderStretchLastSection">
                            <bool>false</bool>
                           </attribute>
+                          <row/>
                           <row/>
                           <column>
                            <property name="text">
@@ -8225,22 +8247,42 @@ QComboBox {
                           </column>
                           <item row="0" column="0">
                            <property name="text">
-                            <string>Philip Dunphy</string>
+                            <string>Perry-Scavo Firm</string>
                            </property>
                           </item>
                           <item row="0" column="1">
                            <property name="text">
-                            <string>Individual</string>
+                            <string>Corporate</string>
                            </property>
                           </item>
                           <item row="0" column="2">
                            <property name="text">
-                            <string>Icare</string>
+                            <string>Maxicare</string>
                            </property>
                           </item>
                           <item row="0" column="3">
                            <property name="text">
-                            <string>08/07/27</string>
+                            <string>2029/10/18</string>
+                           </property>
+                          </item>
+                          <item row="1" column="0">
+                           <property name="text">
+                            <string>Philip Dunphy</string>
+                           </property>
+                          </item>
+                          <item row="1" column="1">
+                           <property name="text">
+                            <string>Individual</string>
+                           </property>
+                          </item>
+                          <item row="1" column="2">
+                           <property name="text">
+                            <string>Icare</string>
+                           </property>
+                          </item>
+                          <item row="1" column="3">
+                           <property name="text">
+                            <string>2027/08/07</string>
                            </property>
                           </item>
                          </widget>
@@ -9986,7 +10028,9 @@ QComboBox {
                  <item>
                   <widget class="QTableWidget" name="company_expenses_table">
                    <property name="styleSheet">
-                    <string notr="true"/>
+                    <string notr="true">#company_expenses_table {
+	color: black;
+}</string>
                    </property>
                    <attribute name="horizontalHeaderDefaultSectionSize">
                     <number>92</number>
@@ -9997,6 +10041,7 @@ QComboBox {
                    <attribute name="horizontalHeaderStretchLastSection">
                     <bool>false</bool>
                    </attribute>
+                   <row/>
                    <row/>
                    <column>
                     <property name="text">
@@ -10030,20 +10075,45 @@ QComboBox {
                    </item>
                    <item row="0" column="1">
                     <property name="text">
-                     <string>Utilities</string>
+                     <string>Office Supplies</string>
                     </property>
                    </item>
                    <item row="0" column="2">
                     <property name="text">
-                     <string>Bank Transfer</string>
+                     <string>Cash</string>
                     </property>
                    </item>
                    <item row="0" column="3">
                     <property name="text">
-                     <string>IT</string>
+                     <string>Admin</string>
                     </property>
                    </item>
                    <item row="0" column="4">
+                    <property name="text">
+                     <string>2025/02/14</string>
+                    </property>
+                   </item>
+                   <item row="1" column="0">
+                    <property name="text">
+                     <string>10,000.00</string>
+                    </property>
+                   </item>
+                   <item row="1" column="1">
+                    <property name="text">
+                     <string>Utilities</string>
+                    </property>
+                   </item>
+                   <item row="1" column="2">
+                    <property name="text">
+                     <string>Bank Transfer</string>
+                    </property>
+                   </item>
+                   <item row="1" column="3">
+                    <property name="text">
+                     <string>IT</string>
+                    </property>
+                   </item>
+                   <item row="1" column="4">
                     <property name="text">
                      <string>2025/01/25</string>
                     </property>
@@ -10613,9 +10683,10 @@ QComboBox {
                     <bool>false</bool>
                    </attribute>
                    <row/>
+                   <row/>
                    <column>
                     <property name="text">
-                     <string>Commission Type</string>
+                     <string>Client Name</string>
                     </property>
                    </column>
                    <column>
@@ -10635,20 +10706,40 @@ QComboBox {
                    </column>
                    <item row="0" column="0">
                     <property name="text">
-                     <string>Client Commission</string>
+                     <string>Susan Meyer</string>
                     </property>
                    </item>
                    <item row="0" column="1">
                     <property name="text">
-                     <string>5%</string>
+                     <string>7%</string>
                     </property>
                    </item>
                    <item row="0" column="2">
                     <property name="text">
-                     <string>Anne Reyes</string>
+                     <string>Lynette Scavo</string>
                     </property>
                    </item>
                    <item row="0" column="3">
+                    <property name="text">
+                     <string>2023/05/24</string>
+                    </property>
+                   </item>
+                   <item row="1" column="0">
+                    <property name="text">
+                     <string>Gabrielle Solis</string>
+                    </property>
+                   </item>
+                   <item row="1" column="1">
+                    <property name="text">
+                     <string>5%</string>
+                    </property>
+                   </item>
+                   <item row="1" column="2">
+                    <property name="text">
+                     <string>Bree Hodge</string>
+                    </property>
+                   </item>
+                   <item row="1" column="3">
                     <property name="text">
                      <string>2024/12/15</string>
                     </property>
@@ -13011,12 +13102,39 @@ QComboBox {
                    <property name="palette">
                     <palette>
                      <active>
+                      <colorrole role="WindowText">
+                       <brush brushstyle="SolidPattern">
+                        <color alpha="255">
+                         <red>0</red>
+                         <green>0</green>
+                         <blue>0</blue>
+                        </color>
+                       </brush>
+                      </colorrole>
                       <colorrole role="Button">
                        <brush brushstyle="SolidPattern">
                         <color alpha="255">
                          <red>255</red>
                          <green>255</green>
                          <blue>255</blue>
+                        </color>
+                       </brush>
+                      </colorrole>
+                      <colorrole role="Text">
+                       <brush brushstyle="SolidPattern">
+                        <color alpha="255">
+                         <red>0</red>
+                         <green>0</green>
+                         <blue>0</blue>
+                        </color>
+                       </brush>
+                      </colorrole>
+                      <colorrole role="ButtonText">
+                       <brush brushstyle="SolidPattern">
+                        <color alpha="255">
+                         <red>0</red>
+                         <green>0</green>
+                         <blue>0</blue>
                         </color>
                        </brush>
                       </colorrole>
@@ -13035,17 +13153,53 @@ QComboBox {
                          <red>255</red>
                          <green>255</green>
                          <blue>255</blue>
+                        </color>
+                       </brush>
+                      </colorrole>
+                      <colorrole role="PlaceholderText">
+                       <brush brushstyle="SolidPattern">
+                        <color alpha="128">
+                         <red>0</red>
+                         <green>0</green>
+                         <blue>0</blue>
                         </color>
                        </brush>
                       </colorrole>
                      </active>
                      <inactive>
+                      <colorrole role="WindowText">
+                       <brush brushstyle="SolidPattern">
+                        <color alpha="255">
+                         <red>0</red>
+                         <green>0</green>
+                         <blue>0</blue>
+                        </color>
+                       </brush>
+                      </colorrole>
                       <colorrole role="Button">
                        <brush brushstyle="SolidPattern">
                         <color alpha="255">
                          <red>255</red>
                          <green>255</green>
                          <blue>255</blue>
+                        </color>
+                       </brush>
+                      </colorrole>
+                      <colorrole role="Text">
+                       <brush brushstyle="SolidPattern">
+                        <color alpha="255">
+                         <red>0</red>
+                         <green>0</green>
+                         <blue>0</blue>
+                        </color>
+                       </brush>
+                      </colorrole>
+                      <colorrole role="ButtonText">
+                       <brush brushstyle="SolidPattern">
+                        <color alpha="255">
+                         <red>0</red>
+                         <green>0</green>
+                         <blue>0</blue>
                         </color>
                        </brush>
                       </colorrole>
@@ -13064,17 +13218,53 @@ QComboBox {
                          <red>255</red>
                          <green>255</green>
                          <blue>255</blue>
+                        </color>
+                       </brush>
+                      </colorrole>
+                      <colorrole role="PlaceholderText">
+                       <brush brushstyle="SolidPattern">
+                        <color alpha="128">
+                         <red>0</red>
+                         <green>0</green>
+                         <blue>0</blue>
                         </color>
                        </brush>
                       </colorrole>
                      </inactive>
                      <disabled>
+                      <colorrole role="WindowText">
+                       <brush brushstyle="SolidPattern">
+                        <color alpha="255">
+                         <red>0</red>
+                         <green>0</green>
+                         <blue>0</blue>
+                        </color>
+                       </brush>
+                      </colorrole>
                       <colorrole role="Button">
                        <brush brushstyle="SolidPattern">
                         <color alpha="255">
                          <red>255</red>
                          <green>255</green>
                          <blue>255</blue>
+                        </color>
+                       </brush>
+                      </colorrole>
+                      <colorrole role="Text">
+                       <brush brushstyle="SolidPattern">
+                        <color alpha="255">
+                         <red>0</red>
+                         <green>0</green>
+                         <blue>0</blue>
+                        </color>
+                       </brush>
+                      </colorrole>
+                      <colorrole role="ButtonText">
+                       <brush brushstyle="SolidPattern">
+                        <color alpha="255">
+                         <red>0</red>
+                         <green>0</green>
+                         <blue>0</blue>
                         </color>
                        </brush>
                       </colorrole>
@@ -13093,6 +13283,15 @@ QComboBox {
                          <red>255</red>
                          <green>255</green>
                          <blue>255</blue>
+                        </color>
+                       </brush>
+                      </colorrole>
+                      <colorrole role="PlaceholderText">
+                       <brush brushstyle="SolidPattern">
+                        <color alpha="128">
+                         <red>0</red>
+                         <green>0</green>
+                         <blue>0</blue>
                         </color>
                        </brush>
                       </colorrole>
@@ -13104,6 +13303,7 @@ QComboBox {
 	background-color: white;
 	border-radius: 10%;
 	padding: 15px;
+	color: black;
 }</string>
                    </property>
                    <attribute name="horizontalHeaderDefaultSectionSize">
