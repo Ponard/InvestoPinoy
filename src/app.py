@@ -1,11 +1,18 @@
 import os
-os.environ["QT_QPA_PLATFORM"] = "windows:darkmode=0"
-
+import sys
+import db_func
 from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView
 from PyQt6 import uic
 
-import sys
-import db_func
+if sys.platform.startswith('linux'):
+    print("Running on Linux")
+elif sys.platform.startswith('win'):
+    print("Running on Windows")
+    os.environ["QT_QPA_PLATFORM"] = "windows:darkmode=0"
+elif sys.platform.startswith('darwin'):
+    print("Running on macOS")
+else:
+    print("Unknown operating system")
 
 class LoginPage(QWidget):
     def __init__(self):
