@@ -1,3 +1,6 @@
+import os
+os.environ["QT_QPA_PLATFORM"] = "windows:darkmode=0"
+
 from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView
 from PyQt6 import uic
 
