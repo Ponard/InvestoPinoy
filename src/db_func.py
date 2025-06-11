@@ -1,17 +1,21 @@
 import psycopg2
+import os
 from PyQt6.QtWidgets import QMessageBox
+from dotenv import load_dotenv
 
-# change this to db pass, leaving it blank for now
-dbPass = "qazwsx"
+load_dotenv()
+
+# set the PASSWORD environment variable in .env
+dbPass = os.getenv("PASSWORD")
 
 # connect to db, return connection if successful else error
 def connect():
     try:
         connection = psycopg2.connect(
-            dbname="test",
-            host="localhost",
-            user="postgres",
-            password=dbPass,
+            dbname=os.getenv("DATABASE_NAME"),
+            host=os.getenv("HOST"),
+            user=os.getenv("USER"),
+            password=dbPass
         )
         return connection
     except Exception as e:
