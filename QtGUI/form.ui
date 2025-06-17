@@ -2800,7 +2800,7 @@ QComboBox {
                              <item>
                               <widget class="QLineEdit" name="clients_non_life_add_client_birthday_line_edit">
                                <property name="placeholderText">
-                                <string>MM/DD/YY</string>
+                                <string>YYYY/MM/DD</string>
                                </property>
                               </widget>
                              </item>
@@ -2818,7 +2818,7 @@ QComboBox {
                              <item>
                               <widget class="QLineEdit" name="clients_non_life_add_client_inception_date_line_edit">
                                <property name="placeholderText">
-                                <string>MM/DD/YR</string>
+                                <string>YYYY/MM/DD</string>
                                </property>
                               </widget>
                              </item>
@@ -2836,7 +2836,7 @@ QComboBox {
                              <item>
                               <widget class="QLineEdit" name="clients_non_life_add_client_expiry_date_line_edit">
                                <property name="placeholderText">
-                                <string>MM/DD/YR</string>
+                                <string>YYYY/MM/DD</string>
                                </property>
                               </widget>
                              </item>
@@ -3933,7 +3933,7 @@ QComboBox {
                                     <item>
                                      <widget class="QLineEdit" name="clients_hmo_add_client_individual_birthday_line_edit">
                                       <property name="placeholderText">
-                                       <string>MM/DD/YY</string>
+                                       <string>YYYY/MM/DD</string>
                                       </property>
                                      </widget>
                                     </item>
@@ -3951,7 +3951,7 @@ QComboBox {
                                     <item>
                                      <widget class="QLineEdit" name="clients_hmo_add_client_individual_expiry_date_line_edit">
                                       <property name="placeholderText">
-                                       <string>MM/DD/YR</string>
+                                       <string>YYYY/MM/DD</string>
                                       </property>
                                      </widget>
                                     </item>
@@ -3987,7 +3987,7 @@ QComboBox {
                                     <item>
                                      <widget class="QLineEdit" name="clients_hmo_add_client_individual_inception_date_line_edit">
                                       <property name="placeholderText">
-                                       <string>MM/DD/YR</string>
+                                       <string>YYYY/MM/DD</string>
                                       </property>
                                      </widget>
                                     </item>
@@ -4237,7 +4237,7 @@ QComboBox {
                                     <item>
                                      <widget class="QLineEdit" name="clients_hmo_add_client_corporate_inception_date_line_edit">
                                       <property name="placeholderText">
-                                       <string>MM/DD/YR</string>
+                                       <string>YYYY/MM/DD</string>
                                       </property>
                                      </widget>
                                     </item>
@@ -4255,7 +4255,7 @@ QComboBox {
                                     <item>
                                      <widget class="QLineEdit" name="clients_hmo_add_client_corporate_expiry_date_line_edit">
                                       <property name="placeholderText">
-                                       <string>MM/DD/YR</string>
+                                       <string>YYYY/MM/DD</string>
                                       </property>
                                      </widget>
                                     </item>

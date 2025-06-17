@@ -708,6 +708,7 @@ QLineFocus:focus {
 	background-color: rgb(60,54,82);
 	border: 1px solid white;
 	border-radius: 5px;
+	color: white;
 }
 QPushButton::hover
 {
