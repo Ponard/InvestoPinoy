@@ -2,6 +2,7 @@ import os
 import sys
 import db_func
 from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView
+from PyQt6.QtCore import QMetaObject
 from PyQt6 import uic
 
 if sys.platform.startswith('linux'):
@@ -14,19 +15,21 @@ elif sys.platform.startswith('darwin'):
 else:
     print("Unknown operating system")
 
+# Monkey-patch to disable auto-connections globally
+QMetaObject.connectSlotsByName = lambda *args, **kwargs: None
+
 class LoginPage(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
-        self = uic.loadUi("QtGUI/login.ui", self)
+        uic.loadUi("QtGUI/login.ui", self)
         self.login_button.clicked.connect(self.on_login)
 
     def on_login(self):
         # username = self.login_username.text()
         # password = self.login_password.text()
-        
 
         self.main_window = MainWindow()
         self.main_window.show()
@@ -36,7 +39,8 @@ class LoginPage(QWidget):
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self = uic.loadUi("QtGUI/form.ui", self)
+        uic.loadUi("QtGUI/form.ui", self)
+        self.showMaximized()
         
         # connect to DB
         db_func.connect()
@@ -52,6 +56,7 @@ class MainWindow(QWidget):
         self.archived_policies_delete_button.clicked.connect(self.on_policies_delete_button_clicked)
         self.archived_clients_restore_button.clicked.connect(self.on_clients_restore_button_clicked)
         self.archived_clients_delete_button.clicked.connect(self.on_clients_delete_button_clicked)
+        self.clients_non_life_add_client_submit_push_button.clicked.connect(self.on_clients_non_life_add_client_submit_push_button_clicked)
 
 
         # REVISE: move to separate functions later
@@ -107,7 +112,11 @@ class MainWindow(QWidget):
 
     def on_clients_button_clicked(self):
         self.current_active_tab.setCurrentIndex(1)
-      
+        db_func.fetch_nonlife_clients(self)
+    
+    def on_clients_non_life_add_client_submit_push_button_clicked(self):
+        db_func.insert_nonlife_client(self)
+
     def on_policies_button_clicked(self):
         self.current_active_tab.setCurrentIndex(2)
       
