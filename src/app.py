@@ -56,8 +56,11 @@ class MainWindow(QWidget):
         self.archived_policies_delete_button.clicked.connect(self.on_policies_delete_button_clicked)
         self.archived_clients_restore_button.clicked.connect(self.on_clients_restore_button_clicked)
         self.archived_clients_delete_button.clicked.connect(self.on_clients_delete_button_clicked)
+        
+        # add client buttons
         self.clients_non_life_add_client_submit_push_button.clicked.connect(self.on_clients_non_life_add_client_submit_push_button_clicked)
-
+        self.clients_hmo_add_client_individual_submit_push_button.clicked.connect(self.on_clients_hmo_add_client_individual_submit_push_button_clicked)
+        self.clients_hmo_add_client_corporate_submit_push_button.clicked.connect(self.on_clients_hmo_add_client_corporate_submit_push_button_clicked)
 
         # REVISE: move to separate functions later
         # resize cols to header/content
@@ -112,10 +115,16 @@ class MainWindow(QWidget):
 
     def on_clients_button_clicked(self):
         self.current_active_tab.setCurrentIndex(1)
-        db_func.fetch_nonlife_clients(self)
+        db_func.fetch_client_table_data(self)
     
     def on_clients_non_life_add_client_submit_push_button_clicked(self):
         db_func.insert_nonlife_client(self)
+
+    def on_clients_hmo_add_client_individual_submit_push_button_clicked(self):
+        db_func.insert_hmo_individual_client(self)
+
+    def on_clients_hmo_add_client_corporate_submit_push_button_clicked(self):
+        db_func.insert_hmo_corporate_client(self)
 
     def on_policies_button_clicked(self):
         self.current_active_tab.setCurrentIndex(2)

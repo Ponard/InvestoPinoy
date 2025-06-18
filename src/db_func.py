@@ -158,7 +158,7 @@ def load_table_data(db_table_name: str, qt_table_widget, columns_to_display: lis
             cursor.close()
             conn.close()
 
-def fetch_nonlife_clients(self):
+def fetch_client_table_data(self):
     load_table_data("clients_nonlife", self.clients_non_life_dashboard_table, ["assured_name", "type_of_insurance", "policy_number", "expiry_date"])
     load_table_data("clients_hmo_individual", self.clients_hmo_dashboard_table, ["assured_name", "'Individual' AS type_of_hmo", "policy_number", "expiry_date"])
     load_table_data("clients_hmo_corporate", self.clients_hmo_dashboard_table, ["company_name", "'Corporate' AS type_of_hmo", "policy_number", "expiry_date"], False)
@@ -215,6 +215,11 @@ def insert_nonlife_client(self):
         amount_covered = parse_decimal(amount_covered)
         notes = clean_text(notes)
 
+        # Validate NOT NULL fields
+        if not name or not expiry_date or not policy_number or not insurance_type:
+            QMessageBox.warning(self, "Missing Fields", "Please fill in all required fields: Assured Name, Expiry Date, Policy Number, Type of Insurance.")
+            return
+
         # Insert into database
         cursor.execute("""
             INSERT INTO clients_nonlife (
@@ -233,11 +238,174 @@ def insert_nonlife_client(self):
         cursor.close()
         conn.close()
 
-        fetch_nonlife_clients(self)
+        fetch_client_table_data(self)
         QMessageBox.information(self, "Success", "Client added successfully!")
 
     except Exception as e:
         QMessageBox.critical(self, "Database Error", f"Failed to insert client:\n{e}")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+def insert_hmo_individual_client(self):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        # Extract values from widgets
+        name = self.clients_hmo_add_client_individual_assured_name_line_edit.text()
+        contact = self.clients_hmo_add_client_individual_contact_number_line_edit.text()
+        email = self.clients_hmo_add_client_individual_email_line_edit.text()
+        birthday = self.clients_hmo_add_client_individual_birthday_line_edit.text()
+        hmo_company = self.clients_hmo_add_client_individual_hmo_company_line_edit.text()
+        inception_date = self.clients_hmo_add_client_individual_inception_date_line_edit.text()
+        expiry_date = self.clients_hmo_add_client_individual_expiry_date_line_edit.text()
+        agent_code = self.clients_hmo_add_client_individual_agent_code_line_edit.text()
+        policy_number = self.clients_hmo_add_client_individual_policy_number_line_edit.text()
+        mbl_abl = self.clients_hmo_add_client_individual_mbl_abl_line_edit.text()
+        net_premium = self.clients_hmo_add_client_individual_net_premium_line_edit.text()
+        gross_premium = self.clients_hmo_add_client_individual_gross_premium_line_edit.text()
+        commission = self.clients_hmo_add_client_individual_commission_line_edit.text()
+        notes = self.clients_hmo_add_client_individual_notes_text_edit.toPlainText()
+
+        # Convert dates and numerics safely
+        def parse_date(date_str):
+            return datetime.strptime(date_str, "%Y/%m/%d").date() if date_str else None
+
+        def parse_decimal(val):
+            return float(val) if val else None
+
+        def clean_text(val):
+            return val.strip() if val.strip() else None
+
+        # Cleaned and parsed values
+        name = clean_text(name)
+        contact = clean_text(contact)
+        email = clean_text(email)
+        birthday = parse_date(birthday)
+        hmo_company = clean_text(hmo_company)
+        inception_date = parse_date(inception_date)
+        expiry_date = parse_date(expiry_date)
+        agent_code = clean_text(agent_code)
+        policy_number = clean_text(policy_number)
+        mbl_abl = clean_text(mbl_abl)
+        net_premium = parse_decimal(net_premium)
+        gross_premium = parse_decimal(gross_premium)
+        commission = parse_decimal(commission)
+        notes = clean_text(notes)
+
+        # Validate NOT NULL fields
+        if not name or not expiry_date or not policy_number:
+            QMessageBox.warning(self, "Missing Fields", "Please fill in all required fields: Assured Name, Expiry Date, Policy Number.")
+            return
+
+        # Insert into database
+        cursor.execute("""
+            INSERT INTO clients_hmo_individual (
+                assured_name, contact_number, email, birthday, hmo_company,
+                inception_date, expiry_date, agent_code, policy_number,
+                mbl_abl, net_premium, gross_premium, commission,
+                client_notes
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (
+            name, contact, email, birthday, hmo_company,
+            inception_date, expiry_date, agent_code, policy_number,
+            mbl_abl, net_premium, gross_premium, commission,
+            notes
+        ))
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        fetch_client_table_data(self)  # You can define this to refresh the client list
+        QMessageBox.information(self, "Success", "HMO Individual client added successfully!")
+
+    except Exception as e:
+        QMessageBox.critical(self, "Database Error", f"Failed to insert client:\n{e}")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+def insert_hmo_corporate_client(self):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        # Extract values from widgets
+        company_name = self.clients_hmo_add_client_corporate_company_name_line_edit.text()
+        number_of_enrollees = self.clients_hmo_add_client_corporate_number_of_enrollees_line_edit.text()
+        contact = self.clients_hmo_add_client_corporate_contact_number_line_edit.text()
+        email = self.clients_hmo_add_client_corporate_email_line_edit.text()
+        hmo_company = self.clients_hmo_add_client_corporate_hmo_company_line_edit.text()
+        inception_date = self.clients_hmo_add_client_corporate_inception_date_line_edit.text()
+        expiry_date = self.clients_hmo_add_client_corporate_expiry_date_line_edit.text()
+        agent_code = self.clients_hmo_add_client_corporate_agent_code_line_edit.text()
+        policy_number = self.clients_hmo_add_client_corporate_policy_number_line_edit.text()
+        mbl_abl = self.clients_hmo_add_client_corporate_mbl_abl_line_edit.text()
+        net_premium = self.clients_hmo_add_client_corporate_net_premium_line_edit.text()
+        gross_premium = self.clients_hmo_add_client_corporate_gross_premium_line_edit.text()
+        commission = self.clients_hmo_add_client_corporate_commission_line_edit.text()
+        notes = self.clients_hmo_add_client_corporate_notes_text_edit.toPlainText()
+
+        # Convert and sanitize input
+        def parse_date(date_str):
+            return datetime.strptime(date_str, "%Y/%m/%d").date() if date_str else None
+
+        def parse_decimal(val):
+            return float(val) if val else None
+
+        def parse_int(val):
+            return int(val) if val else None
+
+        def clean_text(val):
+            return val.strip() if val.strip() else None
+
+        company_name = clean_text(company_name)
+        number_of_enrollees = parse_int(number_of_enrollees)
+        contact = clean_text(contact)
+        email = clean_text(email)
+        hmo_company = clean_text(hmo_company)
+        inception_date = parse_date(inception_date)
+        expiry_date = parse_date(expiry_date)
+        agent_code = clean_text(agent_code)
+        policy_number = clean_text(policy_number)
+        mbl_abl = clean_text(mbl_abl)
+        net_premium = parse_decimal(net_premium)
+        gross_premium = parse_decimal(gross_premium)
+        commission = parse_decimal(commission)
+        notes = clean_text(notes)
+
+        # Validate required fields
+        if not company_name or not policy_number or not expiry_date:
+            QMessageBox.warning(self, "Missing Fields", "Please fill in all required fields: Company Name, Policy Number, Expiry Date.")
+            return
+
+        # Insert into database
+        cursor.execute("""
+            INSERT INTO clients_hmo_corporate (
+                company_name, number_of_enrollees, contact_number, email,
+                hmo_company, inception_date, expiry_date, agent_code,
+                policy_number, mbl_abl, net_premium, gross_premium,
+                commission, client_notes
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (
+            company_name, number_of_enrollees, contact, email,
+            hmo_company, inception_date, expiry_date, agent_code,
+            policy_number, mbl_abl, net_premium, gross_premium,
+            commission, notes
+        ))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        fetch_client_table_data(self)  # Refresh table view, if defined
+        QMessageBox.information(self, "Success", "HMO Corporate client added successfully!")
+
+    except Exception as e:
+        QMessageBox.critical(self, "Database Error", f"Failed to insert corporate client:\n{e}")
     finally:
         if conn:
             cursor.close()

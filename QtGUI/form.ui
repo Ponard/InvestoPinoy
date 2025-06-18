@@ -4115,14 +4115,14 @@ QComboBox {
                                   <item row="0" column="1">
                                    <layout class="QVBoxLayout" name="verticalLayout_117">
                                     <item>
-                                     <widget class="QLabel" name="label_3">
+                                     <widget class="QLabel" name="clients_hmo_add_client_corporate_hmo_company_label">
                                       <property name="text">
                                        <string>HMO Company</string>
                                       </property>
                                      </widget>
                                     </item>
                                     <item>
-                                     <widget class="QLineEdit" name="lineEdit_2">
+                                     <widget class="QLineEdit" name="clients_hmo_add_client_corporate_hmo_company_line_edit">
                                       <property name="placeholderText">
                                        <string>Enter HMO Company</string>
                                       </property>
