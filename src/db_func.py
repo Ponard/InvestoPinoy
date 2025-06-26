@@ -372,8 +372,9 @@ def archive_nonlife_client(self):
                 WHERE policy_number = %s
             """, (policy_number,))
             conn.commit()
-            cursor.close()
-            conn.close()
+
+        cursor.close()
+        conn.close()
 
         QMessageBox.information(self, "Success", "Selected client(s) archived.")
         fetch_client_table_data(self)
