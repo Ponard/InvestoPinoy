@@ -24,98 +24,7 @@ def connect():
         return None
     
 
-# update row/s
-def update_row(table: str, **data):
-    try:
-        connection = connect()
-        cursor = connection.cursor()
-        set_clause = ", ".join([f'"{column}" = %s' for column in data["new"].keys()])
-        where_clause = " AND ".join([f'"{column}" = %s' for column in data["old"].keys()])
-        
-        new_values = tuple(data["new"].values())
-        old_values = tuple(data["old"].values())
-        values = new_values + old_values
-        cursor.execute(f"UPDATE {table} SET {set_clause} WHERE {where_clause}", values)
-        
-        connection.commit()
-        QMessageBox.information(None, "Success", f"Data updated from {table} successfully")
-        return True
-    except Exception as e:
-        QMessageBox.critical(None, "Error", f"Error updating data from table {table}: {e}")
-        return False
-    finally:
-        if connection:
-            cursor.close()
-            connection.close()
-            
-            
-# delete row/s
-def delete_row(table: str, **data):
-    try:
-        connection = connect()
-        cursor = connection.cursor()
-
-        # create WHERE clause dynamically depending on # of columns
-        where_clause = " AND ".join([f'"{column}" = %s' for column in data.keys()])
-        values = tuple(data.values())
-
-        cursor.execute(f"DELETE FROM {table} WHERE {where_clause}", values)
-        
-        connection.commit()
-        QMessageBox.information(None, "Success", f"Data deleted from {table} successfully")
-    except Exception as e:
-        QMessageBox.critical(None, "Error", f"Error deleting data from table {table}: {e}")
-    finally:
-        if connection:
-            cursor.close()
-            connection.close()
-
-
-def insert_row(table: str, **data):
-    try:
-        connection = connect()
-        cursor = connection.cursor()
-        
-        columns = ", ".join([f'"{column}"' for column in data.keys()])
-        placeholders = ", ".join(["%s"] * len(data))
-        values = tuple(data.values())
-        
-        cursor.execute(f"INSERT INTO {table} ({columns}) VALUES ({placeholders})", values)
-        connection.commit()
-        
-        QMessageBox.information(None, "Success", f"Data inserted into {table} successfully")
-        return True
-    except Exception as e:
-        QMessageBox.critical(None, "Error", f"Error inserting data into table {table}: {e}")
-        return False
-    finally:
-        if connection:
-            cursor.close()
-            connection.close()
-
-
-def select_row(table: str, **condition):
-    try:
-        connection = connect()
-        cursor = connection.cursor()
-        if condition:
-            where_clause = " AND ".join([f'"{column}" = %s' for column in condition.keys()])
-            values = tuple(condition.values())
-            cursor.execute(f"SELECT * FROM {table} WHERE {where_clause}", values)
-        else:
-            cursor.execute(f"SELECT * FROM {table}")
-        
-        rows = cursor.fetchall()
-        return rows
-    except Exception as e:
-        QMessageBox.critical(None, "Error", f"Error fetching data from table {table}: {e}")
-        return None
-    finally:
-        if connection:
-            cursor.close()
-            connection.close()
-
-def load_table_data(db_table_name: str, qt_table_widget, columns_to_display: list, clear_rows: bool = True):
+def load_table_data(db_table_name: str, qt_table_widget, columns_to_display: list, condition = '', clear_rows: bool = True):
     """
     Generalized function to load client data from a PostgreSQL table into a Qt table.
 
@@ -131,6 +40,7 @@ def load_table_data(db_table_name: str, qt_table_widget, columns_to_display: lis
         # Generate SQL query
         column_list = ', '.join(columns_to_display)
         query = f"SELECT {column_list} FROM {db_table_name}"
+        query += f" {condition}"
         cursor.execute(query)
         records = cursor.fetchall()
 
@@ -159,11 +69,18 @@ def load_table_data(db_table_name: str, qt_table_widget, columns_to_display: lis
             conn.close()
 
 def fetch_client_table_data(self):
-    load_table_data("clients_nonlife", self.clients_non_life_dashboard_table, ["assured_name", "type_of_insurance", "policy_number", "expiry_date"])
-    load_table_data("clients_hmo_individual", self.clients_hmo_dashboard_table, ["assured_name", "'Individual' AS type_of_hmo", "policy_number", "expiry_date"])
-    load_table_data("clients_hmo_corporate", self.clients_hmo_dashboard_table, ["company_name", "'Corporate' AS type_of_hmo", "policy_number", "expiry_date"], False)
+    load_table_data("clients_nonlife", self.clients_non_life_dashboard_table, ["assured_name", "type_of_insurance", "policy_number", "expiry_date"], "WHERE status = 'active'")
+    load_table_data("clients_hmo_individual", self.clients_hmo_dashboard_table, ["assured_name", "'Individual' AS type_of_hmo", "policy_number", "expiry_date"], "WHERE status = 'active'")
+    load_table_data("clients_hmo_corporate", self.clients_hmo_dashboard_table, ["company_name", "'Corporate' AS type_of_hmo", "policy_number", "expiry_date"], "WHERE status = 'active'", False)
     self.clients_hmo_dashboard_count.setText( str(self.clients_hmo_dashboard_table.rowCount()) )
     self.clients_non_life_dashboard_count.setText( str(self.clients_non_life_dashboard_table.rowCount()) )
+
+def fetch_archive_table_data(self):
+    load_table_data("clients_nonlife", self.archives_non_life_dashboard_table, ["assured_name", "type_of_insurance", "policy_number", "expiry_date"], "WHERE status = 'archived'")
+    load_table_data("clients_hmo_individual", self.archives_hmo_dashboard_table, ["assured_name", "'Individual' AS type_of_hmo", "policy_number", "expiry_date"], "WHERE status = 'archived'")
+    load_table_data("clients_hmo_corporate", self.archives_hmo_dashboard_table, ["company_name", "'Corporate' AS type_of_hmo", "policy_number", "expiry_date"], "WHERE status = 'archived'", False)
+    self.archives_non_life_dashboard_count.setText( str(self.archives_non_life_dashboard_table.rowCount()) )
+    self.archives_hmo_dashboard_count.setText( str(self.archives_hmo_dashboard_table.rowCount()) )
 
 def insert_nonlife_client(self):
     try:
@@ -406,6 +323,104 @@ def insert_hmo_corporate_client(self):
 
     except Exception as e:
         QMessageBox.critical(self, "Database Error", f"Failed to insert corporate client:\n{e}")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+def archive_nonlife_client(self):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+        
+        selected_rows = self.clients_non_life_dashboard_table.selectionModel().selectedRows()
+        if not selected_rows:
+            QMessageBox.warning(self, "No Selection", "Please select a row to archive.")
+            return
+
+        for model_index in selected_rows:
+            row = model_index.row()
+            policy_number_item = self.clients_non_life_dashboard_table.item(row, 2)  # Assuming column 2 is policy_number
+
+            if not policy_number_item:
+                continue
+
+            policy_number = policy_number_item.text().strip()
+
+            if not policy_number:
+                QMessageBox.warning(self, "Missing Info", "Cannot archive without a valid policy number.")
+                return
+
+            # Update DB
+            cursor.execute("""
+                UPDATE clients_nonlife
+                SET status = 'archived', updated_at = CURRENT_TIMESTAMP
+                WHERE policy_number = %s
+            """, (policy_number,))
+            conn.commit()
+            cursor.close()
+            conn.close()
+
+        QMessageBox.information(self, "Success", "Selected client(s) archived.")
+        fetch_client_table_data(self)
+
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to archive client:\n{e}")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+def archive_hmo_client(self):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        selected_rows = self.clients_hmo_dashboard_table.selectionModel().selectedRows()
+        if not selected_rows:
+            QMessageBox.warning(self, "No Selection", "Please select a row to archive.")
+            return
+
+        for model_index in selected_rows:
+            row = model_index.row()
+            type_item = self.clients_hmo_dashboard_table.item(row, 1)  # Type column
+            policy_number_item = self.clients_hmo_dashboard_table.item(row, 2)  # Policy number column
+
+            if not type_item or not policy_number_item:
+                continue
+
+            hmo_type = type_item.text().strip().lower()
+            policy_number = policy_number_item.text().strip()
+
+            if not policy_number:
+                QMessageBox.warning(self, "Missing Info", "Missing policy number in selected row.")
+                return
+
+            # Determine target table
+            if hmo_type == "individual":
+                table_name = "clients_hmo_individual"
+            elif hmo_type == "corporate":
+                table_name = "clients_hmo_corporate"
+            else:
+                QMessageBox.warning(self, "Unknown Type", f"Unrecognized HMO type: {hmo_type}")
+                return
+
+            # Update the correct table
+            cursor.execute(f"""
+                UPDATE {table_name}
+                SET status = 'archived', updated_at = CURRENT_TIMESTAMP
+                WHERE policy_number = %s
+            """, (policy_number,))
+            conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        QMessageBox.information(self, "Success", "Selected HMO client(s) archived.")
+        fetch_client_table_data(self)
+
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to archive HMO client:\n{e}")
     finally:
         if conn:
             cursor.close()
