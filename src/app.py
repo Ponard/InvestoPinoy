@@ -61,10 +61,20 @@ class MainWindow(QWidget):
         # set selection behavior to rows
         self.clients_non_life_dashboard_table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.clients_hmo_dashboard_table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.archives_non_life_dashboard_table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.archives_hmo_dashboard_table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
 
         # archive client buttons
         self.clients_non_life_dashboard_archive_button.clicked.connect(self.on_clients_non_life_dashboard_archive_button_clicked)
         self.clients_hmo_dashboard_archive_button.clicked.connect(self.on_clients_hmo_dashboard_archive_button_clicked)
+        
+        # restore archive buttons
+        self.archives_non_life_dashboard_restore_button.clicked.connect(self.on_archives_non_life_dashboard_restore_button_clicked)
+        self.archives_hmo_dashboard_restore_button.clicked.connect(self.on_archives_hmo_dashboard_restore_button_clicked)
+
+        # delete archive buttons
+        self.archives_non_life_dashboard_delete_button.clicked.connect(self.on_archives_non_life_dashboard_delete_button_clicked)
+        self.archives_hmo_dashboard_delete_button.clicked.connect(self.on_archives_hmo_dashboard_delete_button_clicked)
 
         # REVISE: move to separate functions later
         # resize cols to header/content
@@ -98,6 +108,7 @@ class MainWindow(QWidget):
         self.company_expenses_table.setSortingEnabled(True)
         self.commission_table.setSortingEnabled(True)
         self.clients_non_life_dashboard_table.setSortingEnabled(True)
+        self.clients_hmo_dashboard_table.setSortingEnabled(True)
         
         # REVISE: move to separate functions later
         # display result count per table
@@ -112,7 +123,6 @@ class MainWindow(QWidget):
         self.companies_non_life_dashboard_count.setText( str(self.companies_non_life_dashboard_table.rowCount()) )
         self.policies_hmo_dashboard_count.setText( str(self.policies_hmo_dashboard_table.rowCount()) )
         self.policies_non_life_dashboard_count.setText( str(self.policies_non_life_dashboard_table.rowCount()) )
-    
     
     #### Navigation Tab Button Functions
     def on_home_button_clicked(self):
@@ -149,6 +159,18 @@ class MainWindow(QWidget):
     def on_archives_button_clicked(self):
         self.current_active_tab.setCurrentIndex(5)
         db_func.fetch_archive_table_data(self)
+
+    def on_archives_non_life_dashboard_restore_button_clicked(self):
+        db_func.restore_nonlife_client(self)
+
+    def on_archives_hmo_dashboard_restore_button_clicked(self):
+        db_func.restore_hmo_client(self)
+
+    def on_archives_non_life_dashboard_delete_button_clicked(self):
+        db_func.delete_nonlife_client(self)
+
+    def on_archives_hmo_dashboard_delete_button_clicked(self):
+        db_func.delete_hmo_client(self)
     
 if __name__ == '__main__':
     app = QApplication(sys.argv)

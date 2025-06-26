@@ -425,3 +425,179 @@ def archive_hmo_client(self):
         if conn:
             cursor.close()
             conn.close()
+
+def restore_nonlife_client(self):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        selected_rows = self.archives_non_life_dashboard_table.selectionModel().selectedRows()
+        if not selected_rows:
+            QMessageBox.warning(self, "No Selection", "Please select a row to restore.")
+            return
+
+        for model_index in selected_rows:
+            row = model_index.row()
+            policy_number_item = self.archives_non_life_dashboard_table.item(row, 2)  # Column 3 = policy number
+
+            if not policy_number_item:
+                continue
+
+            policy_number = policy_number_item.text().strip()
+
+            if not policy_number:
+                QMessageBox.warning(self, "Missing Info", "Missing policy number in selected row.")
+                return
+
+            cursor.execute("""
+                UPDATE clients_nonlife
+                SET status = 'active', updated_at = CURRENT_TIMESTAMP
+                WHERE policy_number = %s
+            """, (policy_number,))
+            conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        QMessageBox.information(self, "Success", "Client(s) restored.")
+        fetch_archive_table_data(self)
+
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to restore client:\n{e}")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+def delete_nonlife_client(self):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        selected_rows = self.archives_non_life_dashboard_table.selectionModel().selectedRows()
+        if not selected_rows:
+            QMessageBox.warning(self, "No Selection", "Please select a row to delete.")
+            return
+
+        for model_index in selected_rows:
+            row = model_index.row()
+            policy_number_item = self.archives_non_life_dashboard_table.item(row, 2)  # Column 3 = policy number
+
+            if not policy_number_item:
+                continue
+
+            policy_number = policy_number_item.text().strip()
+
+            if not policy_number:
+                QMessageBox.warning(self, "Missing Info", "Missing policy number in selected row.")
+                return
+
+            cursor.execute("""
+                UPDATE clients_nonlife
+                SET status = 'deleted', updated_at = CURRENT_TIMESTAMP
+                WHERE policy_number = %s
+            """, (policy_number,))
+            conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        QMessageBox.information(self, "Success", "Client(s) marked as deleted.")
+        fetch_archive_table_data(self)
+
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to delete client:\n{e}")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+def restore_hmo_client(self):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        selected_rows = self.archives_hmo_dashboard_table.selectionModel().selectedRows()
+        if not selected_rows:
+            QMessageBox.warning(self, "No Selection", "Please select a row to restore.")
+            return
+
+        for model_index in selected_rows:
+            row = model_index.row()
+            policy_number_item = self.archives_hmo_dashboard_table.item(row, 2)  # Column 3 = policy number
+
+            if not policy_number_item:
+                continue
+
+            policy_number = policy_number_item.text().strip()
+
+            if not policy_number:
+                QMessageBox.warning(self, "Missing Info", "Missing policy number in selected row.")
+                return
+
+            # Restore from both individual and corporate tables
+            for table in ("clients_hmo_individual", "clients_hmo_corporate"):
+                cursor.execute(f"""
+                    UPDATE {table}
+                    SET status = 'active', updated_at = CURRENT_TIMESTAMP
+                    WHERE policy_number = %s
+                """, (policy_number,))
+            conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        QMessageBox.information(self, "Success", "HMO client(s) restored.")
+        fetch_archive_table_data(self)
+
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to restore HMO client:\n{e}")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+def delete_hmo_client(self):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        selected_rows = self.archives_hmo_dashboard_table.selectionModel().selectedRows()
+        if not selected_rows:
+            QMessageBox.warning(self, "No Selection", "Please select a row to delete.")
+            return
+
+        for model_index in selected_rows:
+            row = model_index.row()
+            policy_number_item = self.archives_hmo_dashboard_table.item(row, 2)  # Column 3 = policy number
+
+            if not policy_number_item:
+                continue
+
+            policy_number = policy_number_item.text().strip()
+
+            if not policy_number:
+                QMessageBox.warning(self, "Missing Info", "Missing policy number in selected row.")
+                return
+
+            # Soft-delete in both HMO tables
+            for table in ("clients_hmo_individual", "clients_hmo_corporate"):
+                cursor.execute(f"""
+                    UPDATE {table}
+                    SET status = 'deleted', updated_at = CURRENT_TIMESTAMP
+                    WHERE policy_number = %s
+                """, (policy_number,))
+            conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        QMessageBox.information(self, "Success", "HMO client(s) marked as deleted.")
+        fetch_archive_table_data(self)
+
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to delete HMO client:\n{e}")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
