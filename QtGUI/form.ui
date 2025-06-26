@@ -494,6 +494,9 @@
   <property name="windowOpacity">
    <double>1.000000000000000</double>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <widget class="QFrame" name="navigation_sidebar">
@@ -1061,11 +1064,18 @@ font-weight: bold;</string>
        </disabled>
       </palette>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QTabBar::tab:selected 
+{
+    background: white;
+    color: black;
+}</string>
+     </property>
      <property name="frameShape">
       <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="home_tab">
       <property name="styleSheet">
