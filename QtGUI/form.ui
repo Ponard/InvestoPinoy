@@ -1075,7 +1075,7 @@ font-weight: bold;</string>
       <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="home_tab">
       <property name="styleSheet">
@@ -5142,12 +5142,12 @@ QComboBox {
                           </column>
                           <column>
                            <property name="text">
-                            <string>Policy Number</string>
+                            <string>Type of Insurance</string>
                            </property>
                           </column>
                           <column>
                            <property name="text">
-                            <string>Type of Insurance</string>
+                            <string>Policy Number</string>
                            </property>
                           </column>
                           <column>
@@ -5167,12 +5167,12 @@ QComboBox {
                           </item>
                           <item row="0" column="1">
                            <property name="text">
-                            <string>MO-0011223344</string>
+                            <string>Motor</string>
                            </property>
                           </item>
                           <item row="0" column="2">
                            <property name="text">
-                            <string>Motor</string>
+                            <string>MO-0011223344</string>
                            </property>
                           </item>
                           <item row="0" column="3">
@@ -5791,7 +5791,7 @@ QComboBox {
                            <number>1</number>
                           </property>
                           <property name="columnCount">
-                           <number>4</number>
+                           <number>5</number>
                           </property>
                           <attribute name="horizontalHeaderCascadingSectionResizes">
                            <bool>false</bool>
@@ -5826,6 +5826,11 @@ QComboBox {
                           </column>
                           <column>
                            <property name="text">
+                            <string>Policy Number</string>
+                           </property>
+                          </column>
+                          <column>
+                           <property name="text">
                             <string>Insurance Company</string>
                            </property>
                           </column>
@@ -5844,12 +5849,12 @@ QComboBox {
                             <string>Individual</string>
                            </property>
                           </item>
-                          <item row="0" column="2">
+                          <item row="0" column="3">
                            <property name="text">
                             <string>Maxicare</string>
                            </property>
                           </item>
-                          <item row="0" column="3">
+                          <item row="0" column="4">
                            <property name="text">
                             <string>02/14/26</string>
                            </property>

@@ -149,6 +149,7 @@ class MainWindow(QWidget):
 
     def on_policies_button_clicked(self):
         self.current_active_tab.setCurrentIndex(2)
+        db_func.fetch_policy_table_data(self)
       
     def on_companies_button_clicked(self):
         self.current_active_tab.setCurrentIndex(3)

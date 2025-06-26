@@ -75,6 +75,12 @@ def fetch_client_table_data(self):
     self.clients_hmo_dashboard_count.setText( str(self.clients_hmo_dashboard_table.rowCount()) )
     self.clients_non_life_dashboard_count.setText( str(self.clients_non_life_dashboard_table.rowCount()) )
 
+def fetch_policy_table_data(self):
+    load_table_data("clients_nonlife", self.policies_non_life_dashboard_table, ["assured_name", "type_of_insurance", "policy_number", "insurance_company", "expiry_date"], "WHERE status = 'active'")
+    load_table_data("clients_hmo_individual", self.policies_hmo_dashboard_table, ["assured_name", "'Individual' AS type_of_hmo", "policy_number", "hmo_company", "expiry_date"], "WHERE status = 'active'")
+    load_table_data("clients_hmo_corporate", self.policies_hmo_dashboard_table, ["company_name", "'Corporate' AS type_of_hmo", "policy_number", "hmo_company", "expiry_date"], "WHERE status = 'active'", False)
+    self.policies_non_life_dashboard_count.setText( str(self.policies_non_life_dashboard_table.rowCount()) )
+
 def fetch_archive_table_data(self):
     load_table_data("clients_nonlife", self.archives_non_life_dashboard_table, ["assured_name", "type_of_insurance", "policy_number", "expiry_date"], "WHERE status = 'archived'")
     load_table_data("clients_hmo_individual", self.archives_hmo_dashboard_table, ["assured_name", "'Individual' AS type_of_hmo", "policy_number", "expiry_date"], "WHERE status = 'archived'")
