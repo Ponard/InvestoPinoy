@@ -153,6 +153,7 @@ class MainWindow(QWidget):
       
     def on_companies_button_clicked(self):
         self.current_active_tab.setCurrentIndex(3)
+        db_func.fetch_company_table_data(self)
       
     def on_collection_button_clicked(self):
         self.current_active_tab.setCurrentIndex(4)
