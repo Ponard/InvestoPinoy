@@ -48,7 +48,6 @@ class MainWindow(QWidget):
         # connect button to function
         self.navigation_home_button.clicked.connect(self.on_home_button_clicked)
         self.navigation_clients_button.clicked.connect(self.on_clients_button_clicked)
-        self.navigation_policies_button.clicked.connect(self.on_policies_button_clicked)
         self.navigation_companies_button.clicked.connect(self.on_companies_button_clicked)
         self.navigation_collection_button.clicked.connect(self.on_collection_button_clicked)
         self.navigation_archives_button.clicked.connect(self.on_archives_button_clicked)
@@ -94,10 +93,6 @@ class MainWindow(QWidget):
         self.client_payments_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         self.company_expenses_table.resizeColumnsToContents()
         self.company_expenses_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
-        self.policies_non_life_dashboard_table.resizeColumnsToContents()
-        self.policies_non_life_dashboard_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
-        self.policies_hmo_dashboard_table.resizeColumnsToContents()
-        self.policies_hmo_dashboard_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
 
         # sort data when header is clicked
         self.archives_non_life_dashboard_table.setSortingEnabled(True)
@@ -117,8 +112,6 @@ class MainWindow(QWidget):
         self.clients_non_life_dashboard_count.setText( str(self.clients_non_life_dashboard_table.rowCount()) )
         self.companies_hmo_dashboard_count.setText( str(self.companies_hmo_dashboard_table.rowCount()) )
         self.companies_non_life_dashboard_count.setText( str(self.companies_non_life_dashboard_table.rowCount()) )
-        self.policies_hmo_dashboard_count.setText( str(self.policies_hmo_dashboard_table.rowCount()) )
-        self.policies_non_life_dashboard_count.setText( str(self.policies_non_life_dashboard_table.rowCount()) )
     
     #### Navigation Tab Button Functions
     def on_home_button_clicked(self):
@@ -142,20 +135,16 @@ class MainWindow(QWidget):
 
     def on_clients_hmo_dashboard_archive_button_clicked(self):
         db_func.archive_hmo_client(self)
-
-    def on_policies_button_clicked(self):
-        self.current_active_tab.setCurrentIndex(2)
-        db_func.fetch_policy_table_data(self)
       
     def on_companies_button_clicked(self):
-        self.current_active_tab.setCurrentIndex(3)
+        self.current_active_tab.setCurrentIndex(2)
         db_func.fetch_company_table_data(self)
       
     def on_collection_button_clicked(self):
-        self.current_active_tab.setCurrentIndex(4)
+        self.current_active_tab.setCurrentIndex(3)
       
     def on_archives_button_clicked(self):
-        self.current_active_tab.setCurrentIndex(5)
+        self.current_active_tab.setCurrentIndex(4)
         db_func.fetch_archive_table_data(self)
 
     def on_archives_non_life_dashboard_restore_button_clicked(self):
