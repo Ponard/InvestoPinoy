@@ -8896,7 +8896,7 @@ QComboBox {
                     <number>16</number>
                    </property>
                    <property name="columnCount">
-                    <number>4</number>
+                    <number>7</number>
                    </property>
                    <attribute name="horizontalHeaderCascadingSectionResizes">
                     <bool>false</bool>
@@ -8917,6 +8917,16 @@ QComboBox {
                    <row/>
                    <column>
                     <property name="text">
+                     <string>Client Name</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Policy Number</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
                      <string>Amount Paid</string>
                     </property>
                     <property name="font">
@@ -8927,12 +8937,17 @@ QComboBox {
                    </column>
                    <column>
                     <property name="text">
-                     <string>Client Name</string>
+                     <string>Payment Method</string>
                     </property>
                    </column>
                    <column>
                     <property name="text">
-                     <string>Payment Method</string>
+                     <string>Total Premium Due</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Status</string>
                     </property>
                    </column>
                    <column>
@@ -8942,40 +8957,40 @@ QComboBox {
                    </column>
                    <item row="0" column="0">
                     <property name="text">
-                     <string>500.00</string>
-                    </property>
-                   </item>
-                   <item row="0" column="1">
-                    <property name="text">
                      <string>Juan Dela Cruz</string>
                     </property>
                    </item>
                    <item row="0" column="2">
                     <property name="text">
-                     <string>Cash</string>
+                     <string>500.00</string>
                     </property>
                    </item>
                    <item row="0" column="3">
+                    <property name="text">
+                     <string>Cash</string>
+                    </property>
+                   </item>
+                   <item row="0" column="6">
                     <property name="text">
                      <string>2025/02/03</string>
                     </property>
                    </item>
                    <item row="1" column="0">
                     <property name="text">
-                     <string>300.00</string>
-                    </property>
-                   </item>
-                   <item row="1" column="1">
-                    <property name="text">
                      <string>Maria Clara</string>
                     </property>
                    </item>
                    <item row="1" column="2">
                     <property name="text">
-                     <string>Bank Transfer</string>
+                     <string>300.00</string>
                     </property>
                    </item>
                    <item row="1" column="3">
+                    <property name="text">
+                     <string>Bank Transfer</string>
+                    </property>
+                   </item>
+                   <item row="1" column="6">
                     <property name="text">
                      <string>2024/11/26</string>
                     </property>
