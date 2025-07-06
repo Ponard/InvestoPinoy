@@ -171,3 +171,5 @@ cython_debug/
 .pypirc
 /QtGUI/.qtcreator
 .DS_Store
+/app.dist
+supabase.env

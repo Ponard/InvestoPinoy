@@ -1,7 +1,7 @@
 import psycopg2
 import os
 from datetime import datetime
-from PyQt6.QtWidgets import QMessageBox, QTableWidgetItem, QHeaderView
+from PyQt6.QtWidgets import QMessageBox, QTableWidgetItem, QHeaderView, QInputDialog
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -612,6 +612,60 @@ def delete_hmo_client(self):
 
     except Exception as e:
         QMessageBox.critical(self, "Error", f"Failed to delete HMO client:\n{e}")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+def record_policy_payment_nonlife(self):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        selected_rows = self.policies_non_life_dashboard_table.selectionModel().selectedRows()
+        if not selected_rows:
+            QMessageBox.warning(self, "No Selection", "Please select a policy row.")
+            return
+
+        row = selected_rows[0].row()
+        policy_number = self.policies_non_life_dashboard_table.item(row, 2).text().strip()
+
+        # Fetch client name and premium
+        cursor.execute("""
+            SELECT assured_name, gross_premium
+            FROM clients_nonlife
+            WHERE policy_number = %s
+        """, (policy_number,))
+        result = cursor.fetchone()
+
+        if not result:
+            QMessageBox.critical(self, "Not Found", "Policy not found in clients_nonlife.")
+            return
+
+        client_name, total_due = result
+
+        # Prompt for amount paid
+        amount_paid, ok = QInputDialog.getDouble(self, "Payment", "Enter amount paid:")
+        if not ok:
+            return
+
+        payment_method = "Manual"
+        payment_date = datetime.now().date()
+
+        cursor.execute("""
+            INSERT INTO client_payments (
+                policy_number, client_name, total_premium_due,
+                payment_date, payment_method, status, amount_paid
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """, (
+            policy_number, client_name, total_due,
+            payment_date, payment_method, 'paid', amount_paid
+        ))
+
+        conn.commit()
+        QMessageBox.information(self, "Success", "Payment recorded.")
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to record payment:\n{e}")
     finally:
         if conn:
             cursor.close()
