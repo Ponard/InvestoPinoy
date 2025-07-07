@@ -1,5 +1,6 @@
 import psycopg2
 import os
+import bcrypt
 from datetime import datetime
 from PyQt6.QtWidgets import QMessageBox, QTableWidgetItem, QHeaderView, QInputDialog
 from dotenv import load_dotenv
@@ -666,6 +667,65 @@ def record_policy_payment_nonlife(self):
         QMessageBox.information(self, "Success", "Payment recorded.")
     except Exception as e:
         QMessageBox.critical(self, "Error", f"Failed to record payment:\n{e}")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+def register_user(username, password, email=None):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+        password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+
+        cursor.execute("""
+            INSERT INTO users (username, password_hash, email, status)
+            VALUES (%s, %s, %s, 'pending')
+        """, (username, password_hash, email))
+        conn.commit()
+        return True
+    except Exception as e:
+        print("Registration error:", e)
+        return False
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+def login_user(username, password):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT password_hash, status FROM users WHERE username = %s
+        """, (username,))
+        row = cursor.fetchone()
+
+        if row is None:
+            print("Username not found:", username)
+            return False
+
+        password_hash, status = row
+
+        if status != 'approved':
+            print("User not approved:", username)
+            return False
+
+        if isinstance(password_hash, str):
+            password_hash = password_hash.encode()
+
+        return bcrypt.checkpw(password.encode(), password_hash)
+    except Exception as e:
+        print("Login error:", e)
+        print("Checking login for:", username)
+        print("Typed password:", password)
+
+        if row:
+            print("Hash from DB:", row[0])
+            print("Match:", bcrypt.checkpw(password.encode(), row[0].encode()))
+        else:
+            print("Username not found")
+        return False
     finally:
         if conn:
             cursor.close()

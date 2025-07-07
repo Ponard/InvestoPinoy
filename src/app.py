@@ -1,7 +1,7 @@
 import os
 import sys
 import db_func
-from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView, QAbstractItemView
+from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView, QAbstractItemView, QMessageBox
 from PyQt6.QtCore import QMetaObject
 from PyQt6 import uic
 
@@ -26,14 +26,39 @@ class LoginPage(QWidget):
     def initUI(self):
         uic.loadUi("QtGUI/login.ui", self)
         self.login_button.clicked.connect(self.on_login)
+        self.register_button.clicked.connect(self.on_register)
 
     def on_login(self):
-        # username = self.login_username.text()
-        # password = self.login_password.text()
+        username = self.login_username.text().strip()
+        password = self.login_password.text().strip()
 
-        self.main_window = MainWindow()
-        self.main_window.show()
-        self.close()
+        if not username or not password:
+            QMessageBox.warning(self, "Login", "Username and password are required.")
+            return
+
+        if db_func.login_user(username, password):
+            QMessageBox.information(self, "Login", "Login successful!")
+
+            # Launch main window
+            self.main_window = MainWindow()
+            self.main_window.show()
+            self.close()  # close login window
+        
+        if not db_func.login_user(username, password):
+            QMessageBox.warning(self, "Login", "Invalid credentials or account not yet approved.")
+
+    def on_register(self):
+        username = self.login_username.text().strip()
+        password = self.login_password.text().strip()
+
+        if not username or not password:
+            QMessageBox.warning(self, "Register", "Username and password are required.")
+            return
+
+        if db_func.register_user(username, password, email=None):
+            QMessageBox.information(self, "Register", "Registration will be reviewed!")
+        else:
+            QMessageBox.warning(self, "Register", "Registration failed. Username may already exist.")
 
 
 class MainWindow(QWidget):
@@ -51,6 +76,7 @@ class MainWindow(QWidget):
         self.navigation_companies_button.clicked.connect(self.on_companies_button_clicked)
         self.navigation_collection_button.clicked.connect(self.on_collection_button_clicked)
         self.navigation_archives_button.clicked.connect(self.on_archives_button_clicked)
+        self.navigation_logout_button.clicked.connect(self.on_logout_button_clicked)
         
         # add client buttons
         self.clients_non_life_add_client_submit_push_button.clicked.connect(self.on_clients_non_life_add_client_submit_push_button_clicked)
@@ -158,6 +184,11 @@ class MainWindow(QWidget):
 
     def on_archives_hmo_dashboard_delete_button_clicked(self):
         db_func.delete_hmo_client(self)
+    
+    def on_logout_button_clicked(self):
+        self.login_window = LoginPage()
+        self.login_window.show()
+        self.close()
     
 if __name__ == '__main__':
     app = QApplication(sys.argv)
