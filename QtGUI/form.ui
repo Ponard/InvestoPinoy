@@ -1180,7 +1180,7 @@ QPushButton:hover {
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>InvestoPinoy-main/QtGUI/asset/search_icon.png</pixmap>
+                   <pixmap>asset/search_icon.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -1234,7 +1234,7 @@ border: 0px solid white;
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>InvestoPinoy-main/QtGUI/asset/bell_icon.png</normaloff>InvestoPinoy-main/QtGUI/asset/bell_icon.png</iconset>
+                 <normaloff>asset/bell_icon.png</normaloff>asset/bell_icon.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -1251,7 +1251,7 @@ border: 0px solid white;
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>InvestoPinoy-main/QtGUI/asset/user_icon.png</normaloff>InvestoPinoy-main/QtGUI/asset/user_icon.png</iconset>
+                 <normaloff>asset/user_icon.png</normaloff>asset/user_icon.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -1447,7 +1447,7 @@ background-color: rgb(224, 222, 232);
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>322</width>
+                        <width>264</width>
                         <height>87</height>
                        </rect>
                       </property>
@@ -1532,7 +1532,7 @@ border-radius: 10%;
                              <number>0</number>
                             </property>
                             <property name="pixmap">
-                             <pixmap>InvestoPinoy-main/QtGUI/asset/doc_icon.png</pixmap>
+                             <pixmap>asset/doc_icon.png</pixmap>
                             </property>
                             <property name="scaledContents">
                              <bool>false</bool>
@@ -1653,7 +1653,7 @@ border-radius: 10%;
                       <string/>
                      </property>
                      <property name="pixmap">
-                      <pixmap>InvestoPinoy-main/QtGUI/asset/graph_icon.png</pixmap>
+                      <pixmap>asset/graph_icon.png</pixmap>
                      </property>
                      <property name="scaledContents">
                       <bool>false</bool>
@@ -1706,8 +1706,8 @@ border-radius: 10%;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>933</width>
-                     <height>173</height>
+                     <width>900</width>
+                     <height>189</height>
                     </rect>
                    </property>
                    <property name="sizePolicy">
@@ -10408,6 +10408,16 @@ QComboBox {
                  </widget>
                 </item>
                 <item>
+                 <widget class="QPushButton" name="account_save_button">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Save</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
                  <spacer name="horizontalSpacer_10">
                   <property name="orientation">
                    <enum>Qt::Orientation::Horizontal</enum>
@@ -10419,16 +10429,6 @@ QComboBox {
                    </size>
                   </property>
                  </spacer>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="account_save_button">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="text">
-                   <string>Save</string>
-                  </property>
-                 </widget>
                 </item>
                </layout>
               </item>
