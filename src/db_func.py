@@ -730,3 +730,85 @@ def login_user(username, password):
         if conn:
             cursor.close()
             conn.close()
+
+def load_user_account(self, username):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT full_name, username, agent_number, email, contact_number
+            FROM users
+            WHERE username = %s
+        """, (username,))
+        user = cursor.fetchone()
+        if user:
+            self.account_full_name_line_edit.setText(user[0] or "")
+            self.account_username_line_edit.setText(user[1] or "")
+            self.account_agent_number_line_edit.setText(user[2] or "")
+            self.account_email_line_edit.setText(user[3] or "")
+            self.account_contact_number_line_edit.setText(user[4] or "")
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to load account:\n{e}")
+
+def save_user_account(self, username):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            UPDATE users
+            SET full_name = %s,
+                agent_number = %s,
+                email = %s,
+                contact_number = %s
+            WHERE username = %s
+        """, (
+            self.account_full_name_line_edit.text(),
+            self.account_agent_number_line_edit.text(),
+            self.account_email_line_edit.text(),
+            self.account_contact_number_line_edit.text(),
+            username
+        ))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to save account:\n{e}")
+
+def change_user_password(username, old_password, new_password):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        # Get old password hash
+        cursor.execute("SELECT password_hash FROM users WHERE username = %s", (username,))
+        row = cursor.fetchone()
+        if not row:
+            return False
+
+        stored_hash = row[0]
+        if isinstance(stored_hash, str):
+            stored_hash = stored_hash.encode()
+
+        if not bcrypt.checkpw(old_password.encode(), stored_hash):
+            return False  # old password doesn't match
+
+        # Hash new password
+        new_hash = bcrypt.hashpw(new_password.encode(), bcrypt.gensalt()).decode()
+
+        # Update password in DB
+        cursor.execute("UPDATE users SET password_hash = %s WHERE username = %s", (new_hash, username))
+        conn.commit()
+        return True
+
+    except Exception as e:
+        print("Change password error:", e)
+        return False
+
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
