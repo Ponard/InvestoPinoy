@@ -82,6 +82,8 @@ class MainWindow(QWidget):
         self.search_edit.textChanged.connect(self.on_search_text_changed)
         self.clients_search_edit.textChanged.connect(self.on_search_text_changed)
         self.clients_hmo_search_edit.textChanged.connect(self.on_search_text_changed)
+        self.archives_search_edit.textChanged.connect(self.on_search_text_changed)
+        self.archives_hmo_search_edit.textChanged.connect(self.on_search_text_changed)
         
         # add client buttons
         self.clients_non_life_add_client_submit_push_button.clicked.connect(self.on_clients_non_life_add_client_submit_push_button_clicked)
