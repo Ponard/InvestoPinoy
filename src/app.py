@@ -40,7 +40,7 @@ class LoginPage(QWidget):
             QMessageBox.information(self, "Login", "Login successful!")
 
             # Launch main window
-            self.main_window = MainWindow()
+            self.main_window = MainWindow(current_username=username)
             self.main_window.show()
             self.close()  # close login window
         
@@ -62,9 +62,10 @@ class LoginPage(QWidget):
 
 
 class MainWindow(QWidget):
-    def __init__(self):
+    def __init__(self, current_username=None):
         super().__init__()
         uic.loadUi("QtGUI/form.ui", self)
+        self.current_username = current_username
         self.showMaximized()
         
         # connect to DB
@@ -76,6 +77,7 @@ class MainWindow(QWidget):
         self.navigation_companies_button.clicked.connect(self.on_companies_button_clicked)
         self.navigation_collection_button.clicked.connect(self.on_collection_button_clicked)
         self.navigation_archives_button.clicked.connect(self.on_archives_button_clicked)
+        self.navigation_account_button.clicked.connect(self.on_account_button_clicked)
         self.navigation_logout_button.clicked.connect(self.on_logout_button_clicked)
 
         # connect search bar
@@ -144,6 +146,14 @@ class MainWindow(QWidget):
         self.companies_hmo_dashboard_count.setText( str(self.companies_hmo_dashboard_table.rowCount()) )
         self.companies_non_life_dashboard_count.setText( str(self.companies_non_life_dashboard_table.rowCount()) )
     
+        # edit account buttons
+        self.account_edit_button.clicked.connect(self.enable_account_editing)
+        self.account_save_button.clicked.connect(self.save_account_changes)
+
+        # change password button
+        self.change_password_button.clicked.connect(self.change_password)
+
+
     #### Navigation Tab Button Functions
     def on_home_button_clicked(self):
         self.current_active_tab.setCurrentIndex(0)
@@ -304,10 +314,55 @@ class MainWindow(QWidget):
         # Update the counts after filtering
         self.update_table_counts()
 
+    
+    def on_account_button_clicked(self):
+        self.current_active_tab.setCurrentIndex(5)
+        db_func.load_user_account(self, self.current_username)
+    
+    def enable_account_editing(self):
+        self.account_full_name_line_edit.setReadOnly(False)
+        self.account_agent_number_line_edit.setReadOnly(False)
+        self.account_email_line_edit.setReadOnly(False)
+        self.account_contact_number_line_edit.setReadOnly(False)
+        self.account_save_button.setEnabled(True)
+
+    def save_account_changes(self):
+        db_func.save_user_account(self, self.current_username)
+        QMessageBox.information(self, "Saved", "Account updated.")
+        self.account_save_button.setEnabled(False)
+        self.account_full_name_line_edit.setReadOnly(True)
+        self.account_agent_number_line_edit.setReadOnly(True)
+        self.account_email_line_edit.setReadOnly(True)
+        self.account_contact_number_line_edit.setReadOnly(True)
+    
     def on_logout_button_clicked(self):
         self.login_window = LoginPage()
         self.login_window.show()
         self.close()
+
+    def change_password(self):
+        old_pass = self.account_old_password_line_edit.text()
+        new_pass = self.account_new_password_line_edit.text()
+        confirm_pass = self.account_confirm_password_line_edit.text()
+
+        if not old_pass or not new_pass or not confirm_pass:
+            QMessageBox.warning(self, "Missing Fields", "Please fill in all fields.")
+            return
+
+        if new_pass != confirm_pass:
+            QMessageBox.warning(self, "Mismatch", "New passwords do not match.")
+            return
+
+        success = db_func.change_user_password(self.current_username, old_pass, new_pass)
+
+        if success:
+            QMessageBox.information(self, "Success", "Password changed successfully.")
+            self.account_old_password_line_edit.clear()
+            self.account_new_password_line_edit.clear()
+            self.account_confirm_password_line_edit.clear()
+        else:
+            QMessageBox.critical(self, "Error", "Old password is incorrect.")
+
     
 if __name__ == '__main__':
     app = QApplication(sys.argv)
