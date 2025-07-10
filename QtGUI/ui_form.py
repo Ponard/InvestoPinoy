@@ -3532,6 +3532,62 @@ class Ui_InvestoPinoyGUI(object):
         self.archives_non_life_dashboard_frame.setObjectName("archives_non_life_dashboard_frame")
         self.verticalLayout_59 = QtWidgets.QVBoxLayout(self.archives_non_life_dashboard_frame)
         self.verticalLayout_59.setObjectName("verticalLayout_59")
+        self.archives_header_container = QtWidgets.QFrame(parent=self.archives_non_life_dashboard_frame)
+        self.archives_header_container.setStyleSheet("QPushButton, QPushButton:flat {\n"
+"    background-color: white;\n"
+"    border: 0px solid white;\n"
+"    padding: 5;\n"
+"    border-radius: 10%;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(239, 239, 239);\n"
+"    padding: 5;\n"
+"    border-radius: 10%;\n"
+"}\n"
+"#archives_search_container{\n"
+"    background-color: white;\n"
+"    border: 1px solid black;\n"
+"    border-radius: 15%;\n"
+"}")
+        self.archives_header_container.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.archives_header_container.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.archives_header_container.setObjectName("archives_header_container")
+        self.archives_header_layout = QtWidgets.QHBoxLayout(self.archives_header_container)
+        self.archives_header_layout.setObjectName("archives_header_layout")
+        self.archives_search_container = QtWidgets.QFrame(parent=self.archives_header_container)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.archives_search_container.sizePolicy().hasHeightForWidth())
+        self.archives_search_container.setSizePolicy(sizePolicy)
+        self.archives_search_container.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.archives_search_container.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.archives_search_container.setObjectName("archives_search_container")
+        self.archives_search_layout = QtWidgets.QHBoxLayout(self.archives_search_container)
+        self.archives_search_layout.setContentsMargins(10, 0, 10, 0)
+        self.archives_search_layout.setSpacing(5)
+        self.archives_search_layout.setObjectName("archives_search_layout")
+        self.archives_search_icon = QtWidgets.QLabel(parent=self.archives_search_container)
+        self.archives_search_icon.setText("")
+        self.archives_search_icon.setPixmap(QtGui.QPixmap("QtGUI\\asset/search_icon.png"))
+        self.archives_search_icon.setObjectName("archives_search_icon")
+        self.archives_search_layout.addWidget(self.archives_search_icon)
+        self.archives_search_edit = QtWidgets.QLineEdit(parent=self.archives_search_container)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.archives_search_edit.sizePolicy().hasHeightForWidth())
+        self.archives_search_edit.setSizePolicy(sizePolicy)
+        self.archives_search_edit.setStyleSheet("#archives_search_edit {\n"
+"border: 0px solid white;\n"
+"}")
+        self.archives_search_edit.setCursorMoveStyle(QtCore.Qt.CursorMoveStyle.LogicalMoveStyle)
+        self.archives_search_edit.setObjectName("archives_search_edit")
+        self.archives_search_layout.addWidget(self.archives_search_edit)
+        self.archives_header_layout.addWidget(self.archives_search_container)
+        spacerItem10 = QtWidgets.QSpacerItem(434, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.archives_header_layout.addItem(spacerItem10)
+        self.verticalLayout_59.addWidget(self.archives_header_container)
         self.archives_non_life_dashboard_table = QtWidgets.QTableWidget(parent=self.archives_non_life_dashboard_frame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -3737,8 +3793,8 @@ class Ui_InvestoPinoyGUI(object):
         self.archives_non_life_dashboard_restore_button = QtWidgets.QPushButton(parent=self.archives_non_life_dashboard_frame)
         self.archives_non_life_dashboard_restore_button.setObjectName("archives_non_life_dashboard_restore_button")
         self.archives_non_life_dashboard_button_container.addWidget(self.archives_non_life_dashboard_restore_button)
-        spacerItem10 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.archives_non_life_dashboard_button_container.addItem(spacerItem10)
+        spacerItem11 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.archives_non_life_dashboard_button_container.addItem(spacerItem11)
         self.archives_non_life_dashboard_delete_button = QtWidgets.QPushButton(parent=self.archives_non_life_dashboard_frame)
         self.archives_non_life_dashboard_delete_button.setObjectName("archives_non_life_dashboard_delete_button")
         self.archives_non_life_dashboard_button_container.addWidget(self.archives_non_life_dashboard_delete_button)
@@ -3794,6 +3850,62 @@ class Ui_InvestoPinoyGUI(object):
         self.archives_hmo_dashboard_frame.setObjectName("archives_hmo_dashboard_frame")
         self.verticalLayout_126 = QtWidgets.QVBoxLayout(self.archives_hmo_dashboard_frame)
         self.verticalLayout_126.setObjectName("verticalLayout_126")
+        self.archives_hmo_header_container = QtWidgets.QFrame(parent=self.archives_hmo_dashboard_frame)
+        self.archives_hmo_header_container.setStyleSheet("QPushButton, QPushButton:flat {\n"
+"    background-color: white;\n"
+"    border: 0px solid white;\n"
+"    padding: 5;\n"
+"    border-radius: 10%;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(239, 239, 239);\n"
+"    padding: 5;\n"
+"    border-radius: 10%;\n"
+"}\n"
+"#archives_hmo_search_container{\n"
+"    background-color: white;\n"
+"    border: 1px solid black;\n"
+"    border-radius: 15%;\n"
+"}")
+        self.archives_hmo_header_container.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.archives_hmo_header_container.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.archives_hmo_header_container.setObjectName("archives_hmo_header_container")
+        self.archives_hmo_header_layout = QtWidgets.QHBoxLayout(self.archives_hmo_header_container)
+        self.archives_hmo_header_layout.setObjectName("archives_hmo_header_layout")
+        self.archives_hmo_search_container = QtWidgets.QFrame(parent=self.archives_hmo_header_container)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.archives_hmo_search_container.sizePolicy().hasHeightForWidth())
+        self.archives_hmo_search_container.setSizePolicy(sizePolicy)
+        self.archives_hmo_search_container.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.archives_hmo_search_container.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.archives_hmo_search_container.setObjectName("archives_hmo_search_container")
+        self.archives_hmo_search_layout = QtWidgets.QHBoxLayout(self.archives_hmo_search_container)
+        self.archives_hmo_search_layout.setContentsMargins(10, 0, 10, 0)
+        self.archives_hmo_search_layout.setSpacing(5)
+        self.archives_hmo_search_layout.setObjectName("archives_hmo_search_layout")
+        self.archives_hmo_search_icon = QtWidgets.QLabel(parent=self.archives_hmo_search_container)
+        self.archives_hmo_search_icon.setText("")
+        self.archives_hmo_search_icon.setPixmap(QtGui.QPixmap("QtGUI\\asset/search_icon.png"))
+        self.archives_hmo_search_icon.setObjectName("archives_hmo_search_icon")
+        self.archives_hmo_search_layout.addWidget(self.archives_hmo_search_icon)
+        self.archives_hmo_search_edit = QtWidgets.QLineEdit(parent=self.archives_hmo_search_container)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.archives_hmo_search_edit.sizePolicy().hasHeightForWidth())
+        self.archives_hmo_search_edit.setSizePolicy(sizePolicy)
+        self.archives_hmo_search_edit.setStyleSheet("#archives_hmo_search_edit {\n"
+"border: 0px solid white;\n"
+"}")
+        self.archives_hmo_search_edit.setCursorMoveStyle(QtCore.Qt.CursorMoveStyle.LogicalMoveStyle)
+        self.archives_hmo_search_edit.setObjectName("archives_hmo_search_edit")
+        self.archives_hmo_search_layout.addWidget(self.archives_hmo_search_edit)
+        self.archives_hmo_header_layout.addWidget(self.archives_hmo_search_container)
+        spacerItem12 = QtWidgets.QSpacerItem(434, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.archives_hmo_header_layout.addItem(spacerItem12)
+        self.verticalLayout_126.addWidget(self.archives_hmo_header_container)
         self.archives_hmo_dashboard_table = QtWidgets.QTableWidget(parent=self.archives_hmo_dashboard_frame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -3999,8 +4111,8 @@ class Ui_InvestoPinoyGUI(object):
         self.archives_hmo_dashboard_restore_button = QtWidgets.QPushButton(parent=self.archives_hmo_dashboard_frame)
         self.archives_hmo_dashboard_restore_button.setObjectName("archives_hmo_dashboard_restore_button")
         self.archives_hmo_dashboard_button_container.addWidget(self.archives_hmo_dashboard_restore_button)
-        spacerItem11 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.archives_hmo_dashboard_button_container.addItem(spacerItem11)
+        spacerItem13 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.archives_hmo_dashboard_button_container.addItem(spacerItem13)
         self.archives_hmo_dashboard_delete_button = QtWidgets.QPushButton(parent=self.archives_hmo_dashboard_frame)
         self.archives_hmo_dashboard_delete_button.setObjectName("archives_hmo_dashboard_delete_button")
         self.archives_hmo_dashboard_button_container.addWidget(self.archives_hmo_dashboard_delete_button)
@@ -4356,6 +4468,7 @@ class Ui_InvestoPinoyGUI(object):
         self.company_expenses_count.setText(_translate("InvestoPinoyGUI", "0"))
         self.company_expenses_label.setText(_translate("InvestoPinoyGUI", "Results"))
         self.collection_tab_widget.setTabText(self.collection_tab_widget.indexOf(self.company_expenses_tab), _translate("InvestoPinoyGUI", "Company Expenses"))
+        self.archives_search_edit.setPlaceholderText(_translate("InvestoPinoyGUI", "Search Archives"))
         item = self.archives_non_life_dashboard_table.horizontalHeaderItem(0)
         item.setText(_translate("InvestoPinoyGUI", "Assured Name"))
         item = self.archives_non_life_dashboard_table.horizontalHeaderItem(1)
@@ -4381,6 +4494,7 @@ class Ui_InvestoPinoyGUI(object):
         self.archives_non_life_dashboard_label.setText(_translate("InvestoPinoyGUI", "Results"))
         self.archives_non_life_tab_widget.setTabText(self.archives_non_life_tab_widget.indexOf(self.archives_non_life_dashboard_tab), _translate("InvestoPinoyGUI", "Dashboard"))
         self.archives_tab_widget.setTabText(self.archives_tab_widget.indexOf(self.archives_non_life_tab), _translate("InvestoPinoyGUI", "Non-Life Clients"))
+        self.archives_hmo_search_edit.setPlaceholderText(_translate("InvestoPinoyGUI", "Search HMO Archives"))
         item = self.archives_hmo_dashboard_table.horizontalHeaderItem(0)
         item.setText(_translate("InvestoPinoyGUI", "Assured Name"))
         item = self.archives_hmo_dashboard_table.horizontalHeaderItem(1)
