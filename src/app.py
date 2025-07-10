@@ -1,7 +1,7 @@
 import os
 import sys
 import db_func
-from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView, QAbstractItemView, QMessageBox
+from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView, QAbstractItemView, QMessageBox, QTableWidget
 from PyQt6.QtCore import QMetaObject
 from PyQt6 import uic
 
@@ -77,6 +77,9 @@ class MainWindow(QWidget):
         self.navigation_collection_button.clicked.connect(self.on_collection_button_clicked)
         self.navigation_archives_button.clicked.connect(self.on_archives_button_clicked)
         self.navigation_logout_button.clicked.connect(self.on_logout_button_clicked)
+
+        # connect search bar
+        self.search_edit.textChanged.connect(self.on_search_text_changed)
         
         # add client buttons
         self.clients_non_life_add_client_submit_push_button.clicked.connect(self.on_clients_non_life_add_client_submit_push_button_clicked)
@@ -184,7 +187,22 @@ class MainWindow(QWidget):
 
     def on_archives_hmo_dashboard_delete_button_clicked(self):
         db_func.delete_hmo_client(self)
-    
+
+    def on_search_text_changed(self, text):
+        """Filter visible table rows based on the search text."""
+        text = text.lower()
+        current_tab = self.current_active_tab.currentWidget()
+        tables = current_tab.findChildren(QTableWidget)
+        for table in tables:
+            for row in range(table.rowCount()):
+                match = False
+                for col in range(table.columnCount()):
+                    item = table.item(row, col)
+                    if item and text in item.text().lower():
+                        match = True
+                        break
+                table.setRowHidden(row, not match and text != "")
+
     def on_logout_button_clicked(self):
         self.login_window = LoginPage()
         self.login_window.show()
