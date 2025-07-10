@@ -3,7 +3,9 @@ import os
 import bcrypt
 from datetime import datetime
 from PyQt6.QtWidgets import QMessageBox, QTableWidgetItem, QHeaderView, QInputDialog
+from PyQt6.QtCore import Qt
 from dotenv import load_dotenv
+from decimal import Decimal
 
 load_dotenv()
 
@@ -75,13 +77,6 @@ def fetch_client_table_data(self):
     load_table_data("clients_hmo_corporate", self.clients_hmo_dashboard_table, ["company_name", "'Corporate' AS type_of_hmo", "policy_number", "expiry_date"], "WHERE status = 'active'", False)
     self.clients_non_life_dashboard_count.setText( str(self.clients_non_life_dashboard_table.rowCount()) )
     self.clients_hmo_dashboard_count.setText( str(self.clients_hmo_dashboard_table.rowCount()) )
-
-def fetch_policy_table_data(self):
-    load_table_data("clients_nonlife", self.policies_non_life_dashboard_table, ["assured_name", "type_of_insurance", "policy_number", "insurance_company", "expiry_date"], "WHERE status = 'active'")
-    load_table_data("clients_hmo_individual", self.policies_hmo_dashboard_table, ["assured_name", "'Individual' AS type_of_hmo", "policy_number", "hmo_company", "expiry_date"], "WHERE status = 'active'")
-    load_table_data("clients_hmo_corporate", self.policies_hmo_dashboard_table, ["company_name", "'Corporate' AS type_of_hmo", "policy_number", "hmo_company", "expiry_date"], "WHERE status = 'active'", False)
-    self.policies_non_life_dashboard_count.setText( str(self.policies_non_life_dashboard_table.rowCount()) )
-    self.policies_hmo_dashboard_count.setText( str(self.policies_hmo_dashboard_table.rowCount()) )
 
 def fetch_company_table_data(self):
     load_table_data("clients_nonlife", self.companies_non_life_dashboard_table, ["assured_name", "type_of_insurance", "insurance_company", "expiry_date"], "WHERE status = 'active'")
@@ -623,17 +618,17 @@ def record_policy_payment_nonlife(self):
         conn = connect()
         cursor = conn.cursor()
 
-        selected_rows = self.policies_non_life_dashboard_table.selectionModel().selectedRows()
+        selected_rows = self.clients_non_life_dashboard_table.selectionModel().selectedRows()
         if not selected_rows:
             QMessageBox.warning(self, "No Selection", "Please select a policy row.")
             return
 
         row = selected_rows[0].row()
-        policy_number = self.policies_non_life_dashboard_table.item(row, 2).text().strip()
+        policy_number = self.clients_non_life_dashboard_table.item(row, 2).text().strip()
 
-        # Fetch client name and premium
+        # Get gross premium from clients_nonlife
         cursor.execute("""
-            SELECT assured_name, gross_premium
+            SELECT gross_premium
             FROM clients_nonlife
             WHERE policy_number = %s
         """, (policy_number,))
@@ -643,34 +638,181 @@ def record_policy_payment_nonlife(self):
             QMessageBox.critical(self, "Not Found", "Policy not found in clients_nonlife.")
             return
 
-        client_name, total_due = result
+        gross_premium = result[0] or 0
 
         # Prompt for amount paid
         amount_paid, ok = QInputDialog.getDouble(self, "Payment", "Enter amount paid:")
         if not ok:
             return
 
-        payment_method = "Manual"
+        amount_paid = Decimal(str(amount_paid))
+
+        # Prompt for payment method
+        payment_methods = ["Cash", "Bank Transfer", "GCash", "Check", "Others"]
+        method, ok = QInputDialog.getItem(self, "Payment Method", "Select payment method:", payment_methods, 0, False)
+        if not ok or not method:
+            return
+
         payment_date = datetime.now().date()
 
+        # Calculate total paid so far for this policy
+        cursor.execute("""
+            SELECT COALESCE(SUM(amount_paid), 0)
+            FROM client_payments
+            WHERE policy_number = %s
+        """, (policy_number,))
+        total_paid_before = cursor.fetchone()[0] or 0
+        total_paid_after = total_paid_before + amount_paid
+
+        status = "Paid" if total_paid_after >= gross_premium else "Partial"
+
+        # Insert new payment
         cursor.execute("""
             INSERT INTO client_payments (
-                policy_number, client_name, total_premium_due,
+                policy_number,
                 payment_date, payment_method, status, amount_paid
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s)
+            ) VALUES (%s, %s, %s, %s, %s)
         """, (
-            policy_number, client_name, total_due,
-            payment_date, payment_method, 'paid', amount_paid
+            policy_number,
+            payment_date, method, status, amount_paid
         ))
 
         conn.commit()
-        QMessageBox.information(self, "Success", "Payment recorded.")
+        QMessageBox.information(self, "Success", f"Payment recorded. Status: {status}")
+
     except Exception as e:
         QMessageBox.critical(self, "Error", f"Failed to record payment:\n{e}")
     finally:
         if conn:
             cursor.close()
             conn.close()
+
+def record_policy_payment_hmo(self):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        selected_rows = self.clients_hmo_dashboard_table.selectionModel().selectedRows()
+        if not selected_rows:
+            QMessageBox.warning(self, "No Selection", "Please select a policy row.")
+            return
+
+        row = selected_rows[0].row()
+        policy_number = self.clients_hmo_dashboard_table.item(row, 2).text().strip()
+
+        # Try fetching from individual first
+        cursor.execute("""
+            SELECT gross_premium FROM clients_hmo_individual
+            WHERE policy_number = %s
+        """, (policy_number,))
+        result = cursor.fetchone()
+
+        if result is None:
+            # Try corporate instead
+            cursor.execute("""
+                SELECT gross_premium FROM clients_hmo_corporate
+                WHERE policy_number = %s
+            """, (policy_number,))
+            result = cursor.fetchone()
+
+        if not result:
+            QMessageBox.critical(self, "Not Found", "Policy not found in HMO clients.")
+            return
+
+        gross_premium = result[0] or Decimal("0.00")
+
+        # Prompt for amount paid
+        amount_paid, ok = QInputDialog.getDouble(self, "Payment", "Enter amount paid:")
+        if not ok:
+            return
+
+        amount_paid = Decimal(str(amount_paid))
+
+        # Prompt for payment method
+        payment_methods = ["Cash", "Bank Transfer", "GCash", "Check", "Others"]
+        method, ok = QInputDialog.getItem(self, "Payment Method", "Select payment method:", payment_methods, 0, False)
+        if not ok or not method:
+            return
+
+        payment_date = datetime.now().date()
+
+        # Calculate total paid so far for this policy
+        cursor.execute("""
+            SELECT COALESCE(SUM(amount_paid), 0)
+            FROM client_payments
+            WHERE policy_number = %s
+        """, (policy_number,))
+        total_paid_before = cursor.fetchone()[0] or Decimal("0.00")
+        if not isinstance(total_paid_before, Decimal):
+            total_paid_before = Decimal(str(total_paid_before))
+
+        total_paid_after = total_paid_before + amount_paid
+        status = "Paid" if total_paid_after >= gross_premium else "Partial"
+
+        # Insert new payment
+        cursor.execute("""
+            INSERT INTO client_payments (
+                policy_number,
+                payment_date, payment_method, status, amount_paid
+            ) VALUES (%s, %s, %s, %s, %s)
+        """, (
+            policy_number,
+            payment_date, method, status, amount_paid
+        ))
+
+        conn.commit()
+        QMessageBox.information(self, "Success", f"Payment recorded. Status: {status}")
+
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to record payment:\n{e}")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+def fetch_all_client_payments(self):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT 
+                COALESCE(cnl.assured_name, chmi.assured_name, chmc.company_name) AS client_name,
+                cp.policy_number,
+                cp.amount_paid,
+                cp.payment_method,
+                COALESCE(cnl.gross_premium, chmi.gross_premium, chmc.gross_premium) AS total_premium_due,
+                cp.status,
+                cp.payment_date
+            FROM client_payments cp
+            LEFT JOIN clients_nonlife cnl ON cp.policy_number = cnl.policy_number
+            LEFT JOIN clients_hmo_individual chmi ON cp.policy_number = chmi.policy_number
+            LEFT JOIN clients_hmo_corporate chmc ON cp.policy_number = chmc.policy_number
+            ORDER BY cp.payment_date DESC
+        """)
+
+        rows = cursor.fetchall()
+
+        # Clear existing rows
+        self.client_payments_table.setRowCount(0)
+        self.client_payments_table.setRowCount(len(rows))
+
+        for row_index, row_data in enumerate(rows):
+            for col_index, value in enumerate(row_data):
+                item = QTableWidgetItem(str(value) if value is not None else "")
+                item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+                self.client_payments_table.setItem(row_index, col_index, item)
+
+        self.client_payments_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+
+
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to fetch client payments:\n{e}")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
 
 def register_user(username, password, email=None):
     try:
@@ -726,6 +868,88 @@ def login_user(username, password):
         else:
             print("Username not found")
         return False
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+def load_user_account(self, username):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT full_name, username, agent_number, email, contact_number
+            FROM users
+            WHERE username = %s
+        """, (username,))
+        user = cursor.fetchone()
+        if user:
+            self.account_full_name_line_edit.setText(user[0] or "")
+            self.account_username_line_edit.setText(user[1] or "")
+            self.account_agent_number_line_edit.setText(user[2] or "")
+            self.account_email_line_edit.setText(user[3] or "")
+            self.account_contact_number_line_edit.setText(user[4] or "")
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to load account:\n{e}")
+
+def save_user_account(self, username):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            UPDATE users
+            SET full_name = %s,
+                agent_number = %s,
+                email = %s,
+                contact_number = %s
+            WHERE username = %s
+        """, (
+            self.account_full_name_line_edit.text(),
+            self.account_agent_number_line_edit.text(),
+            self.account_email_line_edit.text(),
+            self.account_contact_number_line_edit.text(),
+            username
+        ))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to save account:\n{e}")
+
+def change_user_password(username, old_password, new_password):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        # Get old password hash
+        cursor.execute("SELECT password_hash FROM users WHERE username = %s", (username,))
+        row = cursor.fetchone()
+        if not row:
+            return False
+
+        stored_hash = row[0]
+        if isinstance(stored_hash, str):
+            stored_hash = stored_hash.encode()
+
+        if not bcrypt.checkpw(old_password.encode(), stored_hash):
+            return False  # old password doesn't match
+
+        # Hash new password
+        new_hash = bcrypt.hashpw(new_password.encode(), bcrypt.gensalt()).decode()
+
+        # Update password in DB
+        cursor.execute("UPDATE users SET password_hash = %s WHERE username = %s", (new_hash, username))
+        conn.commit()
+        return True
+
+    except Exception as e:
+        print("Change password error:", e)
+        return False
+
     finally:
         if conn:
             cursor.close()

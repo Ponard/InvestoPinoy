@@ -1,7 +1,7 @@
 import os
 import sys
 import db_func
-from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView, QAbstractItemView, QMessageBox
+from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView, QAbstractItemView, QMessageBox, QTableWidget
 from PyQt6.QtCore import QMetaObject
 from PyQt6 import uic
 
@@ -40,7 +40,7 @@ class LoginPage(QWidget):
             QMessageBox.information(self, "Login", "Login successful!")
 
             # Launch main window
-            self.main_window = MainWindow()
+            self.main_window = MainWindow(current_username=username)
             self.main_window.show()
             self.close()  # close login window
         
@@ -62,9 +62,10 @@ class LoginPage(QWidget):
 
 
 class MainWindow(QWidget):
-    def __init__(self):
+    def __init__(self, current_username=None):
         super().__init__()
         uic.loadUi("QtGUI/form.ui", self)
+        self.current_username = current_username
         self.showMaximized()
         
         # connect to DB
@@ -76,7 +77,15 @@ class MainWindow(QWidget):
         self.navigation_companies_button.clicked.connect(self.on_companies_button_clicked)
         self.navigation_collection_button.clicked.connect(self.on_collection_button_clicked)
         self.navigation_archives_button.clicked.connect(self.on_archives_button_clicked)
+        self.navigation_account_button.clicked.connect(self.on_account_button_clicked)
         self.navigation_logout_button.clicked.connect(self.on_logout_button_clicked)
+
+        # connect search bar
+        self.search_edit.textChanged.connect(self.on_search_text_changed)
+        self.clients_search_edit.textChanged.connect(self.on_search_text_changed)
+        self.clients_hmo_search_edit.textChanged.connect(self.on_search_text_changed)
+        self.archives_search_edit.textChanged.connect(self.on_search_text_changed)
+        self.archives_hmo_search_edit.textChanged.connect(self.on_search_text_changed)
         
         # add client buttons
         self.clients_non_life_add_client_submit_push_button.clicked.connect(self.on_clients_non_life_add_client_submit_push_button_clicked)
@@ -92,6 +101,10 @@ class MainWindow(QWidget):
         # archive client buttons
         self.clients_non_life_dashboard_archive_button.clicked.connect(self.on_clients_non_life_dashboard_archive_button_clicked)
         self.clients_hmo_dashboard_archive_button.clicked.connect(self.on_clients_hmo_dashboard_archive_button_clicked)
+
+        # record policy payment buttons
+        self.clients_non_life_dashboard_record_payment_button.clicked.connect(self.on_clients_non_life_dashboard_record_payment_button_clicked)
+        self.clients_hmo_dashboard_record_payment_button.clicked.connect(self.on_clients_hmo_dashboard_record_payment_button_clicked)
         
         # restore archive buttons
         self.archives_non_life_dashboard_restore_button.clicked.connect(self.on_archives_non_life_dashboard_restore_button_clicked)
@@ -139,6 +152,14 @@ class MainWindow(QWidget):
         self.companies_hmo_dashboard_count.setText( str(self.companies_hmo_dashboard_table.rowCount()) )
         self.companies_non_life_dashboard_count.setText( str(self.companies_non_life_dashboard_table.rowCount()) )
     
+        # edit account buttons
+        self.account_edit_button.clicked.connect(self.enable_account_editing)
+        self.account_save_button.clicked.connect(self.save_account_changes)
+
+        # change password button
+        self.change_password_button.clicked.connect(self.change_password)
+
+
     #### Navigation Tab Button Functions
     def on_home_button_clicked(self):
         self.current_active_tab.setCurrentIndex(0)
@@ -159,15 +180,22 @@ class MainWindow(QWidget):
     def on_clients_non_life_dashboard_archive_button_clicked(self):
         db_func.archive_nonlife_client(self)
 
+    def on_clients_non_life_dashboard_record_payment_button_clicked(self):
+        db_func.record_policy_payment_nonlife(self)
+
     def on_clients_hmo_dashboard_archive_button_clicked(self):
         db_func.archive_hmo_client(self)
-      
+    
+    def on_clients_hmo_dashboard_record_payment_button_clicked(self):
+        db_func.record_policy_payment_hmo(self)
+        
     def on_companies_button_clicked(self):
         self.current_active_tab.setCurrentIndex(2)
         db_func.fetch_company_table_data(self)
       
     def on_collection_button_clicked(self):
         self.current_active_tab.setCurrentIndex(3)
+        db_func.fetch_all_client_payments(self)
       
     def on_archives_button_clicked(self):
         self.current_active_tab.setCurrentIndex(4)
@@ -184,11 +212,164 @@ class MainWindow(QWidget):
 
     def on_archives_hmo_dashboard_delete_button_clicked(self):
         db_func.delete_hmo_client(self)
+
+    def update_table_counts(self):
+        """Update the result count labels for all tables based on visible rows."""
+        try:
+            # Archives tables
+            if hasattr(self, 'archives_non_life_dashboard_table'):
+                visible_archives_nonlife = sum(1 for row in range(self.archives_non_life_dashboard_table.rowCount()) 
+                                             if not self.archives_non_life_dashboard_table.isRowHidden(row))
+                self.archives_non_life_dashboard_count.setText(str(visible_archives_nonlife))
+            
+            if hasattr(self, 'archives_hmo_dashboard_table'):
+                visible_archives_hmo = sum(1 for row in range(self.archives_hmo_dashboard_table.rowCount()) 
+                                         if not self.archives_hmo_dashboard_table.isRowHidden(row))
+                self.archives_hmo_dashboard_count.setText(str(visible_archives_hmo))
+            
+            # Client tables
+            if hasattr(self, 'clients_non_life_dashboard_table'):
+                visible_clients_nonlife = sum(1 for row in range(self.clients_non_life_dashboard_table.rowCount()) 
+                                            if not self.clients_non_life_dashboard_table.isRowHidden(row))
+                self.clients_non_life_dashboard_count.setText(str(visible_clients_nonlife))
+            
+            if hasattr(self, 'clients_hmo_dashboard_table'):
+                visible_clients_hmo = sum(1 for row in range(self.clients_hmo_dashboard_table.rowCount()) 
+                                        if not self.clients_hmo_dashboard_table.isRowHidden(row))
+                self.clients_hmo_dashboard_count.setText(str(visible_clients_hmo))
+            
+            # Company tables
+            if hasattr(self, 'companies_non_life_dashboard_table'):
+                visible_companies_nonlife = sum(1 for row in range(self.companies_non_life_dashboard_table.rowCount()) 
+                                              if not self.companies_non_life_dashboard_table.isRowHidden(row))
+                self.companies_non_life_dashboard_count.setText(str(visible_companies_nonlife))
+            
+            if hasattr(self, 'companies_hmo_dashboard_table'):
+                visible_companies_hmo = sum(1 for row in range(self.companies_hmo_dashboard_table.rowCount()) 
+                                          if not self.companies_hmo_dashboard_table.isRowHidden(row))
+                self.companies_hmo_dashboard_count.setText(str(visible_companies_hmo))
+            
+            # Collection tables
+            if hasattr(self, 'client_payments_table'):
+                visible_client_payments = sum(1 for row in range(self.client_payments_table.rowCount()) 
+                                            if not self.client_payments_table.isRowHidden(row))
+                self.client_payments_count.setText(str(visible_client_payments))
+            
+            if hasattr(self, 'company_expenses_table'):
+                visible_company_expenses = sum(1 for row in range(self.company_expenses_table.rowCount()) 
+                                             if not self.company_expenses_table.isRowHidden(row))
+                self.company_expenses_count.setText(str(visible_company_expenses))
+        except AttributeError as e:
+            # Some tables might not be loaded yet
+            pass
+
+    def on_search_text_changed(self, text):
+        """Filter visible table rows based on the search text."""
+        # Get the sender widget to determine which search box triggered this
+        sender = self.sender()
+        
+        # Determine the search text based on the current widget or sender
+        if sender:
+            text = sender.text().strip().lower()
+        else:
+            text = text.strip().lower()
+            
+        current_tab = self.current_active_tab.currentWidget()
+        current_tab_index = self.current_active_tab.currentIndex()
+        
+        # Debug: Print current tab info
+        print(f"Search triggered on tab index: {current_tab_index}")
+        
+        # If search text is empty, show all rows
+        if not text:
+            tables = current_tab.findChildren(QTableWidget)
+            print(f"Clearing search - found {len(tables)} tables")
+            for table in tables:
+                for row in range(table.rowCount()):
+                    table.setRowHidden(row, False)
+            self.update_table_counts()
+            return
+        
+        # Search through all tables in the current tab
+        tables = current_tab.findChildren(QTableWidget)
+        print(f"Searching '{text}' - found {len(tables)} tables")
+        
+        # If no tables found, return early (like home tab)
+        if not tables:
+            print("No tables found in current tab")
+            return
+            
+        for table in tables:
+            print(f"Searching table: {table.objectName()} with {table.rowCount()} rows")
+            # Only search if table is visible and has data
+            if table.isVisible() and table.rowCount() > 0:
+                hidden_count = 0
+                for row in range(table.rowCount()):
+                    match = False
+                    # Search through all columns for the text
+                    for col in range(table.columnCount()):
+                        item = table.item(row, col)
+                        if item and item.text() and text in item.text().lower():
+                            match = True
+                            break
+                    # Hide row if no match found
+                    table.setRowHidden(row, not match)
+                    if not match:
+                        hidden_count += 1
+                print(f"Hidden {hidden_count} rows in {table.objectName()}")
+        
+        # Update the counts after filtering
+        self.update_table_counts()
+
+    
+    def on_account_button_clicked(self):
+        self.current_active_tab.setCurrentIndex(5)
+        db_func.load_user_account(self, self.current_username)
+    
+    def enable_account_editing(self):
+        self.account_full_name_line_edit.setReadOnly(False)
+        self.account_agent_number_line_edit.setReadOnly(False)
+        self.account_email_line_edit.setReadOnly(False)
+        self.account_contact_number_line_edit.setReadOnly(False)
+        self.account_save_button.setEnabled(True)
+
+    def save_account_changes(self):
+        db_func.save_user_account(self, self.current_username)
+        QMessageBox.information(self, "Saved", "Account updated.")
+        self.account_save_button.setEnabled(False)
+        self.account_full_name_line_edit.setReadOnly(True)
+        self.account_agent_number_line_edit.setReadOnly(True)
+        self.account_email_line_edit.setReadOnly(True)
+        self.account_contact_number_line_edit.setReadOnly(True)
     
     def on_logout_button_clicked(self):
         self.login_window = LoginPage()
         self.login_window.show()
         self.close()
+
+    def change_password(self):
+        old_pass = self.account_old_password_line_edit.text()
+        new_pass = self.account_new_password_line_edit.text()
+        confirm_pass = self.account_confirm_password_line_edit.text()
+
+        if not old_pass or not new_pass or not confirm_pass:
+            QMessageBox.warning(self, "Missing Fields", "Please fill in all fields.")
+            return
+
+        if new_pass != confirm_pass:
+            QMessageBox.warning(self, "Mismatch", "New passwords do not match.")
+            return
+
+        success = db_func.change_user_password(self.current_username, old_pass, new_pass)
+
+        if success:
+            QMessageBox.information(self, "Success", "Password changed successfully.")
+            self.account_old_password_line_edit.clear()
+            self.account_new_password_line_edit.clear()
+            self.account_confirm_password_line_edit.clear()
+        else:
+            QMessageBox.critical(self, "Error", "Old password is incorrect.")
+
     
 if __name__ == '__main__':
     app = QApplication(sys.argv)
