@@ -2774,6 +2774,13 @@ border: 0px solid white;
                         <item>
                          <layout class="QHBoxLayout" name="clients_non_life_dashboard_button_container">
                           <item>
+                           <widget class="QPushButton" name="clients_non_life_dashboard_record_payment_button">
+                            <property name="text">
+                             <string>Record Payment</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
                            <spacer name="horizontalSpacer_2">
                             <property name="orientation">
                              <enum>Qt::Orientation::Horizontal</enum>
@@ -3947,6 +3954,13 @@ border: 0px solid white;
                         </item>
                         <item>
                          <layout class="QHBoxLayout" name="clients_hmo_dashboard_button_container">
+                          <item>
+                           <widget class="QPushButton" name="clients_hmo_dashboard_record_payment_button">
+                            <property name="text">
+                             <string>Record Payment</string>
+                            </property>
+                           </widget>
+                          </item>
                           <item>
                            <spacer name="horizontalSpacer_8">
                             <property name="orientation">

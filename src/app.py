@@ -99,6 +99,10 @@ class MainWindow(QWidget):
         # archive client buttons
         self.clients_non_life_dashboard_archive_button.clicked.connect(self.on_clients_non_life_dashboard_archive_button_clicked)
         self.clients_hmo_dashboard_archive_button.clicked.connect(self.on_clients_hmo_dashboard_archive_button_clicked)
+
+        # record policy payment buttons
+        self.clients_non_life_dashboard_record_payment_button.clicked.connect(self.on_clients_non_life_dashboard_record_payment_button_clicked)
+        self.clients_hmo_dashboard_record_payment_button.clicked.connect(self.on_clients_hmo_dashboard_record_payment_button_clicked)
         
         # restore archive buttons
         self.archives_non_life_dashboard_restore_button.clicked.connect(self.on_archives_non_life_dashboard_restore_button_clicked)
@@ -174,21 +178,22 @@ class MainWindow(QWidget):
     def on_clients_non_life_dashboard_archive_button_clicked(self):
         db_func.archive_nonlife_client(self)
 
+    def on_clients_non_life_dashboard_record_payment_button_clicked(self):
+        db_func.record_policy_payment_nonlife(self)
+
     def on_clients_hmo_dashboard_archive_button_clicked(self):
         db_func.archive_hmo_client(self)
-      
+    
+    def on_clients_hmo_dashboard_record_payment_button_clicked(self):
+        db_func.record_policy_payment_hmo(self)
+        
     def on_companies_button_clicked(self):
         self.current_active_tab.setCurrentIndex(2)
         db_func.fetch_company_table_data(self)
       
     def on_collection_button_clicked(self):
         self.current_active_tab.setCurrentIndex(3)
-        # Load collection data if db_func has the methods
-        try:
-            if hasattr(db_func, 'fetch_collection_table_data'):
-                db_func.fetch_collection_table_data(self)
-        except Exception as e:
-            print(f"Error loading collection data: {e}")
+        db_func.fetch_all_client_payments(self)
       
     def on_archives_button_clicked(self):
         self.current_active_tab.setCurrentIndex(4)
