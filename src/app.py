@@ -92,6 +92,18 @@ class MainWindow(QWidget):
         self.clients_hmo_add_client_individual_submit_push_button.clicked.connect(self.on_clients_hmo_add_client_individual_submit_push_button_clicked)
         self.clients_hmo_add_client_corporate_submit_push_button.clicked.connect(self.on_clients_hmo_add_client_corporate_submit_push_button_clicked)
 
+        # set view policy fields to read only
+        self.set_view_policy_fields_readonly(True)
+
+        # allow view policy fields to be edited
+        self.clients_non_life_view_policy_edit_push_button.clicked.connect(self.on_clients_non_life_view_policy_edit_push_button_clicked)
+
+        # client table row double click handlers
+        self.clients_non_life_dashboard_table.cellDoubleClicked.connect(self.on_clients_non_life_dashboard_table_row_double_clicked)
+
+        # update policy details button
+        self.clients_non_life_view_policy_update_push_button.clicked.connect(self.on_clients_non_life_view_policy_update_push_button_clicked)
+
         # set selection behavior to rows
         self.clients_non_life_dashboard_table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.clients_hmo_dashboard_table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
@@ -167,6 +179,15 @@ class MainWindow(QWidget):
     def on_clients_button_clicked(self):
         self.current_active_tab.setCurrentIndex(1)
         db_func.fetch_client_table_data(self)
+
+    def on_clients_non_life_dashboard_table_row_double_clicked(self, row, column):
+        db_func.handle_nonlife_row_double_click(self, row, column)
+
+    def on_clients_non_life_view_policy_edit_push_button_clicked(self):
+        self.set_view_policy_fields_readonly(False)
+    
+    def on_clients_non_life_view_policy_update_push_button_clicked(self):
+        db_func.update_nonlife_policy(self)
     
     def on_clients_non_life_add_client_submit_push_button_clicked(self):
         db_func.insert_nonlife_client(self)
@@ -369,6 +390,32 @@ class MainWindow(QWidget):
             self.account_confirm_password_line_edit.clear()
         else:
             QMessageBox.critical(self, "Error", "Old password is incorrect.")
+
+    def set_view_policy_fields_readonly(self, readonly=True):
+        self.clients_non_life_view_policy_update_push_button.setEnabled(not readonly)
+
+        # Make all fields read-only by default
+        for widget in [
+            self.clients_non_life_view_policy_assured_name_line_edit,
+            self.clients_non_life_view_policy_contact_number_line_edit,
+            self.clients_non_life_view_policy_email_line_edit,
+            self.clients_non_life_view_policy_birthday_line_edit,
+            self.clients_non_life_view_policy_inception_date_line_edit,
+            self.clients_non_life_view_policy_expiry_date_line_edit,
+            self.clients_non_life_view_policy_net_premium_line_edit,
+            self.clients_non_life_view_policy_gross_premium_line_edit,
+            self.clients_non_life_view_policy_policy_number_line_edit,
+            self.clients_non_life_view_policy_agent_code_line_edit,
+            self.clients_non_life_view_policy_payment_invoice_line_edit,
+            self.clients_non_life_view_policy_commission_line_edit,
+            self.clients_non_life_view_policy_insurance_company_line_edit,
+            self.clients_non_life_view_policy_amount_covered_line_edit,
+            self.clients_non_life_view_policy_notes_text_edit,
+        ]:
+            widget.setReadOnly(readonly)
+        self.clients_non_life_view_policy_insurance_type_combo_box.setEnabled(not readonly)
+
+
 
     
 if __name__ == '__main__':

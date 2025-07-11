@@ -498,6 +498,9 @@
       <string notr="true">#frame {
 	border: 10px solid white;
 	border-radius: 50%;
+}
+QLineEdit {
+	color: white;
 }</string>
      </property>
      <property name="frameShape">

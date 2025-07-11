@@ -979,3 +979,163 @@ def change_user_password(username, old_password, new_password):
         if conn:
             cursor.close()
             conn.close()
+
+def handle_nonlife_row_double_click(self, row, column):
+    try:
+        policy_number_item = self.clients_non_life_dashboard_table.item(row, 2)  # Assuming col 2 is policy_number
+        if not policy_number_item:
+            return
+
+        policy_number = policy_number_item.text().strip()
+        if not policy_number:
+            return
+
+        # Fetch policy data
+        conn = connect()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT 
+                assured_name, contact_number, email, birthday,
+                inception_date, expiry_date, net_premium, gross_premium,
+                policy_number, agent_code, payment_invoice, commission,
+                type_of_insurance, insurance_company, amount_covered, client_notes
+            FROM clients_nonlife
+            WHERE policy_number = %s
+        """, (policy_number,))
+        data = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if not data:
+            QMessageBox.warning(self, "Not Found", "Client not found in database.")
+            return
+
+        # Populate the View Policy fields (replace these with your actual field variable names)
+        self.clients_non_life_view_policy_assured_name_line_edit.setText(data[0] or "")
+        self.clients_non_life_view_policy_contact_number_line_edit.setText(data[1] or "")
+        self.clients_non_life_view_policy_email_line_edit.setText(data[2] or "")
+        self.clients_non_life_view_policy_birthday_line_edit.setText(data[3].strftime("%Y/%m/%d") if data[3] else "")
+        self.clients_non_life_view_policy_inception_date_line_edit.setText(data[4].strftime("%Y/%m/%d") if data[4] else "")
+        self.clients_non_life_view_policy_expiry_date_line_edit.setText(data[5].strftime("%Y/%m/%d") if data[5] else "")
+        self.clients_non_life_view_policy_net_premium_line_edit.setText(str(data[6]) if data[6] is not None else "")
+        self.clients_non_life_view_policy_gross_premium_line_edit.setText(str(data[7]) if data[7] is not None else "")
+        self.clients_non_life_view_policy_policy_number_line_edit.setText(data[8] or "")
+        self.clients_non_life_view_policy_agent_code_line_edit.setText(data[9] or "")
+        self.clients_non_life_view_policy_payment_invoice_line_edit.setText(data[10] or "")
+        self.clients_non_life_view_policy_commission_line_edit.setText(str(data[11]) if data[11] is not None else "")
+        self.clients_non_life_view_policy_insurance_type_combo_box.setCurrentText(data[12] or "")
+        self.clients_non_life_view_policy_insurance_company_line_edit.setText(data[13] or "")
+        self.clients_non_life_view_policy_amount_covered_line_edit.setText(str(data[14]) if data[14] is not None else "")
+        self.clients_non_life_view_policy_notes_text_edit.setPlainText(data[15] or "")
+
+        # Switch to the View Policy tab (index 2)
+        self.clients_non_life_tab_widget.setCurrentIndex(2)
+
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to load client data:\n{e}")
+
+def update_nonlife_policy(self):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        # Extract updated values from View Policy fields
+        name = self.clients_non_life_view_policy_assured_name_line_edit.text()
+        contact = self.clients_non_life_view_policy_contact_number_line_edit.text()
+        email = self.clients_non_life_view_policy_email_line_edit.text()
+        birthday = self.clients_non_life_view_policy_birthday_line_edit.text()
+        inception_date = self.clients_non_life_view_policy_inception_date_line_edit.text()
+        expiry_date = self.clients_non_life_view_policy_expiry_date_line_edit.text()
+        net_premium = self.clients_non_life_view_policy_net_premium_line_edit.text()
+        gross_premium = self.clients_non_life_view_policy_gross_premium_line_edit.text()
+        policy_number = self.clients_non_life_view_policy_policy_number_line_edit.text()
+        agent_code = self.clients_non_life_view_policy_agent_code_line_edit.text()
+        payment_invoice = self.clients_non_life_view_policy_payment_invoice_line_edit.text()
+        commission = self.clients_non_life_view_policy_commission_line_edit.text()
+        insurance_type = self.clients_non_life_view_policy_insurance_type_combo_box.currentText()
+        insurance_company = self.clients_non_life_view_policy_insurance_company_line_edit.text()
+        amount_covered = self.clients_non_life_view_policy_amount_covered_line_edit.text()
+        notes = self.clients_non_life_view_policy_notes_text_edit.toPlainText()
+
+        # Parse fields
+        def parse_date(date_str):
+            return datetime.strptime(date_str, "%Y/%m/%d").date() if date_str else None
+
+        def parse_decimal(val):
+            return float(val) if val else None
+
+        def clean_text(val):
+            return val.strip() if val.strip() else None
+
+        name = clean_text(name)
+        contact = clean_text(contact)
+        email = clean_text(email)
+        policy_number = clean_text(policy_number)
+        agent_code = clean_text(agent_code)
+        payment_invoice = clean_text(payment_invoice)
+        insurance_type = clean_text(insurance_type)
+        insurance_company = clean_text(insurance_company)
+        notes = clean_text(notes)
+
+        birthday = parse_date(birthday)
+        inception_date = parse_date(inception_date)
+        expiry_date = parse_date(expiry_date)
+        net_premium = parse_decimal(net_premium)
+        gross_premium = parse_decimal(gross_premium)
+        commission = parse_decimal(commission)
+        amount_covered = parse_decimal(amount_covered)
+
+        # Validate required fields
+        if not name or not expiry_date or not policy_number or not insurance_type:
+            QMessageBox.warning(self, "Missing Fields", "Please fill in all required fields: Assured Name, Expiry Date, Policy Number, Type of Insurance.")
+            return
+
+        # Validate email format
+        if email:
+            email_pattern = r'^[\w\.-]+@[\w\.-]+\.\w{2,}$'
+            if not re.match(email_pattern, email):
+                QMessageBox.warning(self, "Invalid Email", "Please enter a valid email address.")
+                return
+
+        # Perform update
+        cursor.execute("""
+            UPDATE clients_nonlife
+            SET
+                assured_name = %s,
+                contact_number = %s,
+                email = %s,
+                birthday = %s,
+                inception_date = %s,
+                expiry_date = %s,
+                net_premium = %s,
+                gross_premium = %s,
+                agent_code = %s,
+                payment_invoice = %s,
+                commission = %s,
+                type_of_insurance = %s,
+                insurance_company = %s,
+                amount_covered = %s,
+                client_notes = %s,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE policy_number = %s
+        """, (
+            name, contact, email, birthday,
+            inception_date, expiry_date, net_premium, gross_premium,
+            agent_code, payment_invoice, commission, insurance_type,
+            insurance_company, amount_covered, notes,
+            policy_number
+        ))
+
+        conn.commit()
+        QMessageBox.information(self, "Success", "Policy updated successfully.")
+        fetch_client_table_data(self)
+
+        # Optionally make fields read-only again
+        self.set_view_policy_fields_readonly(True)
+
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to update policy:\n{e}")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
