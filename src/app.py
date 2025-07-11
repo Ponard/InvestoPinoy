@@ -94,15 +94,22 @@ class MainWindow(QWidget):
 
         # set view policy fields to read only
         self.set_view_policy_fields_readonly(True)
+        self.set_hmo_individual_view_policy_fields_readonly(True)
+        self.set_hmo_corporate_view_policy_fields_readonly(True)
 
         # allow view policy fields to be edited
         self.clients_non_life_view_policy_edit_push_button.clicked.connect(self.on_clients_non_life_view_policy_edit_push_button_clicked)
+        self.clients_hmo_view_policy_individual_edit_push_button.clicked.connect(self.on_clients_hmo_view_policy_individual_edit_push_button_clicked)
+        self.clients_hmo_view_policy_corporate_edit_push_button.clicked.connect(self.on_clients_hmo_view_policy_corporate_edit_push_button_clicked)
 
         # client table row double click handlers
         self.clients_non_life_dashboard_table.cellDoubleClicked.connect(self.on_clients_non_life_dashboard_table_row_double_clicked)
+        self.clients_hmo_dashboard_table.cellDoubleClicked.connect(self.on_clients_hmo_dashboard_table_cell_double_clicked)
 
         # update policy details button
         self.clients_non_life_view_policy_update_push_button.clicked.connect(self.on_clients_non_life_view_policy_update_push_button_clicked)
+        self.clients_hmo_view_policy_individual_update_push_button.clicked.connect(self.on_clients_hmo_view_policy_individual_update_push_button_clicked)
+        self.clients_hmo_view_policy_corporate_update_push_button.clicked.connect(self.on_clients_hmo_view_policy_corporate_update_push_button_clicked)
 
         # set selection behavior to rows
         self.clients_non_life_dashboard_table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
@@ -185,12 +192,27 @@ class MainWindow(QWidget):
 
     def on_clients_non_life_view_policy_edit_push_button_clicked(self):
         self.set_view_policy_fields_readonly(False)
+
+    def on_clients_hmo_view_policy_individual_edit_push_button_clicked(self):
+        self.set_hmo_individual_view_policy_fields_readonly(False)
     
+    def on_clients_hmo_view_policy_corporate_edit_push_button_clicked(self):
+        self.set_hmo_corporate_view_policy_fields_readonly(False)
+
     def on_clients_non_life_view_policy_update_push_button_clicked(self):
         db_func.update_nonlife_policy(self)
+
+    def on_clients_hmo_view_policy_individual_update_push_button_clicked(self):
+        db_func.update_hmo_individual_policy(self)
     
+    def on_clients_hmo_view_policy_corporate_update_push_button_clicked(self):
+        db_func.update_hmo_corporate_policy(self)
+
     def on_clients_non_life_add_client_submit_push_button_clicked(self):
         db_func.insert_nonlife_client(self)
+
+    def on_clients_hmo_dashboard_table_cell_double_clicked(self, row, column):
+        db_func.handle_hmo_row_double_click(self, row, column)
 
     def on_clients_hmo_add_client_individual_submit_push_button_clicked(self):
         db_func.insert_hmo_individual_client(self)
@@ -415,9 +437,48 @@ class MainWindow(QWidget):
             widget.setReadOnly(readonly)
         self.clients_non_life_view_policy_insurance_type_combo_box.setEnabled(not readonly)
 
+    def set_hmo_individual_view_policy_fields_readonly(self, readonly=True):
+        self.clients_hmo_view_policy_individual_update_push_button.setEnabled(not readonly)
 
+        for widget in [
+            self.clients_hmo_view_policy_individual_assured_name_line_edit,
+            self.clients_hmo_view_policy_individual_contact_number_line_edit,
+            self.clients_hmo_view_policy_individual_email_line_edit,
+            self.clients_hmo_view_policy_individual_birthday_line_edit,
+            self.clients_hmo_view_policy_individual_inception_date_line_edit,
+            self.clients_hmo_view_policy_individual_expiry_date_line_edit,
+            self.clients_hmo_view_policy_individual_agent_code_line_edit,
+            self.clients_hmo_view_policy_individual_policy_number_line_edit,
+            self.clients_hmo_view_policy_individual_mbl_abl_line_edit,
+            self.clients_hmo_view_policy_individual_net_premium_line_edit,
+            self.clients_hmo_view_policy_individual_gross_premium_line_edit,
+            self.clients_hmo_view_policy_individual_commission_line_edit,
+            self.clients_hmo_view_policy_individual_notes_text_edit,
+            self.clients_hmo_view_policy_individual_hmo_company_line_edit,
+        ]:
+            widget.setReadOnly(readonly)
 
-    
+    def set_hmo_corporate_view_policy_fields_readonly(self, readonly=True):
+        self.clients_hmo_view_policy_corporate_update_push_button.setEnabled(not readonly)
+
+        for widget in [
+            self.clients_hmo_view_policy_corporate_company_name_line_edit,
+            self.clients_hmo_view_policy_corporate_contact_number_line_edit,
+            self.clients_hmo_view_policy_corporate_email_line_edit,
+            self.clients_hmo_view_policy_corporate_number_of_enrollees_line_edit,
+            self.clients_hmo_view_policy_corporate_inception_date_line_edit,
+            self.clients_hmo_view_policy_corporate_expiry_date_line_edit,
+            self.clients_hmo_view_policy_corporate_agent_code_line_edit,
+            self.clients_hmo_view_policy_corporate_policy_number_line_edit,
+            self.clients_hmo_view_policy_corporate_mbl_abl_line_edit,
+            self.clients_hmo_view_policy_corporate_net_premium_line_edit,
+            self.clients_hmo_view_policy_corporate_gross_premium_line_edit,
+            self.clients_hmo_view_policy_corporate_commission_line_edit,
+            self.clients_hmo_view_policy_corporate_notes_text_edit,
+            self.clients_hmo_view_policy_corporate_hmo_company_line_edit,
+        ]:
+            widget.setReadOnly(readonly)
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     login_page = LoginPage()
