@@ -1,9 +1,10 @@
 import os
 import sys
 import db_func
-from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView, QAbstractItemView, QMessageBox, QTableWidget
+from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView, QAbstractItemView, QMessageBox, QSizePolicy, QTableWidget, QLabel, QFrame, QPushButton, QHBoxLayout
 from PyQt6.QtCore import QMetaObject
 from PyQt6 import uic
+from datetime import datetime
 
 if sys.platform.startswith('linux'):
     print("Running on Linux")
@@ -71,6 +72,8 @@ class MainWindow(QWidget):
         # connect to DB
         db_func.connect()
 
+        self.load_expiring_policies_grouped(self)
+
         # connect button to function
         self.navigation_home_button.clicked.connect(self.on_home_button_clicked)
         self.navigation_clients_button.clicked.connect(self.on_clients_button_clicked)
@@ -81,7 +84,7 @@ class MainWindow(QWidget):
         self.navigation_logout_button.clicked.connect(self.on_logout_button_clicked)
 
         # connect search bar
-        self.search_edit.textChanged.connect(self.on_search_text_changed)
+        # self.search_edit.textChanged.connect(self.on_search_text_changed)
         self.clients_search_edit.textChanged.connect(self.on_search_text_changed)
         self.clients_hmo_search_edit.textChanged.connect(self.on_search_text_changed)
         self.archives_search_edit.textChanged.connect(self.on_search_text_changed)
@@ -182,6 +185,7 @@ class MainWindow(QWidget):
     #### Navigation Tab Button Functions
     def on_home_button_clicked(self):
         self.current_active_tab.setCurrentIndex(0)
+        self.load_expiring_policies_grouped(self)
 
     def on_clients_button_clicked(self):
         self.current_active_tab.setCurrentIndex(1)
@@ -478,6 +482,124 @@ class MainWindow(QWidget):
             self.clients_hmo_view_policy_corporate_hmo_company_line_edit,
         ]:
             widget.setReadOnly(readonly)
+
+    def create_section_label(self, text):
+        label = QLabel(text)
+        label.setStyleSheet("font-weight: bold; font-size: 18px; margin-top: 20px; margin-bottom: 10px;")
+        return label
+
+    def create_notification_card(self, policy_number, client_name, expiry_date, color):
+        frame = QFrame()
+        frame.setStyleSheet(f"""
+            QFrame {{
+                background-color: {color};
+                border: 1px solid #aaa;
+                border-radius: 6px;
+                padding: 10px;
+            }}
+        """)
+        frame_layout = QHBoxLayout(frame)
+
+        message = f"Policy number {policy_number} insured to {client_name} is about to expire on {expiry_date}."
+        label = QLabel(message)
+        label.setWordWrap(True)
+        label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)  # stretch label horizontally
+
+        dismiss_button = QPushButton("Dismiss")
+        dismiss_button.setFixedWidth(80)
+        dismiss_button.clicked.connect(lambda _, f=frame: f.setParent(None))
+
+        frame_layout.addWidget(label)
+        frame_layout.addStretch()
+        #frame_layout.addWidget(dismiss_button)
+
+        return frame
+    
+    def load_expiring_policies_grouped(self, ui):
+        try:
+            conn = db_func.connect()
+            cursor = conn.cursor()
+
+            self.clear_notifications()
+
+            queries = [
+                # Non-Life
+                """
+                SELECT policy_number, assured_name AS client_name, expiry_date
+                FROM clients_nonlife
+                WHERE status = 'active'
+                """,
+                # HMO Individual
+                """
+                SELECT policy_number, assured_name AS client_name, expiry_date
+                FROM clients_hmo_individual
+                WHERE status = 'active'
+                """,
+                # HMO Corporate
+                """
+                SELECT policy_number, company_name AS client_name, expiry_date
+                FROM clients_hmo_corporate
+                WHERE status = 'active'
+                """
+            ]
+
+            all_results = []
+            for query in queries:
+                cursor.execute(query)
+                all_results.extend(cursor.fetchall())
+
+            all_results.sort(key=lambda row: row[2])
+
+            # Get layout inside notifications scroll area
+            layout = ui.notifications_center.findChild(QWidget, "scrollAreaWidgetContents").layout()
+
+            # Group policies
+            grouped = {"This Week": [], "Next Week": [], "This Month": [], "Upcoming Months": []}
+
+            for policy_number, client_name, expiry_date in all_results:
+                days_left = (expiry_date - datetime.now().date()).days
+                if days_left <= 7:
+                    grouped["This Week"].append((policy_number, client_name, expiry_date))
+                elif 8 <= days_left <= 14:
+                    grouped["Next Week"].append((policy_number, client_name, expiry_date))
+                elif 15 <= days_left <= 30:
+                    grouped["This Month"].append((policy_number, client_name, expiry_date))
+                else:
+                    grouped["Upcoming Months"].append((policy_number, client_name, expiry_date))
+
+            for category, items in grouped.items():
+                if not items:
+                    continue
+
+                layout.addWidget(self.create_section_label(category))
+
+                for policy_number, client_name, expiry_date in items:
+                    color = {
+                        "This Week": "#ffcccc",
+                        "Next Week": "#fff0cc",
+                        "This Month": "#e0f0ff"
+                    }.get(category, "#ffffff")
+
+                    card = self.create_notification_card(policy_number, client_name, expiry_date, color)
+                    layout.addWidget(card)
+
+            cursor.close()
+            conn.close()
+
+        except Exception as e:
+            print("Error loading grouped notifications:", e)
+
+    def clear_notifications(self):
+        container = self.notifications_center.widget()
+        if container is not None:
+            layout = container.layout()
+            if layout is not None:
+                while layout.count():
+                    item = layout.takeAt(0)
+                    widget = item.widget()
+                    if widget is not None:
+                        widget.deleteLater()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
