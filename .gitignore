@@ -174,3 +174,4 @@ cython_debug/
 /app.dist
 supabase.env
 *.env
+QtGUI/QtGUI.pyproject.user

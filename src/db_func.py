@@ -1,6 +1,7 @@
 import psycopg2
 import os
 import bcrypt
+import re
 from datetime import datetime
 from PyQt6.QtWidgets import QMessageBox, QTableWidgetItem, QHeaderView, QInputDialog
 from PyQt6.QtCore import Qt
@@ -127,7 +128,15 @@ def insert_nonlife_client(self):
 
         name = clean_text(name)
         contact = clean_text(contact)
+
         email = clean_text(email)
+        # validate email format
+        if email:
+            email_pattern = r'^[\w\.-]+@[\w\.-]+\.\w{2,}$'
+            if not re.match(email_pattern, email):
+                QMessageBox.warning(self, "Invalid Email", "Please enter a valid email address.")
+                return
+            
         birthday = parse_date(birthday)
         inception_date = parse_date(inception_date)
         expiry_date = parse_date(expiry_date)
@@ -209,7 +218,15 @@ def insert_hmo_individual_client(self):
         # Cleaned and parsed values
         name = clean_text(name)
         contact = clean_text(contact)
+
         email = clean_text(email)
+        # validate email format
+        if email:
+            email_pattern = r'^[\w\.-]+@[\w\.-]+\.\w{2,}$'
+            if not re.match(email_pattern, email):
+                QMessageBox.warning(self, "Invalid Email", "Please enter a valid email address.")
+                return
+
         birthday = parse_date(birthday)
         hmo_company = clean_text(hmo_company)
         inception_date = parse_date(inception_date)
@@ -292,7 +309,15 @@ def insert_hmo_corporate_client(self):
         company_name = clean_text(company_name)
         number_of_enrollees = parse_int(number_of_enrollees)
         contact = clean_text(contact)
+
         email = clean_text(email)
+        # validate email format
+        if email:
+            email_pattern = r'^[\w\.-]+@[\w\.-]+\.\w{2,}$'
+            if not re.match(email_pattern, email):
+                QMessageBox.warning(self, "Invalid Email", "Please enter a valid email address.")
+                return
+
         hmo_company = clean_text(hmo_company)
         inception_date = parse_date(inception_date)
         expiry_date = parse_date(expiry_date)
