@@ -1123,149 +1123,12 @@ font-weight: bold;</string>
            <number>10</number>
           </property>
           <item>
-           <widget class="QFrame" name="home_header_container">
-            <property name="styleSheet">
-             <string notr="true">QPushButton, QPushButton:flat {
-	background-color: white;
-	border: 0px solid white;
-	padding: 5;
-	border-radius: 10%;
-}
-QPushButton:hover {
-    background-color: rgb(239, 239, 239);
-	padding: 5;
-	border-radius: 10%;
-}</string>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::Shape::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Shadow::Raised</enum>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_11">
-             <item>
-              <widget class="QFrame" name="search_container">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="frameShape">
-                <enum>QFrame::Shape::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Shadow::Raised</enum>
-               </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_10">
-                <property name="spacing">
-                 <number>5</number>
-                </property>
-                <property name="leftMargin">
-                 <number>10</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>10</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="search_icon">
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="pixmap">
-                   <pixmap>asset/search_icon.png</pixmap>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLineEdit" name="search_edit">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">#search_edit {
-border: 0px solid white;
-}</string>
-                  </property>
-                  <property name="placeholderText">
-                   <string>Search</string>
-                  </property>
-                  <property name="cursorMoveStyle">
-                   <enum>Qt::CursorMoveStyle::LogicalMoveStyle</enum>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <spacer name="home_header_spacer">
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>434</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="bell_button">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>asset/bell_icon.png</normaloff>asset/bell_icon.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="user_button">
-               <property name="text">
-                <string>John Doe</string>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>asset/user_icon.png</normaloff>asset/user_icon.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item>
            <widget class="QFrame" name="home_body">
+            <property name="styleSheet">
+             <string notr="true">#notifications_label {
+	color: black;
+}</string>
+            </property>
             <property name="frameShape">
              <enum>QFrame::Shape::StyledPanel</enum>
             </property>
@@ -1289,690 +1152,33 @@ border: 0px solid white;
               <number>10</number>
              </property>
              <item>
-              <widget class="QFrame" name="frame">
-               <property name="frameShape">
-                <enum>QFrame::Shape::StyledPanel</enum>
+              <widget class="QLabel" name="notifications_label">
+               <property name="font">
+                <font>
+                 <pointsize>24</pointsize>
+                </font>
                </property>
-               <property name="frameShadow">
-                <enum>QFrame::Shadow::Raised</enum>
+               <property name="text">
+                <string>Notifications</string>
                </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_8">
-                <property name="spacing">
-                 <number>10</number>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QFrame" name="home_welcome_container">
-                  <property name="frameShape">
-                   <enum>QFrame::Shape::StyledPanel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Shadow::Raised</enum>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_80">
-                   <property name="spacing">
-                    <number>10</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>10</number>
-                   </property>
-                   <item>
-                    <widget class="QLabel" name="home_welcome">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>16</pointsize>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Welcome to InvestoPinoy®</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="home_info">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="text">
-                      <string>Are you ready to eliminate inefficiencies and take your insurance operations to the next level?</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
-                     </property>
-                     <property name="wordWrap">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_3">
-                  <property name="orientation">
-                   <enum>Qt::Orientation::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QFrame" name="popup_container">
-                  <property name="styleSheet">
-                   <string notr="true"/>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::Shape::StyledPanel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Shadow::Raised</enum>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_83">
-                   <property name="spacing">
-                    <number>10</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>10</number>
-                   </property>
-                   <item>
-                    <widget class="QScrollArea" name="popup_notif">
-                     <property name="styleSheet">
-                      <string notr="true">#popup_notif {
-background-color: rgb(224, 222, 232);
-}</string>
-                     </property>
-                     <property name="frameShape">
-                      <enum>QFrame::Shape::NoFrame</enum>
-                     </property>
-                     <property name="frameShadow">
-                      <enum>QFrame::Shadow::Plain</enum>
-                     </property>
-                     <property name="lineWidth">
-                      <number>0</number>
-                     </property>
-                     <property name="horizontalScrollBarPolicy">
-                      <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
-                     </property>
-                     <property name="widgetResizable">
-                      <bool>true</bool>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
-                     </property>
-                     <widget class="QWidget" name="popup_notif_container">
-                      <property name="geometry">
-                       <rect>
-                        <x>0</x>
-                        <y>0</y>
-                        <width>264</width>
-                        <height>87</height>
-                       </rect>
-                      </property>
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">#popup_notif_container {
-background-color: rgb(224, 222, 232);
-}</string>
-                      </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_79">
-                       <property name="spacing">
-                        <number>5</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>10</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>10</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>10</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>10</number>
-                       </property>
-                       <item>
-                        <widget class="QFrame" name="popup_frame">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">#popup_frame {
-background-color: rgb(156, 149, 162);
-border-radius: 10%;
-}</string>
-                         </property>
-                         <property name="frameShape">
-                          <enum>QFrame::Shape::StyledPanel</enum>
-                         </property>
-                         <property name="frameShadow">
-                          <enum>QFrame::Shadow::Raised</enum>
-                         </property>
-                         <layout class="QHBoxLayout" name="horizontalLayout_7">
-                          <property name="spacing">
-                           <number>10</number>
-                          </property>
-                          <property name="leftMargin">
-                           <number>10</number>
-                          </property>
-                          <property name="topMargin">
-                           <number>10</number>
-                          </property>
-                          <property name="rightMargin">
-                           <number>10</number>
-                          </property>
-                          <property name="bottomMargin">
-                           <number>10</number>
-                          </property>
-                          <item>
-                           <widget class="QLabel" name="popup_icon">
-                            <property name="sizePolicy">
-                             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                              <horstretch>0</horstretch>
-                              <verstretch>0</verstretch>
-                             </sizepolicy>
-                            </property>
-                            <property name="autoFillBackground">
-                             <bool>false</bool>
-                            </property>
-                            <property name="styleSheet">
-                             <string notr="true"/>
-                            </property>
-                            <property name="lineWidth">
-                             <number>0</number>
-                            </property>
-                            <property name="pixmap">
-                             <pixmap>asset/doc_icon.png</pixmap>
-                            </property>
-                            <property name="scaledContents">
-                             <bool>false</bool>
-                            </property>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QLabel" name="popup_label">
-                            <property name="sizePolicy">
-                             <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-                              <horstretch>0</horstretch>
-                              <verstretch>0</verstretch>
-                             </sizepolicy>
-                            </property>
-                            <property name="styleSheet">
-                             <string notr="true">color: white;</string>
-                            </property>
-                            <property name="text">
-                             <string>Popup Notification</string>
-                            </property>
-                            <property name="alignment">
-                             <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-                            </property>
-                           </widget>
-                          </item>
-                         </layout>
-                        </widget>
-                       </item>
-                      </layout>
-                     </widget>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-               </layout>
               </widget>
              </item>
              <item>
-              <widget class="QFrame" name="recent_act_frame">
-               <property name="frameShape">
-                <enum>QFrame::Shape::NoFrame</enum>
+              <widget class="QScrollArea" name="notifications_center">
+               <property name="widgetResizable">
+                <bool>true</bool>
                </property>
-               <property name="frameShadow">
-                <enum>QFrame::Shadow::Plain</enum>
-               </property>
-               <property name="lineWidth">
-                <number>0</number>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_78">
-                <property name="spacing">
-                 <number>10</number>
+               <widget class="QWidget" name="scrollAreaWidgetContents">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>968</width>
+                  <height>642</height>
+                 </rect>
                 </property>
-                <property name="leftMargin">
-                 <number>10</number>
-                </property>
-                <property name="topMargin">
-                 <number>10</number>
-                </property>
-                <property name="rightMargin">
-                 <number>10</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>10</number>
-                </property>
-                <item>
-                 <widget class="QFrame" name="recenct_act_header">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::Shape::StyledPanel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Shadow::Raised</enum>
-                  </property>
-                  <layout class="QHBoxLayout" name="horizontalLayout_4">
-                   <property name="spacing">
-                    <number>10</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
-                   <item>
-                    <widget class="QLabel" name="recent_act_label">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="text">
-                      <string>Recent Activity</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="recent_act_icon">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="pixmap">
-                      <pixmap>asset/graph_icon.png</pixmap>
-                     </property>
-                     <property name="scaledContents">
-                      <bool>false</bool>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QScrollArea" name="recent_act">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>126</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true"/>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::Shape::NoFrame</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Shadow::Plain</enum>
-                  </property>
-                  <property name="lineWidth">
-                   <number>0</number>
-                  </property>
-                  <property name="verticalScrollBarPolicy">
-                   <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
-                  </property>
-                  <property name="horizontalScrollBarPolicy">
-                   <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
-                  </property>
-                  <property name="widgetResizable">
-                   <bool>true</bool>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
-                  </property>
-                  <widget class="QWidget" name="recent_act_container">
-                   <property name="geometry">
-                    <rect>
-                     <x>0</x>
-                     <y>0</y>
-                     <width>900</width>
-                     <height>189</height>
-                    </rect>
-                   </property>
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <layout class="QVBoxLayout" name="verticalLayout_4">
-                    <property name="spacing">
-                     <number>7</number>
-                    </property>
-                    <property name="leftMargin">
-                     <number>0</number>
-                    </property>
-                    <property name="topMargin">
-                     <number>0</number>
-                    </property>
-                    <property name="rightMargin">
-                     <number>10</number>
-                    </property>
-                    <property name="bottomMargin">
-                     <number>0</number>
-                    </property>
-                    <item>
-                     <widget class="QFrame" name="activity_container_4">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">#activity_container_4 {
-background-color: rgb(225, 206, 206);
-border: 1px solid black;
-border-radius: 20%;
-}</string>
-                      </property>
-                      <property name="frameShape">
-                       <enum>QFrame::Shape::NoFrame</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Shadow::Plain</enum>
-                      </property>
-                      <property name="lineWidth">
-                       <number>0</number>
-                      </property>
-                      <layout class="QHBoxLayout" name="horizontalLayout_14">
-                       <property name="spacing">
-                        <number>10</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>10</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>10</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>10</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>10</number>
-                       </property>
-                       <item>
-                        <widget class="QLabel" name="activity_label_4">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="lineWidth">
-                          <number>0</number>
-                         </property>
-                         <property name="text">
-                          <string>A new insurance request has arrived.</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QFrame" name="activity_container_2">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">#activity_container_2 {
-background-color: rgb(225, 206, 206);
-border: 1px solid black;
-border-radius: 20%;
-}</string>
-                      </property>
-                      <property name="frameShape">
-                       <enum>QFrame::Shape::NoFrame</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Shadow::Plain</enum>
-                      </property>
-                      <property name="lineWidth">
-                       <number>0</number>
-                      </property>
-                      <layout class="QHBoxLayout" name="horizontalLayout_12">
-                       <property name="spacing">
-                        <number>10</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>10</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>10</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>10</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>10</number>
-                       </property>
-                       <item>
-                        <widget class="QLabel" name="activity_label_2">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="lineWidth">
-                          <number>0</number>
-                         </property>
-                         <property name="text">
-                          <string>A new insurance request has arrived.</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QFrame" name="activity_container_3">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">#activity_container_3 {
-background-color: rgb(225, 206, 206);
-border: 1px solid black;
-border-radius: 20%;
-}</string>
-                      </property>
-                      <property name="frameShape">
-                       <enum>QFrame::Shape::NoFrame</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Shadow::Plain</enum>
-                      </property>
-                      <property name="lineWidth">
-                       <number>0</number>
-                      </property>
-                      <layout class="QHBoxLayout" name="horizontalLayout_13">
-                       <property name="spacing">
-                        <number>10</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>10</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>10</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>10</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>10</number>
-                       </property>
-                       <item>
-                        <widget class="QLabel" name="activity_label_3">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="lineWidth">
-                          <number>0</number>
-                         </property>
-                         <property name="text">
-                          <string>A new insurance request has arrived.</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QFrame" name="activity_container">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">#activity_container {
-background-color: rgb(225, 206, 206);
-border: 1px solid black;
-border-radius: 20%;
-}</string>
-                      </property>
-                      <property name="frameShape">
-                       <enum>QFrame::Shape::NoFrame</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Shadow::Plain</enum>
-                      </property>
-                      <property name="lineWidth">
-                       <number>0</number>
-                      </property>
-                      <layout class="QHBoxLayout" name="horizontalLayout_6">
-                       <property name="spacing">
-                        <number>10</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>10</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>10</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>10</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>10</number>
-                       </property>
-                       <item>
-                        <widget class="QLabel" name="activity_label">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="lineWidth">
-                          <number>0</number>
-                         </property>
-                         <property name="text">
-                          <string>A new insurance request has arrived.</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                 </widget>
-                </item>
-               </layout>
+                <layout class="QVBoxLayout" name="verticalLayout_4"/>
+               </widget>
               </widget>
              </item>
             </layout>
@@ -2001,7 +1207,10 @@ border-radius: 20%;
 }
 #clients_hmo_add_client_individual_frame,
 #clients_hmo_add_client_corporate_frame,
-#clients_non_life_add_client_frame {
+#clients_non_life_add_client_frame,
+#clients_non_life_view_policy_frame,
+#clients_hmo_view_policy_individual_frame,
+#clients_hmo_view_policy_corporate_frame {
 	background-color: #E0DEE8;
 	border: 1px solid black;
 	border-radius: 10%;
@@ -2009,12 +1218,18 @@ border-radius: 20%;
 }
 #clients_hmo_add_client_individual_upper_frame,
 #clients_hmo_add_client_corporate_upper_frame,
-#clients_non_life_add_client_upper_frame {
+#clients_non_life_add_client_upper_frame,
+#clients_non_life_view_policy_upper_frame,
+#clients_hmo_view_policy_individual_upper_frame,
+#clients_hmo_view_policy_corporate_upper_frame {
 	background-color: rgba(255, 255, 255, 0.5);
 }
 #clients_hmo_add_client_individual_lower_frame,
 #clients_hmo_add_client_corporate_lower_frame,
-#clients_non_life_add_client_lower_frame {
+#clients_non_life_add_client_lower_frame,
+#clients_non_life_view_policy_lower_frame,
+#clients_hmo_view_policy_individual_lower_frame,
+#clients_hmo_view_policy_corporate_lower_frame {
 	background-color: #E0DEE8;
 }
 #clients_hmo_dashboard_table,
@@ -2026,7 +1241,9 @@ border-radius: 20%;
 }
 #clients_hmo_add_client_individual_frame QLabel,
 #clients_hmo_add_client_corporate_frame QLabel,
-#clients_non_life_add_client_frame QLabel {
+#clients_non_life_add_client_frame QLabel,
+#clients_non_life_view_policy_frame QLabel,
+#clients_hmo_view_policy_frame QLabel {
 	color: black;
 }
 QLineEdit,
@@ -2085,6 +1302,113 @@ QComboBox {
                         <enum>QFrame::Shadow::Raised</enum>
                        </property>
                        <layout class="QVBoxLayout" name="verticalLayout_18">
+                        <item>
+                         <widget class="QFrame" name="clients_header_container">
+                          <property name="styleSheet">
+                           <string notr="true">QPushButton, QPushButton:flat {
+	background-color: white;
+	border: 0px solid white;
+	padding: 5;
+	border-radius: 10%;
+}
+QPushButton:hover {
+    background-color: rgb(239, 239, 239);
+	padding: 5;
+	border-radius: 10%;
+}
+#clients_search_container{
+	background-color: white;
+	border: 1px solid black;
+	border-radius: 15%;
+}</string>
+                          </property>
+                          <property name="frameShape">
+                           <enum>QFrame::Shape::StyledPanel</enum>
+                          </property>
+                          <property name="frameShadow">
+                           <enum>QFrame::Shadow::Raised</enum>
+                          </property>
+                          <layout class="QHBoxLayout" name="clients_header_layout">
+                           <item>
+                            <widget class="QFrame" name="clients_search_container">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="frameShape">
+                              <enum>QFrame::Shape::StyledPanel</enum>
+                             </property>
+                             <property name="frameShadow">
+                              <enum>QFrame::Shadow::Raised</enum>
+                             </property>
+                             <layout class="QHBoxLayout" name="clients_search_layout">
+                              <property name="spacing">
+                               <number>5</number>
+                              </property>
+                              <property name="leftMargin">
+                               <number>10</number>
+                              </property>
+                              <property name="topMargin">
+                               <number>0</number>
+                              </property>
+                              <property name="rightMargin">
+                               <number>10</number>
+                              </property>
+                              <property name="bottomMargin">
+                               <number>0</number>
+                              </property>
+                              <item>
+                               <widget class="QLabel" name="clients_search_icon">
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="pixmap">
+                                 <pixmap>asset/search_icon.png</pixmap>
+                                </property>
+                               </widget>
+                              </item>
+                              <item>
+                               <widget class="QLineEdit" name="clients_search_edit">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true">#clients_search_edit {
+border: 0px solid white;
+}</string>
+                                </property>
+                                <property name="placeholderText">
+                                 <string>Search Clients</string>
+                                </property>
+                                <property name="cursorMoveStyle">
+                                 <enum>Qt::CursorMoveStyle::LogicalMoveStyle</enum>
+                                </property>
+                               </widget>
+                              </item>
+                             </layout>
+                            </widget>
+                           </item>
+                           <item>
+                            <spacer name="clients_header_spacer">
+                             <property name="orientation">
+                              <enum>Qt::Orientation::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>434</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
                         <item>
                          <widget class="QTableWidget" name="clients_non_life_dashboard_table">
                           <property name="sizePolicy">
@@ -2667,6 +1991,13 @@ QComboBox {
                         <item>
                          <layout class="QHBoxLayout" name="clients_non_life_dashboard_button_container">
                           <item>
+                           <widget class="QPushButton" name="clients_non_life_dashboard_record_payment_button">
+                            <property name="text">
+                             <string>Record Payment</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
                            <spacer name="horizontalSpacer_2">
                             <property name="orientation">
                              <enum>Qt::Orientation::Horizontal</enum>
@@ -3112,6 +2443,381 @@ QComboBox {
                      </item>
                     </layout>
                    </widget>
+                   <widget class="QWidget" name="clients_non_life_view_policy_tab">
+                    <attribute name="title">
+                     <string>View Policy</string>
+                    </attribute>
+                    <layout class="QVBoxLayout" name="verticalLayout_15">
+                     <item>
+                      <widget class="QFrame" name="clients_non_life_view_policy_frame">
+                       <property name="frameShape">
+                        <enum>QFrame::Shape::StyledPanel</enum>
+                       </property>
+                       <property name="frameShadow">
+                        <enum>QFrame::Shadow::Raised</enum>
+                       </property>
+                       <layout class="QVBoxLayout" name="verticalLayout_14">
+                        <item>
+                         <widget class="QFrame" name="clients_non_life_view_policy_upper_frame">
+                          <property name="frameShape">
+                           <enum>QFrame::Shape::StyledPanel</enum>
+                          </property>
+                          <property name="frameShadow">
+                           <enum>QFrame::Shadow::Raised</enum>
+                          </property>
+                          <layout class="QGridLayout" name="gridLayout_4">
+                           <item row="1" column="0">
+                            <layout class="QVBoxLayout" name="verticalLayout_53">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_view_policy_contact_number_label">
+                               <property name="text">
+                                <string>Contact Number</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_view_policy_contact_number_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Contact Number</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="0" column="0">
+                            <layout class="QVBoxLayout" name="verticalLayout_54">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_view_policy_assured_name_label">
+                               <property name="text">
+                                <string>Assured Name</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_view_policy_assured_name_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Assured Name</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="2" column="0">
+                            <layout class="QVBoxLayout" name="verticalLayout_55">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_view_policy_email_label">
+                               <property name="text">
+                                <string>Email</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_view_policy_email_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Email Address</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="3" column="0">
+                            <layout class="QVBoxLayout" name="verticalLayout_60">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_view_policy_birthday_label">
+                               <property name="text">
+                                <string>Birthday</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_view_policy_birthday_line_edit">
+                               <property name="placeholderText">
+                                <string>YYYY/MM/DD</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="0" column="1">
+                            <layout class="QVBoxLayout" name="verticalLayout_61">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_view_policy_inception_date_label">
+                               <property name="text">
+                                <string>Inception Date</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_view_policy_inception_date_line_edit">
+                               <property name="placeholderText">
+                                <string>YYYY/MM/DD</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="1" column="1">
+                            <layout class="QVBoxLayout" name="verticalLayout_62">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_view_policy_expiry_date_label">
+                               <property name="text">
+                                <string>Expiry Date</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_view_policy_expiry_date_line_edit">
+                               <property name="placeholderText">
+                                <string>YYYY/MM/DD</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="2" column="1">
+                            <layout class="QVBoxLayout" name="verticalLayout_63">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_view_policy_net_premium_label">
+                               <property name="text">
+                                <string>Net Premium</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_view_policy_net_premium_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Net Premium</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="3" column="1">
+                            <layout class="QVBoxLayout" name="verticalLayout_64">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_view_policy_gross_premium_label">
+                               <property name="text">
+                                <string>Gross Premium</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_view_policy_gross_premium_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Gross Premium</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="0" column="2">
+                            <layout class="QVBoxLayout" name="verticalLayout_65">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_view_policy_policy_number_label">
+                               <property name="text">
+                                <string>Policy Number</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_view_policy_policy_number_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Policy Number</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="1" column="2">
+                            <layout class="QVBoxLayout" name="verticalLayout_66">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_view_policy_agent_code_label">
+                               <property name="text">
+                                <string>Agent Code</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_view_policy_agent_code_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Agent Code</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="2" column="2">
+                            <layout class="QVBoxLayout" name="verticalLayout_67">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_view_policy_payment_invoice_label">
+                               <property name="text">
+                                <string>Payment Invoice</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_view_policy_payment_invoice_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Payment Invoice</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="3" column="2">
+                            <layout class="QVBoxLayout" name="verticalLayout_68">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_view_policy_commission_label">
+                               <property name="text">
+                                <string>Commission</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_view_policy_commission_line_edit">
+                               <property name="readOnly">
+                                <bool>false</bool>
+                               </property>
+                               <property name="placeholderText">
+                                <string>Enter Commission</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QFrame" name="clients_non_life_view_policy_lower_frame">
+                          <property name="frameShape">
+                           <enum>QFrame::Shape::StyledPanel</enum>
+                          </property>
+                          <property name="frameShadow">
+                           <enum>QFrame::Shadow::Raised</enum>
+                          </property>
+                          <layout class="QGridLayout" name="gridLayout_3">
+                           <item row="0" column="1">
+                            <layout class="QVBoxLayout" name="verticalLayout_48">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_view_policy_insurance_type_label">
+                               <property name="text">
+                                <string>Type of Insurance</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QComboBox" name="clients_non_life_view_policy_insurance_type_combo_box">
+                               <property name="placeholderText">
+                                <string>Select Insurance Type</string>
+                               </property>
+                               <item>
+                                <property name="text">
+                                 <string>Motor</string>
+                                </property>
+                               </item>
+                               <item>
+                                <property name="text">
+                                 <string>Fire</string>
+                                </property>
+                               </item>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="0" column="2">
+                            <layout class="QVBoxLayout" name="verticalLayout_50">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_view_policy_insurance_company_label">
+                               <property name="text">
+                                <string>Insurance Company</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_view_policy_insurance_company_line_edit">
+                               <property name="placeholderText">
+                                <string>Select Insurance Company</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="0" column="3">
+                            <layout class="QVBoxLayout" name="verticalLayout_51">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_view_policy_amount_covered_label">
+                               <property name="text">
+                                <string>Amount Covered</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="clients_non_life_view_policy_amount_covered_line_edit">
+                               <property name="placeholderText">
+                                <string>Enter Amount Covered</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="2" column="2" colspan="2">
+                            <layout class="QVBoxLayout" name="verticalLayout_52">
+                             <item>
+                              <widget class="QLabel" name="clients_non_life_view_policy_notes_label">
+                               <property name="text">
+                                <string>Client</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QTextEdit" name="clients_non_life_view_policy_notes_text_edit">
+                               <property name="placeholderText">
+                                <string>Add Notes</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                        <item>
+                         <layout class="QHBoxLayout" name="horizontalLayout_5">
+                          <item>
+                           <spacer name="horizontalSpacer_11">
+                            <property name="orientation">
+                             <enum>Qt::Orientation::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>40</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="clients_non_life_view_policy_edit_push_button">
+                            <property name="text">
+                             <string>Edit</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="clients_non_life_view_policy_update_push_button">
+                            <property name="text">
+                             <string>Update</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
                   </widget>
                  </item>
                 </layout>
@@ -3152,6 +2858,113 @@ QComboBox {
                         <enum>QFrame::Shadow::Raised</enum>
                        </property>
                        <layout class="QVBoxLayout" name="verticalLayout_21">
+                        <item>
+                         <widget class="QFrame" name="clients_hmo_header_container">
+                          <property name="styleSheet">
+                           <string notr="true">QPushButton, QPushButton:flat {
+	background-color: white;
+	border: 0px solid white;
+	padding: 5;
+	border-radius: 10%;
+}
+QPushButton:hover {
+    background-color: rgb(239, 239, 239);
+	padding: 5;
+	border-radius: 10%;
+}
+#clients_hmo_search_container{
+	background-color: white;
+	border: 1px solid black;
+	border-radius: 15%;
+}</string>
+                          </property>
+                          <property name="frameShape">
+                           <enum>QFrame::Shape::StyledPanel</enum>
+                          </property>
+                          <property name="frameShadow">
+                           <enum>QFrame::Shadow::Raised</enum>
+                          </property>
+                          <layout class="QHBoxLayout" name="clients_hmo_header_layout">
+                           <item>
+                            <widget class="QFrame" name="clients_hmo_search_container">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="frameShape">
+                              <enum>QFrame::Shape::StyledPanel</enum>
+                             </property>
+                             <property name="frameShadow">
+                              <enum>QFrame::Shadow::Raised</enum>
+                             </property>
+                             <layout class="QHBoxLayout" name="clients_hmo_search_layout">
+                              <property name="spacing">
+                               <number>5</number>
+                              </property>
+                              <property name="leftMargin">
+                               <number>10</number>
+                              </property>
+                              <property name="topMargin">
+                               <number>0</number>
+                              </property>
+                              <property name="rightMargin">
+                               <number>10</number>
+                              </property>
+                              <property name="bottomMargin">
+                               <number>0</number>
+                              </property>
+                              <item>
+                               <widget class="QLabel" name="clients_hmo_search_icon">
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="pixmap">
+                                 <pixmap>asset/search_icon.png</pixmap>
+                                </property>
+                               </widget>
+                              </item>
+                              <item>
+                               <widget class="QLineEdit" name="clients_hmo_search_edit">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true">#clients_hmo_search_edit {
+border: 0px solid white;
+}</string>
+                                </property>
+                                <property name="placeholderText">
+                                 <string>Search HMO Clients</string>
+                                </property>
+                                <property name="cursorMoveStyle">
+                                 <enum>Qt::CursorMoveStyle::LogicalMoveStyle</enum>
+                                </property>
+                               </widget>
+                              </item>
+                             </layout>
+                            </widget>
+                           </item>
+                           <item>
+                            <spacer name="clients_hmo_header_spacer">
+                             <property name="orientation">
+                              <enum>Qt::Orientation::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>434</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
                         <item>
                          <widget class="QTableWidget" name="clients_hmo_dashboard_table">
                           <property name="sizePolicy">
@@ -3733,6 +3546,13 @@ QComboBox {
                         </item>
                         <item>
                          <layout class="QHBoxLayout" name="clients_hmo_dashboard_button_container">
+                          <item>
+                           <widget class="QPushButton" name="clients_hmo_dashboard_record_payment_button">
+                            <property name="text">
+                             <string>Record Payment</string>
+                            </property>
+                           </widget>
+                          </item>
                           <item>
                            <spacer name="horizontalSpacer_8">
                             <property name="orientation">
@@ -4458,6 +4278,690 @@ QComboBox {
                                   <widget class="QPushButton" name="clients_hmo_add_client_corporate_submit_push_button">
                                    <property name="text">
                                     <string>Submit</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                </layout>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                           </layout>
+                          </widget>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                   <widget class="QWidget" name="clients_hmo_view_policy_tab">
+                    <attribute name="title">
+                     <string>View Policy</string>
+                    </attribute>
+                    <layout class="QVBoxLayout" name="verticalLayout_8">
+                     <item>
+                      <widget class="QFrame" name="clients_hmo_view_policy_frame">
+                       <property name="frameShape">
+                        <enum>QFrame::Shape::StyledPanel</enum>
+                       </property>
+                       <property name="frameShadow">
+                        <enum>QFrame::Shadow::Raised</enum>
+                       </property>
+                       <layout class="QVBoxLayout" name="verticalLayout_69">
+                        <item>
+                         <widget class="QTabWidget" name="clients_hmo_view_policy_tab_widget">
+                          <property name="currentIndex">
+                           <number>0</number>
+                          </property>
+                          <widget class="QWidget" name="clients_hmo_view_policy_individual_tab">
+                           <attribute name="title">
+                            <string>Individual</string>
+                           </attribute>
+                           <layout class="QVBoxLayout" name="verticalLayout_221">
+                            <item>
+                             <widget class="QFrame" name="clients_hmo_view_policy_individual_frame">
+                              <property name="frameShape">
+                               <enum>QFrame::Shape::StyledPanel</enum>
+                              </property>
+                              <property name="frameShadow">
+                               <enum>QFrame::Shadow::Raised</enum>
+                              </property>
+                              <layout class="QVBoxLayout" name="verticalLayout_222">
+                               <item>
+                                <widget class="QFrame" name="clients_hmo_view_policy_individual_upper_frame">
+                                 <property name="frameShape">
+                                  <enum>QFrame::Shape::StyledPanel</enum>
+                                 </property>
+                                 <property name="frameShadow">
+                                  <enum>QFrame::Shadow::Raised</enum>
+                                 </property>
+                                 <layout class="QGridLayout" name="gridLayout_21">
+                                  <item row="3" column="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_223">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_individual_gross_premium_label">
+                                      <property name="text">
+                                       <string>Gross Premium</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_individual_gross_premium_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Gross Premium</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="0" column="0">
+                                   <layout class="QVBoxLayout" name="verticalLayout_224">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_individual_assured_name_label">
+                                      <property name="text">
+                                       <string>Assured Name</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_individual_assured_name_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Assured Name</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="0" column="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_225">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_individual_policy_number_label">
+                                      <property name="text">
+                                       <string>Policy Number</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_individual_policy_number_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Policy Number</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="2" column="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_226">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_individual_net_premium_label">
+                                      <property name="text">
+                                       <string>Net Premium</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_individual_net_premium_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Net Premium</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="1" column="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_227">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_individual_mbl_abl_label">
+                                      <property name="text">
+                                       <string>MBL/ABL</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_individual_mbl_abl_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter MBL/ABL</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="1" column="0">
+                                   <layout class="QVBoxLayout" name="verticalLayout_228">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_individual_contact_number_label">
+                                      <property name="text">
+                                       <string>Contact Number</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_individual_contact_number_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Contact Number</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="2" column="0">
+                                   <layout class="QVBoxLayout" name="verticalLayout_229">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_individual_email_label">
+                                      <property name="text">
+                                       <string>Email</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_individual_email_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Email Address</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="3" column="0">
+                                   <layout class="QVBoxLayout" name="verticalLayout_230">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_individual_birthday_label">
+                                      <property name="text">
+                                       <string>Birthday</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_individual_birthday_line_edit">
+                                      <property name="placeholderText">
+                                       <string>YYYY/MM/DD</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="2" column="1">
+                                   <layout class="QVBoxLayout" name="verticalLayout_231">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_individual_expiry_date_label">
+                                      <property name="text">
+                                       <string>Expiry Date</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_individual_expiry_date_line_edit">
+                                      <property name="placeholderText">
+                                       <string>YYYY/MM/DD</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="3" column="1">
+                                   <layout class="QVBoxLayout" name="verticalLayout_232">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_individual_agent_code_label">
+                                      <property name="text">
+                                       <string>Agent Code</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_individual_agent_code_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Agent Code</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="1" column="1">
+                                   <layout class="QVBoxLayout" name="verticalLayout_233">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_individual_inception_date_label">
+                                      <property name="text">
+                                       <string>Inception Date</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_individual_inception_date_line_edit">
+                                      <property name="placeholderText">
+                                       <string>YYYY/MM/DD</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="0" column="1">
+                                   <layout class="QVBoxLayout" name="verticalLayout_234">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_individual_hmo_company_label">
+                                      <property name="text">
+                                       <string>HMO Company</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_individual_hmo_company_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter HMO Company</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                 </layout>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QFrame" name="clients_hmo_view_policy_individual_lower_frame">
+                                 <property name="frameShape">
+                                  <enum>QFrame::Shape::StyledPanel</enum>
+                                 </property>
+                                 <property name="frameShadow">
+                                  <enum>QFrame::Shadow::Raised</enum>
+                                 </property>
+                                 <layout class="QGridLayout" name="gridLayout_22">
+                                  <item row="1" column="1" colspan="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_235">
+                                    <item>
+                                     <layout class="QVBoxLayout" name="verticalLayout_236">
+                                      <item>
+                                       <widget class="QLabel" name="clients_hmo_view_policy_individual_commission_label">
+                                        <property name="text">
+                                         <string>Commission</string>
+                                        </property>
+                                       </widget>
+                                      </item>
+                                      <item>
+                                       <widget class="QLineEdit" name="clients_hmo_view_policy_individual_commission_line_edit">
+                                        <property name="readOnly">
+                                         <bool>false</bool>
+                                        </property>
+                                        <property name="placeholderText">
+                                         <string>Enter Commission</string>
+                                        </property>
+                                       </widget>
+                                      </item>
+                                     </layout>
+                                    </item>
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_individual_notes_label">
+                                      <property name="text">
+                                       <string>Client</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QTextEdit" name="clients_hmo_view_policy_individual_notes_text_edit">
+                                      <property name="placeholderText">
+                                       <string>Add Notes</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                 </layout>
+                                </widget>
+                               </item>
+                               <item>
+                                <layout class="QHBoxLayout" name="horizontalLayout_23">
+                                 <item>
+                                  <spacer name="horizontalSpacer_18">
+                                   <property name="orientation">
+                                    <enum>Qt::Orientation::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>40</width>
+                                     <height>20</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item>
+                                  <widget class="QPushButton" name="clients_hmo_view_policy_individual_edit_push_button">
+                                   <property name="text">
+                                    <string>Edit</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item>
+                                  <widget class="QPushButton" name="clients_hmo_view_policy_individual_update_push_button">
+                                   <property name="text">
+                                    <string>Update</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                </layout>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                           </layout>
+                          </widget>
+                          <widget class="QWidget" name="clients_hmo_view_policy_corporate_tab">
+                           <attribute name="title">
+                            <string>Corporate</string>
+                           </attribute>
+                           <layout class="QVBoxLayout" name="verticalLayout_237">
+                            <item>
+                             <widget class="QFrame" name="clients_hmo_view_policy_corporate_frame">
+                              <property name="frameShape">
+                               <enum>QFrame::Shape::StyledPanel</enum>
+                              </property>
+                              <property name="frameShadow">
+                               <enum>QFrame::Shadow::Raised</enum>
+                              </property>
+                              <layout class="QVBoxLayout" name="verticalLayout_238">
+                               <item>
+                                <widget class="QFrame" name="clients_hmo_view_policy_corporate_upper_frame">
+                                 <property name="frameShape">
+                                  <enum>QFrame::Shape::StyledPanel</enum>
+                                 </property>
+                                 <property name="frameShadow">
+                                  <enum>QFrame::Shadow::Raised</enum>
+                                 </property>
+                                 <layout class="QGridLayout" name="gridLayout_23">
+                                  <item row="0" column="1">
+                                   <layout class="QVBoxLayout" name="verticalLayout_239">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_corporate_hmo_company_label">
+                                      <property name="text">
+                                       <string>HMO Company</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_corporate_hmo_company_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter HMO Company</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="0" column="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_240">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_corporate_policy_number_label">
+                                      <property name="text">
+                                       <string>Policy Number</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_corporate_policy_number_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Policy Number</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="0" column="0">
+                                   <layout class="QVBoxLayout" name="verticalLayout_241">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_corporate_company_name_label">
+                                      <property name="text">
+                                       <string>Company Name</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_corporate_company_name_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Company Name</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="3" column="0">
+                                   <layout class="QVBoxLayout" name="verticalLayout_242">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_corporate_email_label">
+                                      <property name="text">
+                                       <string>Email</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_corporate_email_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Email Address</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="2" column="0">
+                                   <layout class="QVBoxLayout" name="verticalLayout_243">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_corporate_contact_number_label">
+                                      <property name="text">
+                                       <string>Contact Number</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_corporate_contact_number_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Contact Number</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="1" column="0">
+                                   <layout class="QVBoxLayout" name="verticalLayout_244">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_corporate_number_of_enrollees_label">
+                                      <property name="text">
+                                       <string>Number of Enrollees</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_corporate_number_of_enrollees_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Number of Enrollees</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="1" column="1">
+                                   <layout class="QVBoxLayout" name="verticalLayout_245">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_corporate_inception_date_label">
+                                      <property name="text">
+                                       <string>Inception Date</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_corporate_inception_date_line_edit">
+                                      <property name="placeholderText">
+                                       <string>YYYY/MM/DD</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="2" column="1">
+                                   <layout class="QVBoxLayout" name="verticalLayout_246">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_corporate_expiry_date_label">
+                                      <property name="text">
+                                       <string>Expiry Date</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_corporate_expiry_date_line_edit">
+                                      <property name="placeholderText">
+                                       <string>YYYY/MM/DD</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="3" column="1">
+                                   <layout class="QVBoxLayout" name="verticalLayout_247">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_corporate_agent_code_label">
+                                      <property name="text">
+                                       <string>Agent Code</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_corporate_agent_code_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Agent Code</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="1" column="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_248">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_corporate_mbl_abl_label">
+                                      <property name="text">
+                                       <string>MBL/ABL</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_corporate_mbl_abl_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter MBL/ABL</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="2" column="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_249">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_corporate_net_premium_label">
+                                      <property name="text">
+                                       <string>Net Premium</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_corporate_net_premium_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Net Premium</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                  <item row="3" column="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_250">
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_corporate_gross_premium_label">
+                                      <property name="text">
+                                       <string>Gross Premium</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLineEdit" name="clients_hmo_view_policy_corporate_gross_premium_line_edit">
+                                      <property name="placeholderText">
+                                       <string>Enter Gross Premium</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                 </layout>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QFrame" name="clients_hmo_view_policy_corporate_lower_frame">
+                                 <property name="frameShape">
+                                  <enum>QFrame::Shape::StyledPanel</enum>
+                                 </property>
+                                 <property name="frameShadow">
+                                  <enum>QFrame::Shadow::Raised</enum>
+                                 </property>
+                                 <layout class="QGridLayout" name="gridLayout_24">
+                                  <item row="1" column="1" colspan="2">
+                                   <layout class="QVBoxLayout" name="verticalLayout_251">
+                                    <item>
+                                     <layout class="QVBoxLayout" name="verticalLayout_252">
+                                      <item>
+                                       <widget class="QLabel" name="clients_hmo_view_policy_corporate_commission_label">
+                                        <property name="text">
+                                         <string>Commission</string>
+                                        </property>
+                                       </widget>
+                                      </item>
+                                      <item>
+                                       <widget class="QLineEdit" name="clients_hmo_view_policy_corporate_commission_line_edit">
+                                        <property name="readOnly">
+                                         <bool>false</bool>
+                                        </property>
+                                        <property name="placeholderText">
+                                         <string>Enter Commission</string>
+                                        </property>
+                                       </widget>
+                                      </item>
+                                     </layout>
+                                    </item>
+                                    <item>
+                                     <widget class="QLabel" name="clients_hmo_view_policy_corporate_notes_label">
+                                      <property name="text">
+                                       <string>Client</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QTextEdit" name="clients_hmo_view_policy_corporate_notes_text_edit">
+                                      <property name="placeholderText">
+                                       <string>Add Notes</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
+                                  </item>
+                                 </layout>
+                                </widget>
+                               </item>
+                               <item>
+                                <layout class="QHBoxLayout" name="horizontalLayout_24">
+                                 <item>
+                                  <spacer name="horizontalSpacer_19">
+                                   <property name="orientation">
+                                    <enum>Qt::Orientation::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>40</width>
+                                     <height>20</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item>
+                                  <widget class="QPushButton" name="clients_hmo_view_policy_corporate_edit_push_button">
+                                   <property name="text">
+                                    <string>Edit</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item>
+                                  <widget class="QPushButton" name="clients_hmo_view_policy_corporate_update_push_button">
+                                   <property name="text">
+                                    <string>Update</string>
                                    </property>
                                   </widget>
                                  </item>
@@ -8316,7 +8820,7 @@ QComboBox {
           <item>
            <widget class="QTabWidget" name="archives_tab_widget">
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="archives_non_life_tab">
              <attribute name="title">
@@ -8351,6 +8855,113 @@ QComboBox {
                         <enum>QFrame::Shadow::Raised</enum>
                        </property>
                        <layout class="QVBoxLayout" name="verticalLayout_59">
+                        <item>
+                         <widget class="QFrame" name="archives_header_container">
+                          <property name="styleSheet">
+                           <string notr="true">QPushButton, QPushButton:flat {
+	background-color: white;
+	border: 0px solid white;
+	padding: 5;
+	border-radius: 10%;
+}
+QPushButton:hover {
+    background-color: rgb(239, 239, 239);
+	padding: 5;
+	border-radius: 10%;
+}
+#archives_search_container{
+	background-color: white;
+	border: 1px solid black;
+	border-radius: 15%;
+}</string>
+                          </property>
+                          <property name="frameShape">
+                           <enum>QFrame::Shape::StyledPanel</enum>
+                          </property>
+                          <property name="frameShadow">
+                           <enum>QFrame::Shadow::Raised</enum>
+                          </property>
+                          <layout class="QHBoxLayout" name="archives_header_layout">
+                           <item>
+                            <widget class="QFrame" name="archives_search_container">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="frameShape">
+                              <enum>QFrame::Shape::StyledPanel</enum>
+                             </property>
+                             <property name="frameShadow">
+                              <enum>QFrame::Shadow::Raised</enum>
+                             </property>
+                             <layout class="QHBoxLayout" name="archives_search_layout">
+                              <property name="spacing">
+                               <number>5</number>
+                              </property>
+                              <property name="leftMargin">
+                               <number>10</number>
+                              </property>
+                              <property name="topMargin">
+                               <number>0</number>
+                              </property>
+                              <property name="rightMargin">
+                               <number>10</number>
+                              </property>
+                              <property name="bottomMargin">
+                               <number>0</number>
+                              </property>
+                              <item>
+                               <widget class="QLabel" name="archives_search_icon">
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="pixmap">
+                                 <pixmap>asset/search_icon.png</pixmap>
+                                </property>
+                               </widget>
+                              </item>
+                              <item>
+                               <widget class="QLineEdit" name="archives_search_edit">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true">#archives_search_edit {
+border: 0px solid white;
+}</string>
+                                </property>
+                                <property name="placeholderText">
+                                 <string>Search Archives</string>
+                                </property>
+                                <property name="cursorMoveStyle">
+                                 <enum>Qt::CursorMoveStyle::LogicalMoveStyle</enum>
+                                </property>
+                               </widget>
+                              </item>
+                             </layout>
+                            </widget>
+                           </item>
+                           <item>
+                            <spacer name="archives_header_spacer">
+                             <property name="orientation">
+                              <enum>Qt::Orientation::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>434</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
                         <item>
                          <widget class="QTableWidget" name="archives_non_life_dashboard_table">
                           <property name="sizePolicy">
@@ -9051,6 +9662,113 @@ QComboBox {
                         <enum>QFrame::Shadow::Raised</enum>
                        </property>
                        <layout class="QVBoxLayout" name="verticalLayout_126">
+                        <item>
+                         <widget class="QFrame" name="archives_hmo_header_container">
+                          <property name="styleSheet">
+                           <string notr="true">QPushButton, QPushButton:flat {
+	background-color: white;
+	border: 0px solid white;
+	padding: 5;
+	border-radius: 10%;
+}
+QPushButton:hover {
+    background-color: rgb(239, 239, 239);
+	padding: 5;
+	border-radius: 10%;
+}
+#archives_hmo_search_container{
+	background-color: white;
+	border: 1px solid black;
+	border-radius: 15%;
+}</string>
+                          </property>
+                          <property name="frameShape">
+                           <enum>QFrame::Shape::StyledPanel</enum>
+                          </property>
+                          <property name="frameShadow">
+                           <enum>QFrame::Shadow::Raised</enum>
+                          </property>
+                          <layout class="QHBoxLayout" name="archives_hmo_header_layout">
+                           <item>
+                            <widget class="QFrame" name="archives_hmo_search_container">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="frameShape">
+                              <enum>QFrame::Shape::StyledPanel</enum>
+                             </property>
+                             <property name="frameShadow">
+                              <enum>QFrame::Shadow::Raised</enum>
+                             </property>
+                             <layout class="QHBoxLayout" name="archives_hmo_search_layout">
+                              <property name="spacing">
+                               <number>5</number>
+                              </property>
+                              <property name="leftMargin">
+                               <number>10</number>
+                              </property>
+                              <property name="topMargin">
+                               <number>0</number>
+                              </property>
+                              <property name="rightMargin">
+                               <number>10</number>
+                              </property>
+                              <property name="bottomMargin">
+                               <number>0</number>
+                              </property>
+                              <item>
+                               <widget class="QLabel" name="archives_hmo_search_icon">
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="pixmap">
+                                 <pixmap>asset/search_icon.png</pixmap>
+                                </property>
+                               </widget>
+                              </item>
+                              <item>
+                               <widget class="QLineEdit" name="archives_hmo_search_edit">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true">#archives_hmo_search_edit {
+border: 0px solid white;
+}</string>
+                                </property>
+                                <property name="placeholderText">
+                                 <string>Search HMO Archives</string>
+                                </property>
+                                <property name="cursorMoveStyle">
+                                 <enum>Qt::CursorMoveStyle::LogicalMoveStyle</enum>
+                                </property>
+                               </widget>
+                              </item>
+                             </layout>
+                            </widget>
+                           </item>
+                           <item>
+                            <spacer name="archives_hmo_header_spacer">
+                             <property name="orientation">
+                              <enum>Qt::Orientation::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>434</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
                         <item>
                          <widget class="QTableWidget" name="archives_hmo_dashboard_table">
                           <property name="sizePolicy">
