@@ -1,9 +1,13 @@
 import os
 import sys
 import db_func
-from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView, QAbstractItemView, QMessageBox
+import csv
+from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView, QAbstractItemView, QMessageBox, QTableWidget, QFileDialog
 from PyQt6.QtCore import QMetaObject
 from PyQt6 import uic
+from openpyxl import Workbook
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
 
 if sys.platform.startswith('linux'):
     print("Running on Linux")
@@ -79,6 +83,13 @@ class MainWindow(QWidget):
         self.navigation_archives_button.clicked.connect(self.on_archives_button_clicked)
         self.navigation_account_button.clicked.connect(self.on_account_button_clicked)
         self.navigation_logout_button.clicked.connect(self.on_logout_button_clicked)
+
+        # connect search bar
+        self.search_edit.textChanged.connect(self.on_search_text_changed)
+        self.clients_search_edit.textChanged.connect(self.on_search_text_changed)
+        self.clients_hmo_search_edit.textChanged.connect(self.on_search_text_changed)
+        self.archives_search_edit.textChanged.connect(self.on_search_text_changed)
+        self.archives_hmo_search_edit.textChanged.connect(self.on_search_text_changed)
         
         # add client buttons
         self.clients_non_life_add_client_submit_push_button.clicked.connect(self.on_clients_non_life_add_client_submit_push_button_clicked)
@@ -94,6 +105,10 @@ class MainWindow(QWidget):
         # archive client buttons
         self.clients_non_life_dashboard_archive_button.clicked.connect(self.on_clients_non_life_dashboard_archive_button_clicked)
         self.clients_hmo_dashboard_archive_button.clicked.connect(self.on_clients_hmo_dashboard_archive_button_clicked)
+
+        # record policy payment buttons
+        self.clients_non_life_dashboard_record_payment_button.clicked.connect(self.on_clients_non_life_dashboard_record_payment_button_clicked)
+        self.clients_hmo_dashboard_record_payment_button.clicked.connect(self.on_clients_hmo_dashboard_record_payment_button_clicked)
         
         # restore archive buttons
         self.archives_non_life_dashboard_restore_button.clicked.connect(self.on_archives_non_life_dashboard_restore_button_clicked)
@@ -102,6 +117,16 @@ class MainWindow(QWidget):
         # delete archive buttons
         self.archives_non_life_dashboard_delete_button.clicked.connect(self.on_archives_non_life_dashboard_delete_button_clicked)
         self.archives_hmo_dashboard_delete_button.clicked.connect(self.on_archives_hmo_dashboard_delete_button_clicked)
+
+        # export buttons
+        self.export_clients_nonlife_csv_button.clicked.connect(self.export_clients_nonlife_to_csv)
+        self.export_clients_nonlife_xls_button.clicked.connect(self.export_clients_nonlife_to_xls)
+        self.export_clients_nonlife_pdf_button.clicked.connect(self.export_clients_nonlife_to_pdf)
+        self.export_clients_hmo_individual_csv_button.clicked.connect(self.export_clients_hmo_individual_to_csv)
+        self.export_clients_hmo_individual_xls_button.clicked.connect(self.export_clients_hmo_individual_to_xls)
+        self.export_clients_hmo_individual_pdf_button.clicked.connect(self.export_clients_hmo_individual_to_pdf)
+        #self.export_clients_hmo_corporate_csv_button.clicked.connect(self.export_clients_hmo_corporate_to_csv)
+        #self.export_clients_hmo_corporate_xls_button.clicked.connect(self.export_clients_hmo_corporate_to_xls)
 
         # REVISE: move to separate functions later
         # resize cols to header/content
@@ -169,15 +194,22 @@ class MainWindow(QWidget):
     def on_clients_non_life_dashboard_archive_button_clicked(self):
         db_func.archive_nonlife_client(self)
 
+    def on_clients_non_life_dashboard_record_payment_button_clicked(self):
+        db_func.record_policy_payment_nonlife(self)
+
     def on_clients_hmo_dashboard_archive_button_clicked(self):
         db_func.archive_hmo_client(self)
-      
+    
+    def on_clients_hmo_dashboard_record_payment_button_clicked(self):
+        db_func.record_policy_payment_hmo(self)
+        
     def on_companies_button_clicked(self):
         self.current_active_tab.setCurrentIndex(2)
         db_func.fetch_company_table_data(self)
       
     def on_collection_button_clicked(self):
         self.current_active_tab.setCurrentIndex(3)
+        db_func.fetch_all_client_payments(self)
       
     def on_archives_button_clicked(self):
         self.current_active_tab.setCurrentIndex(4)
@@ -194,6 +226,115 @@ class MainWindow(QWidget):
 
     def on_archives_hmo_dashboard_delete_button_clicked(self):
         db_func.delete_hmo_client(self)
+
+    def update_table_counts(self):
+        """Update the result count labels for all tables based on visible rows."""
+        try:
+            # Archives tables
+            if hasattr(self, 'archives_non_life_dashboard_table'):
+                visible_archives_nonlife = sum(1 for row in range(self.archives_non_life_dashboard_table.rowCount()) 
+                                             if not self.archives_non_life_dashboard_table.isRowHidden(row))
+                self.archives_non_life_dashboard_count.setText(str(visible_archives_nonlife))
+            
+            if hasattr(self, 'archives_hmo_dashboard_table'):
+                visible_archives_hmo = sum(1 for row in range(self.archives_hmo_dashboard_table.rowCount()) 
+                                         if not self.archives_hmo_dashboard_table.isRowHidden(row))
+                self.archives_hmo_dashboard_count.setText(str(visible_archives_hmo))
+            
+            # Client tables
+            if hasattr(self, 'clients_non_life_dashboard_table'):
+                visible_clients_nonlife = sum(1 for row in range(self.clients_non_life_dashboard_table.rowCount()) 
+                                            if not self.clients_non_life_dashboard_table.isRowHidden(row))
+                self.clients_non_life_dashboard_count.setText(str(visible_clients_nonlife))
+            
+            if hasattr(self, 'clients_hmo_dashboard_table'):
+                visible_clients_hmo = sum(1 for row in range(self.clients_hmo_dashboard_table.rowCount()) 
+                                        if not self.clients_hmo_dashboard_table.isRowHidden(row))
+                self.clients_hmo_dashboard_count.setText(str(visible_clients_hmo))
+            
+            # Company tables
+            if hasattr(self, 'companies_non_life_dashboard_table'):
+                visible_companies_nonlife = sum(1 for row in range(self.companies_non_life_dashboard_table.rowCount()) 
+                                              if not self.companies_non_life_dashboard_table.isRowHidden(row))
+                self.companies_non_life_dashboard_count.setText(str(visible_companies_nonlife))
+            
+            if hasattr(self, 'companies_hmo_dashboard_table'):
+                visible_companies_hmo = sum(1 for row in range(self.companies_hmo_dashboard_table.rowCount()) 
+                                          if not self.companies_hmo_dashboard_table.isRowHidden(row))
+                self.companies_hmo_dashboard_count.setText(str(visible_companies_hmo))
+            
+            # Collection tables
+            if hasattr(self, 'client_payments_table'):
+                visible_client_payments = sum(1 for row in range(self.client_payments_table.rowCount()) 
+                                            if not self.client_payments_table.isRowHidden(row))
+                self.client_payments_count.setText(str(visible_client_payments))
+            
+            if hasattr(self, 'company_expenses_table'):
+                visible_company_expenses = sum(1 for row in range(self.company_expenses_table.rowCount()) 
+                                             if not self.company_expenses_table.isRowHidden(row))
+                self.company_expenses_count.setText(str(visible_company_expenses))
+        except AttributeError as e:
+            # Some tables might not be loaded yet
+            pass
+
+    def on_search_text_changed(self, text):
+        """Filter visible table rows based on the search text."""
+        # Get the sender widget to determine which search box triggered this
+        sender = self.sender()
+        
+        # Determine the search text based on the current widget or sender
+        if sender:
+            text = sender.text().strip().lower()
+        else:
+            text = text.strip().lower()
+            
+        current_tab = self.current_active_tab.currentWidget()
+        current_tab_index = self.current_active_tab.currentIndex()
+        
+        # Debug: Print current tab info
+        print(f"Search triggered on tab index: {current_tab_index}")
+        
+        # If search text is empty, show all rows
+        if not text:
+            tables = current_tab.findChildren(QTableWidget)
+            print(f"Clearing search - found {len(tables)} tables")
+            for table in tables:
+                for row in range(table.rowCount()):
+                    table.setRowHidden(row, False)
+            self.update_table_counts()
+            return
+        
+        # Search through all tables in the current tab
+        tables = current_tab.findChildren(QTableWidget)
+        print(f"Searching '{text}' - found {len(tables)} tables")
+        
+        # If no tables found, return early (like home tab)
+        if not tables:
+            print("No tables found in current tab")
+            return
+            
+        for table in tables:
+            print(f"Searching table: {table.objectName()} with {table.rowCount()} rows")
+            # Only search if table is visible and has data
+            if table.isVisible() and table.rowCount() > 0:
+                hidden_count = 0
+                for row in range(table.rowCount()):
+                    match = False
+                    # Search through all columns for the text
+                    for col in range(table.columnCount()):
+                        item = table.item(row, col)
+                        if item and item.text() and text in item.text().lower():
+                            match = True
+                            break
+                    # Hide row if no match found
+                    table.setRowHidden(row, not match)
+                    if not match:
+                        hidden_count += 1
+                print(f"Hidden {hidden_count} rows in {table.objectName()}")
+        
+        # Update the counts after filtering
+        self.update_table_counts()
+
     
     def on_account_button_clicked(self):
         self.current_active_tab.setCurrentIndex(5)
@@ -242,8 +383,271 @@ class MainWindow(QWidget):
             self.account_confirm_password_line_edit.clear()
         else:
             QMessageBox.critical(self, "Error", "Old password is incorrect.")
-
     
+    def export_clients_nonlife_to_csv(self):
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save CSV", "clients.csv", "CSV Files (*.csv)"
+        )
+
+        if not path:
+            return  # User canceled
+
+        try:
+            rows, headers = db_func.fetch_all_clients_nonlife()
+            with open(path, "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                writer.writerow(headers)
+                writer.writerows(rows)
+
+            QMessageBox.information(self, "Export Complete", f"Clients exported to:\n{path}")
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Export failed:\n{e}")
+        
+    def export_clients_nonlife_to_xls(self):
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save Excel File", "clients.xlsx", "Excel Files (*.xlsx)"
+        )
+
+        if not path:
+            return  # user canceled
+
+        try:
+            rows, headers = db_func.fetch_all_clients_nonlife()
+
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Clients"
+
+            # Write headers
+            ws.append(headers)
+
+            # Write data rows
+            for row in rows:
+                ws.append(row)
+
+            wb.save(path)
+            QMessageBox.information(self, "Export Successful", f"Excel file saved:\n{path}")
+        except Exception as e:
+            QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
+    
+    def export_clients_nonlife_to_pdf(self):
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save PDF", "clients.pdf", "PDF Files (*.pdf)"
+        )
+
+        if not path:
+            return
+
+        try:
+            rows, headers = db_func.fetch_all_clients_nonlife()
+
+            c = canvas.Canvas(path, pagesize=A4)
+            width, height = A4
+            c.setFont("Helvetica", 10)
+
+            y = height - 40  # Start 40 pts from top
+            x_offset = 40
+            line_height = 20
+
+            # Draw headers
+            for i, header in enumerate(headers):
+                c.drawString(x_offset + i * 100, y, str(header))
+            y -= line_height
+
+            # Draw rows
+            for row in rows:
+                for i, cell in enumerate(row):
+                    c.drawString(x_offset + i * 100, y, str(cell))
+                y -= line_height
+
+                # Page break if needed
+                if y < 40:
+                    c.showPage()
+                    y = height - 40
+                    c.setFont("Helvetica", 10)
+
+            c.save()
+            QMessageBox.information(self, "Export Successful", f"PDF saved to:\n{path}")
+
+        except Exception as e:
+            QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
+    
+    def export_clients_hmo_individual_to_csv(self):
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save CSV", "clients.csv", "CSV Files (*.csv)"
+        )
+
+        if not path:
+            return  # User canceled
+
+        try:
+            rows, headers = db_func.fetch_all_clients_hmo_individual()
+            with open(path, "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                writer.writerow(headers)
+                writer.writerows(rows)
+
+            QMessageBox.information(self, "Export Complete", f"Clients exported to:\n{path}")
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Export failed:\n{e}")
+        
+    def export_clients_hmo_individual_to_xls(self):
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save Excel File", "clients.xlsx", "Excel Files (*.xlsx)"
+        )
+
+        if not path:
+            return  # user canceled
+
+        try:
+            rows, headers = db_func.fetch_all_clients_hmo_individual()
+
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Clients"
+
+            # Write headers
+            ws.append(headers)
+
+            # Write data rows
+            for row in rows:
+                ws.append(row)
+
+            wb.save(path)
+            QMessageBox.information(self, "Export Successful", f"Excel file saved:\n{path}")
+        except Exception as e:
+            QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
+    
+    def export_clients_hmo_individual_to_pdf(self):
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save PDF", "clients.pdf", "PDF Files (*.pdf)"
+        )
+
+        if not path:
+            return
+
+        try:
+            rows, headers = db_func.fetch_all_clients_hmo_individual()
+
+            c = canvas.Canvas(path, pagesize=A4)
+            width, height = A4
+            c.setFont("Helvetica", 10)
+
+            y = height - 40  # Start 40 pts from top
+            x_offset = 40
+            line_height = 20
+
+            # Draw headers
+            for i, header in enumerate(headers):
+                c.drawString(x_offset + i * 100, y, str(header))
+            y -= line_height
+
+            # Draw rows
+            for row in rows:
+                for i, cell in enumerate(row):
+                    c.drawString(x_offset + i * 100, y, str(cell))
+                y -= line_height
+
+                # Page break if needed
+                if y < 40:
+                    c.showPage()
+                    y = height - 40
+                    c.setFont("Helvetica", 10)
+
+            c.save()
+            QMessageBox.information(self, "Export Successful", f"PDF saved to:\n{path}")
+
+        except Exception as e:
+            QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
+
+    def export_clients_hmo_corporate_to_csv(self):
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save CSV", "clients.csv", "CSV Files (*.csv)"
+        )
+
+        if not path:
+            return  # User canceled
+
+        try:
+            rows, headers = db_func.fetch_all_clients_hmo_corporate()
+            with open(path, "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                writer.writerow(headers)
+                writer.writerows(rows)
+
+            QMessageBox.information(self, "Export Complete", f"Clients exported to:\n{path}")
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Export failed:\n{e}")
+        
+    def export_clients_hmo_corporate_to_xls(self):
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save Excel File", "clients.xlsx", "Excel Files (*.xlsx)"
+        )
+
+        if not path:
+            return  # user canceled
+
+        try:
+            rows, headers = db_func.fetch_all_clients_hmo_corporate()
+
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Clients"
+
+            # Write headers
+            ws.append(headers)
+
+            # Write data rows
+            for row in rows:
+                ws.append(row)
+
+            wb.save(path)
+            QMessageBox.information(self, "Export Successful", f"Excel file saved:\n{path}")
+        except Exception as e:
+            QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
+    
+    def export_clients_hmo_corporate_to_pdf(self):
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save PDF", "clients.pdf", "PDF Files (*.pdf)"
+        )
+
+        if not path:
+            return
+
+        try:
+            rows, headers = db_func.fetch_all_clients_hmo_corporate()
+
+            c = canvas.Canvas(path, pagesize=A4)
+            width, height = A4
+            c.setFont("Helvetica", 10)
+
+            y = height - 40  # Start 40 pts from top
+            x_offset = 40
+            line_height = 20
+
+            # Draw headers
+            for i, header in enumerate(headers):
+                c.drawString(x_offset + i * 100, y, str(header))
+            y -= line_height
+
+            # Draw rows
+            for row in rows:
+                for i, cell in enumerate(row):
+                    c.drawString(x_offset + i * 100, y, str(cell))
+                y -= line_height
+
+                # Page break if needed
+                if y < 40:
+                    c.showPage()
+                    y = height - 40
+                    c.setFont("Helvetica", 10)
+
+            c.save()
+            QMessageBox.information(self, "Export Successful", f"PDF saved to:\n{path}")
+
+        except Exception as e:
+            QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     login_page = LoginPage()
