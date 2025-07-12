@@ -980,38 +980,366 @@ def change_user_password(username, old_password, new_password):
             cursor.close()
             conn.close()
 
-def fetch_all_clients_nonlife():
-    conn = connect()
+def handle_nonlife_row_double_click(self, row, column):
     try:
+        policy_number_item = self.clients_non_life_dashboard_table.item(row, 2)  # Assuming col 2 is policy_number
+        if not policy_number_item:
+            return
+
+        policy_number = policy_number_item.text().strip()
+        if not policy_number:
+            return
+
+        # Fetch policy data
+        conn = connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM clients_nonlife")
-        rows = cursor.fetchall()
-        headers = [desc[0] for desc in cursor.description]
-        return rows, headers
-    finally:
+        cursor.execute("""
+            SELECT 
+                assured_name, contact_number, email, birthday,
+                inception_date, expiry_date, net_premium, gross_premium,
+                policy_number, agent_code, payment_invoice, commission,
+                type_of_insurance, insurance_company, amount_covered, client_notes
+            FROM clients_nonlife
+            WHERE policy_number = %s
+        """, (policy_number,))
+        data = cursor.fetchone()
         cursor.close()
         conn.close()
 
-def fetch_all_clients_hmo_individual():
-    conn = connect()
-    try:
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM clients_hmo_individual")
-        rows = cursor.fetchall()
-        headers = [desc[0] for desc in cursor.description]
-        return rows, headers
-    finally:
-        cursor.close()
-        conn.close()
+        if not data:
+            QMessageBox.warning(self, "Not Found", "Client not found in database.")
+            return
 
-def fetch_all_clients_hmo_corporate():
-    conn = connect()
+        # Populate the View Policy fields (replace these with your actual field variable names)
+        self.clients_non_life_view_policy_assured_name_line_edit.setText(data[0] or "")
+        self.clients_non_life_view_policy_contact_number_line_edit.setText(data[1] or "")
+        self.clients_non_life_view_policy_email_line_edit.setText(data[2] or "")
+        self.clients_non_life_view_policy_birthday_line_edit.setText(data[3].strftime("%Y/%m/%d") if data[3] else "")
+        self.clients_non_life_view_policy_inception_date_line_edit.setText(data[4].strftime("%Y/%m/%d") if data[4] else "")
+        self.clients_non_life_view_policy_expiry_date_line_edit.setText(data[5].strftime("%Y/%m/%d") if data[5] else "")
+        self.clients_non_life_view_policy_net_premium_line_edit.setText(str(data[6]) if data[6] is not None else "")
+        self.clients_non_life_view_policy_gross_premium_line_edit.setText(str(data[7]) if data[7] is not None else "")
+        self.clients_non_life_view_policy_policy_number_line_edit.setText(data[8] or "")
+        self.clients_non_life_view_policy_agent_code_line_edit.setText(data[9] or "")
+        self.clients_non_life_view_policy_payment_invoice_line_edit.setText(data[10] or "")
+        self.clients_non_life_view_policy_commission_line_edit.setText(str(data[11]) if data[11] is not None else "")
+        self.clients_non_life_view_policy_insurance_type_combo_box.setCurrentText(data[12] or "")
+        self.clients_non_life_view_policy_insurance_company_line_edit.setText(data[13] or "")
+        self.clients_non_life_view_policy_amount_covered_line_edit.setText(str(data[14]) if data[14] is not None else "")
+        self.clients_non_life_view_policy_notes_text_edit.setPlainText(data[15] or "")
+
+        # Switch to the View Policy tab (index 2)
+        self.clients_non_life_tab_widget.setCurrentIndex(2)
+
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to load client data:\n{e}")
+
+def handle_hmo_row_double_click(self, row, column):
     try:
+        policy_number_item = self.clients_hmo_dashboard_table.item(row, 2)
+        if not policy_number_item:
+            return
+
+        policy_number = policy_number_item.text().strip()
+
+        conn = connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM clients_hmo_corporate")
-        rows = cursor.fetchall()
-        headers = [desc[0] for desc in cursor.description]
-        return rows, headers
+
+        # Try individual first
+        cursor.execute("SELECT * FROM clients_hmo_individual WHERE policy_number = %s", (policy_number,))
+        result = cursor.fetchone()
+
+        if result:
+            self.clients_hmo_tab_widget.setCurrentIndex(2)
+            self.clients_hmo_view_policy_tab_widget.setCurrentIndex(0)  # Individual tab
+            # Fill individual fields
+            self.clients_hmo_view_policy_individual_assured_name_line_edit.setText(result[1])
+            self.clients_hmo_view_policy_individual_contact_number_line_edit.setText(result[2] or "")
+            self.clients_hmo_view_policy_individual_email_line_edit.setText(result[3] or "")
+            self.clients_hmo_view_policy_individual_birthday_line_edit.setText(result[4].strftime("%Y/%m/%d") if result[4] else "")
+            self.clients_hmo_view_policy_individual_hmo_company_line_edit.setText(result[5] or "")
+            self.clients_hmo_view_policy_individual_inception_date_line_edit.setText(result[6].strftime("%Y/%m/%d") if result[6] else "")
+            self.clients_hmo_view_policy_individual_expiry_date_line_edit.setText(result[7].strftime("%Y/%m/%d") if result[7] else "")
+            self.clients_hmo_view_policy_individual_agent_code_line_edit.setText(result[8] or "")
+            self.clients_hmo_view_policy_individual_policy_number_line_edit.setText(result[9] or "")
+            self.clients_hmo_view_policy_individual_mbl_abl_line_edit.setText(result[10] or "")
+            self.clients_hmo_view_policy_individual_net_premium_line_edit.setText(str(result[11]) if result[11] else "")
+            self.clients_hmo_view_policy_individual_gross_premium_line_edit.setText(str(result[12]) if result[12] else "")
+            self.clients_hmo_view_policy_individual_commission_line_edit.setText(str(result[13]) if result[13] else "")
+            self.clients_hmo_view_policy_individual_notes_text_edit.setPlainText(result[15] or "")
+            return
+
+        # Try corporate if not individual
+        cursor.execute("SELECT * FROM clients_hmo_corporate WHERE policy_number = %s", (policy_number,))
+        result = cursor.fetchone()
+
+        if result:
+            self.clients_hmo_tab_widget.setCurrentIndex(2)
+            self.clients_hmo_view_policy_tab_widget.setCurrentIndex(1)  # Corporate tab
+            # Fill corporate fields
+            self.clients_hmo_view_policy_corporate_company_name_line_edit.setText(result[1])
+            self.clients_hmo_view_policy_corporate_number_of_enrollees_line_edit.setText(str(result[2]) if result[2] else "")
+            self.clients_hmo_view_policy_corporate_contact_number_line_edit.setText(result[3] or "")
+            self.clients_hmo_view_policy_corporate_email_line_edit.setText(result[4] or "")
+            self.clients_hmo_view_policy_corporate_hmo_company_line_edit.setText(result[5] or "")
+            self.clients_hmo_view_policy_corporate_inception_date_line_edit.setText(result[6].strftime("%Y/%m/%d") if result[6] else "")
+            self.clients_hmo_view_policy_corporate_expiry_date_line_edit.setText(result[7].strftime("%Y/%m/%d") if result[7] else "")
+            self.clients_hmo_view_policy_corporate_agent_code_line_edit.setText(result[8] or "")
+            self.clients_hmo_view_policy_corporate_policy_number_line_edit.setText(result[9] or "")
+            self.clients_hmo_view_policy_corporate_mbl_abl_line_edit.setText(result[10] or "")
+            self.clients_hmo_view_policy_corporate_net_premium_line_edit.setText(str(result[11]) if result[11] else "")
+            self.clients_hmo_view_policy_corporate_gross_premium_line_edit.setText(str(result[12]) if result[12] else "")
+            self.clients_hmo_view_policy_corporate_commission_line_edit.setText(str(result[13]) if result[13] else "")
+            self.clients_hmo_view_policy_corporate_notes_text_edit.setPlainText(result[15] or "")
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to fetch policy:\n{e}")
     finally:
-        cursor.close()
-        conn.close()
+        if conn:
+            cursor.close()
+            conn.close()
+
+def update_nonlife_policy(self):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        # Extract updated values from View Policy fields
+        name = self.clients_non_life_view_policy_assured_name_line_edit.text()
+        contact = self.clients_non_life_view_policy_contact_number_line_edit.text()
+        email = self.clients_non_life_view_policy_email_line_edit.text()
+        birthday = self.clients_non_life_view_policy_birthday_line_edit.text()
+        inception_date = self.clients_non_life_view_policy_inception_date_line_edit.text()
+        expiry_date = self.clients_non_life_view_policy_expiry_date_line_edit.text()
+        net_premium = self.clients_non_life_view_policy_net_premium_line_edit.text()
+        gross_premium = self.clients_non_life_view_policy_gross_premium_line_edit.text()
+        policy_number = self.clients_non_life_view_policy_policy_number_line_edit.text()
+        agent_code = self.clients_non_life_view_policy_agent_code_line_edit.text()
+        payment_invoice = self.clients_non_life_view_policy_payment_invoice_line_edit.text()
+        commission = self.clients_non_life_view_policy_commission_line_edit.text()
+        insurance_type = self.clients_non_life_view_policy_insurance_type_combo_box.currentText()
+        insurance_company = self.clients_non_life_view_policy_insurance_company_line_edit.text()
+        amount_covered = self.clients_non_life_view_policy_amount_covered_line_edit.text()
+        notes = self.clients_non_life_view_policy_notes_text_edit.toPlainText()
+
+        # Parse fields
+        def parse_date(date_str):
+            return datetime.strptime(date_str, "%Y/%m/%d").date() if date_str else None
+
+        def parse_decimal(val):
+            return float(val) if val else None
+
+        def clean_text(val):
+            return val.strip() if val.strip() else None
+
+        name = clean_text(name)
+        contact = clean_text(contact)
+        email = clean_text(email)
+        policy_number = clean_text(policy_number)
+        agent_code = clean_text(agent_code)
+        payment_invoice = clean_text(payment_invoice)
+        insurance_type = clean_text(insurance_type)
+        insurance_company = clean_text(insurance_company)
+        notes = clean_text(notes)
+
+        birthday = parse_date(birthday)
+        inception_date = parse_date(inception_date)
+        expiry_date = parse_date(expiry_date)
+        net_premium = parse_decimal(net_premium)
+        gross_premium = parse_decimal(gross_premium)
+        commission = parse_decimal(commission)
+        amount_covered = parse_decimal(amount_covered)
+
+        # Validate required fields
+        if not name or not expiry_date or not policy_number or not insurance_type:
+            QMessageBox.warning(self, "Missing Fields", "Please fill in all required fields: Assured Name, Expiry Date, Policy Number, Type of Insurance.")
+            return
+
+        # Validate email format
+        if email:
+            email_pattern = r'^[\w\.-]+@[\w\.-]+\.\w{2,}$'
+            if not re.match(email_pattern, email):
+                QMessageBox.warning(self, "Invalid Email", "Please enter a valid email address.")
+                return
+
+        # Perform update
+        cursor.execute("""
+            UPDATE clients_nonlife
+            SET
+                assured_name = %s,
+                contact_number = %s,
+                email = %s,
+                birthday = %s,
+                inception_date = %s,
+                expiry_date = %s,
+                net_premium = %s,
+                gross_premium = %s,
+                agent_code = %s,
+                payment_invoice = %s,
+                commission = %s,
+                type_of_insurance = %s,
+                insurance_company = %s,
+                amount_covered = %s,
+                client_notes = %s,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE policy_number = %s
+        """, (
+            name, contact, email, birthday,
+            inception_date, expiry_date, net_premium, gross_premium,
+            agent_code, payment_invoice, commission, insurance_type,
+            insurance_company, amount_covered, notes,
+            policy_number
+        ))
+
+        conn.commit()
+        QMessageBox.information(self, "Success", "Policy updated successfully.")
+        fetch_client_table_data(self)
+
+        # Optionally make fields read-only again
+        self.set_view_policy_fields_readonly(True)
+
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Failed to update policy:\n{e}")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+def update_hmo_individual_policy(self):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        # Extract values from individual view policy widgets
+        name = self.clients_hmo_view_policy_individual_assured_name_line_edit.text().strip()
+        contact = self.clients_hmo_view_policy_individual_contact_number_line_edit.text().strip()
+        email = self.clients_hmo_view_policy_individual_email_line_edit.text().strip()
+        birthday = self.clients_hmo_view_policy_individual_birthday_line_edit.text().strip()
+        inception = self.clients_hmo_view_policy_individual_inception_date_line_edit.text().strip()
+        expiry = self.clients_hmo_view_policy_individual_expiry_date_line_edit.text().strip()
+        agent_code = self.clients_hmo_view_policy_individual_agent_code_line_edit.text().strip()
+        policy_number = self.clients_hmo_view_policy_individual_policy_number_line_edit.text().strip()
+        mbl_abl = self.clients_hmo_view_policy_individual_mbl_abl_line_edit.text().strip()
+        net = self.clients_hmo_view_policy_individual_net_premium_line_edit.text().strip()
+        gross = self.clients_hmo_view_policy_individual_gross_premium_line_edit.text().strip()
+        commission = self.clients_hmo_view_policy_individual_commission_line_edit.text().strip()
+        notes = self.clients_hmo_view_policy_individual_notes_text_edit.toPlainText().strip()
+        hmo_company = self.clients_hmo_view_policy_individual_hmo_company_line_edit.text().strip()
+
+        # Email validation
+        if email:
+            email_pattern = r'^[\w\.-]+@[\w\.-]+\.\w{2,}$'
+            if not re.match(email_pattern, email):
+                QMessageBox.warning(self, "Invalid Email", "Please enter a valid email address.")
+                return
+
+        # Required fields check
+        if not name or not expiry or not policy_number:
+            QMessageBox.warning(self, "Missing Fields", "Required: Assured Name, Expiry Date, Policy Number.")
+            return
+
+        # Parse dates and numbers
+        def parse_date(s): return datetime.strptime(s, "%Y/%m/%d").date() if s else None
+        def parse_float(s): return float(s) if s else None
+
+        birthday = parse_date(birthday)
+        inception = parse_date(inception)
+        expiry = parse_date(expiry)
+        net = parse_float(net)
+        gross = parse_float(gross)
+        commission = parse_float(commission)
+
+        # Perform update
+        cursor.execute("""
+            UPDATE clients_hmo_individual
+            SET assured_name=%s, contact_number=%s, email=%s, birthday=%s,
+                inception_date=%s, expiry_date=%s, agent_code=%s,
+                mbl_abl=%s, net_premium=%s, gross_premium=%s, commission=%s,
+                client_notes=%s, hmo_company=%s
+            WHERE policy_number=%s
+        """, (
+            name, contact, email, birthday, inception, expiry, agent_code,
+            mbl_abl, net, gross, commission, notes, hmo_company, policy_number
+        ))
+
+        conn.commit()
+        QMessageBox.information(self, "Updated", "Policy updated successfully.")
+        fetch_client_table_data(self)
+
+        # Optionally make fields read-only again
+        self.set_hmo_individual_view_policy_fields_readonly(True)
+
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Update failed:\n{e}")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+def update_hmo_corporate_policy(self):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        # Extract values from corporate view policy widgets
+        name = self.clients_hmo_view_policy_corporate_company_name_line_edit.text().strip()
+        contact = self.clients_hmo_view_policy_corporate_contact_number_line_edit.text().strip()
+        email = self.clients_hmo_view_policy_corporate_email_line_edit.text().strip()
+        enrollees = self.clients_hmo_view_policy_corporate_number_of_enrollees_line_edit.text().strip()
+        inception = self.clients_hmo_view_policy_corporate_inception_date_line_edit.text().strip()
+        expiry = self.clients_hmo_view_policy_corporate_expiry_date_line_edit.text().strip()
+        agent_code = self.clients_hmo_view_policy_corporate_agent_code_line_edit.text().strip()
+        policy_number = self.clients_hmo_view_policy_corporate_policy_number_line_edit.text().strip()
+        mbl_abl = self.clients_hmo_view_policy_corporate_mbl_abl_line_edit.text().strip()
+        net = self.clients_hmo_view_policy_corporate_net_premium_line_edit.text().strip()
+        gross = self.clients_hmo_view_policy_corporate_gross_premium_line_edit.text().strip()
+        commission = self.clients_hmo_view_policy_corporate_commission_line_edit.text().strip()
+        notes = self.clients_hmo_view_policy_corporate_notes_text_edit.toPlainText().strip()
+        hmo_company = self.clients_hmo_view_policy_corporate_hmo_company_line_edit.text().strip()
+
+        # Email validation
+        if email:
+            email_pattern = r'^[\w\.-]+@[\w\.-]+\.\w{2,}$'
+            if not re.match(email_pattern, email):
+                QMessageBox.warning(self, "Invalid Email", "Please enter a valid email address.")
+                return
+
+        if not name or not expiry or not policy_number:
+            QMessageBox.warning(self, "Missing Fields", "Required: Company Name, Expiry Date, Policy Number.")
+            return
+
+        def parse_date(s): return datetime.strptime(s, "%Y/%m/%d").date() if s else None
+        def parse_float(s): return float(s) if s else None
+        def parse_int(s): return int(s) if s else None
+
+        enrollees = parse_int(enrollees)
+        inception = parse_date(inception)
+        expiry = parse_date(expiry)
+        net = parse_float(net)
+        gross = parse_float(gross)
+        commission = parse_float(commission)
+
+        cursor.execute("""
+            UPDATE clients_hmo_corporate
+            SET company_name=%s, contact_number=%s, email=%s, number_of_enrollees=%s,
+                inception_date=%s, expiry_date=%s, agent_code=%s, mbl_abl=%s,
+                net_premium=%s, gross_premium=%s, commission=%s, client_notes=%s,
+                hmo_company=%s
+            WHERE policy_number=%s
+        """, (
+            name, contact, email, enrollees, inception, expiry, agent_code,
+            mbl_abl, net, gross, commission, notes, hmo_company, policy_number
+        ))
+
+        conn.commit()
+        QMessageBox.information(self, "Updated", "Corporate policy updated successfully.")
+        fetch_client_table_data(self)
+
+        # Optionally make fields read-only again
+        self.set_hmo_corporate_view_policy_fields_readonly(True)
+
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Update failed:\n{e}")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()

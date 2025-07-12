@@ -1,13 +1,10 @@
 import os
 import sys
 import db_func
-import csv
-from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView, QAbstractItemView, QMessageBox, QTableWidget, QFileDialog
+from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView, QAbstractItemView, QMessageBox, QSizePolicy, QTableWidget, QLabel, QFrame, QPushButton, QHBoxLayout
 from PyQt6.QtCore import QMetaObject
 from PyQt6 import uic
-from openpyxl import Workbook
-from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
+from datetime import datetime
 
 if sys.platform.startswith('linux'):
     print("Running on Linux")
@@ -75,6 +72,8 @@ class MainWindow(QWidget):
         # connect to DB
         db_func.connect()
 
+        self.load_expiring_policies_grouped(self)
+
         # connect button to function
         self.navigation_home_button.clicked.connect(self.on_home_button_clicked)
         self.navigation_clients_button.clicked.connect(self.on_clients_button_clicked)
@@ -85,7 +84,7 @@ class MainWindow(QWidget):
         self.navigation_logout_button.clicked.connect(self.on_logout_button_clicked)
 
         # connect search bar
-        self.search_edit.textChanged.connect(self.on_search_text_changed)
+        # self.search_edit.textChanged.connect(self.on_search_text_changed)
         self.clients_search_edit.textChanged.connect(self.on_search_text_changed)
         self.clients_hmo_search_edit.textChanged.connect(self.on_search_text_changed)
         self.archives_search_edit.textChanged.connect(self.on_search_text_changed)
@@ -95,6 +94,25 @@ class MainWindow(QWidget):
         self.clients_non_life_add_client_submit_push_button.clicked.connect(self.on_clients_non_life_add_client_submit_push_button_clicked)
         self.clients_hmo_add_client_individual_submit_push_button.clicked.connect(self.on_clients_hmo_add_client_individual_submit_push_button_clicked)
         self.clients_hmo_add_client_corporate_submit_push_button.clicked.connect(self.on_clients_hmo_add_client_corporate_submit_push_button_clicked)
+
+        # set view policy fields to read only
+        self.set_view_policy_fields_readonly(True)
+        self.set_hmo_individual_view_policy_fields_readonly(True)
+        self.set_hmo_corporate_view_policy_fields_readonly(True)
+
+        # allow view policy fields to be edited
+        self.clients_non_life_view_policy_edit_push_button.clicked.connect(self.on_clients_non_life_view_policy_edit_push_button_clicked)
+        self.clients_hmo_view_policy_individual_edit_push_button.clicked.connect(self.on_clients_hmo_view_policy_individual_edit_push_button_clicked)
+        self.clients_hmo_view_policy_corporate_edit_push_button.clicked.connect(self.on_clients_hmo_view_policy_corporate_edit_push_button_clicked)
+
+        # client table row double click handlers
+        self.clients_non_life_dashboard_table.cellDoubleClicked.connect(self.on_clients_non_life_dashboard_table_row_double_clicked)
+        self.clients_hmo_dashboard_table.cellDoubleClicked.connect(self.on_clients_hmo_dashboard_table_cell_double_clicked)
+
+        # update policy details button
+        self.clients_non_life_view_policy_update_push_button.clicked.connect(self.on_clients_non_life_view_policy_update_push_button_clicked)
+        self.clients_hmo_view_policy_individual_update_push_button.clicked.connect(self.on_clients_hmo_view_policy_individual_update_push_button_clicked)
+        self.clients_hmo_view_policy_corporate_update_push_button.clicked.connect(self.on_clients_hmo_view_policy_corporate_update_push_button_clicked)
 
         # set selection behavior to rows
         self.clients_non_life_dashboard_table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
@@ -117,16 +135,6 @@ class MainWindow(QWidget):
         # delete archive buttons
         self.archives_non_life_dashboard_delete_button.clicked.connect(self.on_archives_non_life_dashboard_delete_button_clicked)
         self.archives_hmo_dashboard_delete_button.clicked.connect(self.on_archives_hmo_dashboard_delete_button_clicked)
-
-        # export buttons
-        self.export_clients_nonlife_csv_button.clicked.connect(self.export_clients_nonlife_to_csv)
-        self.export_clients_nonlife_xls_button.clicked.connect(self.export_clients_nonlife_to_xls)
-        self.export_clients_nonlife_pdf_button.clicked.connect(self.export_clients_nonlife_to_pdf)
-        self.export_clients_hmo_individual_csv_button.clicked.connect(self.export_clients_hmo_individual_to_csv)
-        self.export_clients_hmo_individual_xls_button.clicked.connect(self.export_clients_hmo_individual_to_xls)
-        self.export_clients_hmo_individual_pdf_button.clicked.connect(self.export_clients_hmo_individual_to_pdf)
-        #self.export_clients_hmo_corporate_csv_button.clicked.connect(self.export_clients_hmo_corporate_to_csv)
-        #self.export_clients_hmo_corporate_xls_button.clicked.connect(self.export_clients_hmo_corporate_to_xls)
 
         # REVISE: move to separate functions later
         # resize cols to header/content
@@ -177,13 +185,38 @@ class MainWindow(QWidget):
     #### Navigation Tab Button Functions
     def on_home_button_clicked(self):
         self.current_active_tab.setCurrentIndex(0)
+        self.load_expiring_policies_grouped(self)
 
     def on_clients_button_clicked(self):
         self.current_active_tab.setCurrentIndex(1)
         db_func.fetch_client_table_data(self)
+
+    def on_clients_non_life_dashboard_table_row_double_clicked(self, row, column):
+        db_func.handle_nonlife_row_double_click(self, row, column)
+
+    def on_clients_non_life_view_policy_edit_push_button_clicked(self):
+        self.set_view_policy_fields_readonly(False)
+
+    def on_clients_hmo_view_policy_individual_edit_push_button_clicked(self):
+        self.set_hmo_individual_view_policy_fields_readonly(False)
     
+    def on_clients_hmo_view_policy_corporate_edit_push_button_clicked(self):
+        self.set_hmo_corporate_view_policy_fields_readonly(False)
+
+    def on_clients_non_life_view_policy_update_push_button_clicked(self):
+        db_func.update_nonlife_policy(self)
+
+    def on_clients_hmo_view_policy_individual_update_push_button_clicked(self):
+        db_func.update_hmo_individual_policy(self)
+    
+    def on_clients_hmo_view_policy_corporate_update_push_button_clicked(self):
+        db_func.update_hmo_corporate_policy(self)
+
     def on_clients_non_life_add_client_submit_push_button_clicked(self):
         db_func.insert_nonlife_client(self)
+
+    def on_clients_hmo_dashboard_table_cell_double_clicked(self, row, column):
+        db_func.handle_hmo_row_double_click(self, row, column)
 
     def on_clients_hmo_add_client_individual_submit_push_button_clicked(self):
         db_func.insert_hmo_individual_client(self)
@@ -383,270 +416,190 @@ class MainWindow(QWidget):
             self.account_confirm_password_line_edit.clear()
         else:
             QMessageBox.critical(self, "Error", "Old password is incorrect.")
+
+    def set_view_policy_fields_readonly(self, readonly=True):
+        self.clients_non_life_view_policy_update_push_button.setEnabled(not readonly)
+
+        # Make all fields read-only by default
+        for widget in [
+            self.clients_non_life_view_policy_assured_name_line_edit,
+            self.clients_non_life_view_policy_contact_number_line_edit,
+            self.clients_non_life_view_policy_email_line_edit,
+            self.clients_non_life_view_policy_birthday_line_edit,
+            self.clients_non_life_view_policy_inception_date_line_edit,
+            self.clients_non_life_view_policy_expiry_date_line_edit,
+            self.clients_non_life_view_policy_net_premium_line_edit,
+            self.clients_non_life_view_policy_gross_premium_line_edit,
+            self.clients_non_life_view_policy_policy_number_line_edit,
+            self.clients_non_life_view_policy_agent_code_line_edit,
+            self.clients_non_life_view_policy_payment_invoice_line_edit,
+            self.clients_non_life_view_policy_commission_line_edit,
+            self.clients_non_life_view_policy_insurance_company_line_edit,
+            self.clients_non_life_view_policy_amount_covered_line_edit,
+            self.clients_non_life_view_policy_notes_text_edit,
+        ]:
+            widget.setReadOnly(readonly)
+        self.clients_non_life_view_policy_insurance_type_combo_box.setEnabled(not readonly)
+
+    def set_hmo_individual_view_policy_fields_readonly(self, readonly=True):
+        self.clients_hmo_view_policy_individual_update_push_button.setEnabled(not readonly)
+
+        for widget in [
+            self.clients_hmo_view_policy_individual_assured_name_line_edit,
+            self.clients_hmo_view_policy_individual_contact_number_line_edit,
+            self.clients_hmo_view_policy_individual_email_line_edit,
+            self.clients_hmo_view_policy_individual_birthday_line_edit,
+            self.clients_hmo_view_policy_individual_inception_date_line_edit,
+            self.clients_hmo_view_policy_individual_expiry_date_line_edit,
+            self.clients_hmo_view_policy_individual_agent_code_line_edit,
+            self.clients_hmo_view_policy_individual_policy_number_line_edit,
+            self.clients_hmo_view_policy_individual_mbl_abl_line_edit,
+            self.clients_hmo_view_policy_individual_net_premium_line_edit,
+            self.clients_hmo_view_policy_individual_gross_premium_line_edit,
+            self.clients_hmo_view_policy_individual_commission_line_edit,
+            self.clients_hmo_view_policy_individual_notes_text_edit,
+            self.clients_hmo_view_policy_individual_hmo_company_line_edit,
+        ]:
+            widget.setReadOnly(readonly)
+
+    def set_hmo_corporate_view_policy_fields_readonly(self, readonly=True):
+        self.clients_hmo_view_policy_corporate_update_push_button.setEnabled(not readonly)
+
+        for widget in [
+            self.clients_hmo_view_policy_corporate_company_name_line_edit,
+            self.clients_hmo_view_policy_corporate_contact_number_line_edit,
+            self.clients_hmo_view_policy_corporate_email_line_edit,
+            self.clients_hmo_view_policy_corporate_number_of_enrollees_line_edit,
+            self.clients_hmo_view_policy_corporate_inception_date_line_edit,
+            self.clients_hmo_view_policy_corporate_expiry_date_line_edit,
+            self.clients_hmo_view_policy_corporate_agent_code_line_edit,
+            self.clients_hmo_view_policy_corporate_policy_number_line_edit,
+            self.clients_hmo_view_policy_corporate_mbl_abl_line_edit,
+            self.clients_hmo_view_policy_corporate_net_premium_line_edit,
+            self.clients_hmo_view_policy_corporate_gross_premium_line_edit,
+            self.clients_hmo_view_policy_corporate_commission_line_edit,
+            self.clients_hmo_view_policy_corporate_notes_text_edit,
+            self.clients_hmo_view_policy_corporate_hmo_company_line_edit,
+        ]:
+            widget.setReadOnly(readonly)
+
+    def create_section_label(self, text):
+        label = QLabel(text)
+        label.setStyleSheet("font-weight: bold; font-size: 18px; margin-top: 20px; margin-bottom: 10px;")
+        return label
+
+    def create_notification_card(self, policy_number, client_name, expiry_date, color):
+        frame = QFrame()
+        frame.setStyleSheet(f"""
+            QFrame {{
+                background-color: {color};
+                border: 1px solid #aaa;
+                border-radius: 6px;
+                padding: 10px;
+            }}
+        """)
+        frame_layout = QHBoxLayout(frame)
+
+        message = f"Policy number {policy_number} insured to {client_name} is about to expire on {expiry_date}."
+        label = QLabel(message)
+        label.setWordWrap(True)
+        label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)  # stretch label horizontally
+
+        dismiss_button = QPushButton("Dismiss")
+        dismiss_button.setFixedWidth(80)
+        dismiss_button.clicked.connect(lambda _, f=frame: f.setParent(None))
+
+        frame_layout.addWidget(label)
+        frame_layout.addStretch()
+        #frame_layout.addWidget(dismiss_button)
+
+        return frame
     
-    def export_clients_nonlife_to_csv(self):
-        path, _ = QFileDialog.getSaveFileName(
-            self, "Save CSV", "clients.csv", "CSV Files (*.csv)"
-        )
-
-        if not path:
-            return  # User canceled
-
+    def load_expiring_policies_grouped(self, ui):
         try:
-            rows, headers = db_func.fetch_all_clients_nonlife()
-            with open(path, "w", newline="", encoding="utf-8") as f:
-                writer = csv.writer(f)
-                writer.writerow(headers)
-                writer.writerows(rows)
+            conn = db_func.connect()
+            cursor = conn.cursor()
 
-            QMessageBox.information(self, "Export Complete", f"Clients exported to:\n{path}")
-        except Exception as e:
-            QMessageBox.critical(self, "Error", f"Export failed:\n{e}")
-        
-    def export_clients_nonlife_to_xls(self):
-        path, _ = QFileDialog.getSaveFileName(
-            self, "Save Excel File", "clients.xlsx", "Excel Files (*.xlsx)"
-        )
+            self.clear_notifications()
 
-        if not path:
-            return  # user canceled
+            queries = [
+                # Non-Life
+                """
+                SELECT policy_number, assured_name AS client_name, expiry_date
+                FROM clients_nonlife
+                WHERE status = 'active'
+                """,
+                # HMO Individual
+                """
+                SELECT policy_number, assured_name AS client_name, expiry_date
+                FROM clients_hmo_individual
+                WHERE status = 'active'
+                """,
+                # HMO Corporate
+                """
+                SELECT policy_number, company_name AS client_name, expiry_date
+                FROM clients_hmo_corporate
+                WHERE status = 'active'
+                """
+            ]
 
-        try:
-            rows, headers = db_func.fetch_all_clients_nonlife()
+            all_results = []
+            for query in queries:
+                cursor.execute(query)
+                all_results.extend(cursor.fetchall())
 
-            wb = Workbook()
-            ws = wb.active
-            ws.title = "Clients"
+            all_results.sort(key=lambda row: row[2])
 
-            # Write headers
-            ws.append(headers)
+            # Get layout inside notifications scroll area
+            layout = ui.notifications_center.findChild(QWidget, "scrollAreaWidgetContents").layout()
 
-            # Write data rows
-            for row in rows:
-                ws.append(row)
+            # Group policies
+            grouped = {"This Week": [], "Next Week": [], "This Month": [], "Upcoming Months": []}
 
-            wb.save(path)
-            QMessageBox.information(self, "Export Successful", f"Excel file saved:\n{path}")
-        except Exception as e:
-            QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
-    
-    def export_clients_nonlife_to_pdf(self):
-        path, _ = QFileDialog.getSaveFileName(
-            self, "Save PDF", "clients.pdf", "PDF Files (*.pdf)"
-        )
+            for policy_number, client_name, expiry_date in all_results:
+                days_left = (expiry_date - datetime.now().date()).days
+                if days_left <= 7:
+                    grouped["This Week"].append((policy_number, client_name, expiry_date))
+                elif 8 <= days_left <= 14:
+                    grouped["Next Week"].append((policy_number, client_name, expiry_date))
+                elif 15 <= days_left <= 30:
+                    grouped["This Month"].append((policy_number, client_name, expiry_date))
+                else:
+                    grouped["Upcoming Months"].append((policy_number, client_name, expiry_date))
 
-        if not path:
-            return
+            for category, items in grouped.items():
+                if not items:
+                    continue
 
-        try:
-            rows, headers = db_func.fetch_all_clients_nonlife()
+                layout.addWidget(self.create_section_label(category))
 
-            c = canvas.Canvas(path, pagesize=A4)
-            width, height = A4
-            c.setFont("Helvetica", 10)
+                for policy_number, client_name, expiry_date in items:
+                    color = {
+                        "This Week": "#ffcccc",
+                        "Next Week": "#fff0cc",
+                        "This Month": "#e0f0ff"
+                    }.get(category, "#ffffff")
 
-            y = height - 40  # Start 40 pts from top
-            x_offset = 40
-            line_height = 20
+                    card = self.create_notification_card(policy_number, client_name, expiry_date, color)
+                    layout.addWidget(card)
 
-            # Draw headers
-            for i, header in enumerate(headers):
-                c.drawString(x_offset + i * 100, y, str(header))
-            y -= line_height
-
-            # Draw rows
-            for row in rows:
-                for i, cell in enumerate(row):
-                    c.drawString(x_offset + i * 100, y, str(cell))
-                y -= line_height
-
-                # Page break if needed
-                if y < 40:
-                    c.showPage()
-                    y = height - 40
-                    c.setFont("Helvetica", 10)
-
-            c.save()
-            QMessageBox.information(self, "Export Successful", f"PDF saved to:\n{path}")
+            cursor.close()
+            conn.close()
 
         except Exception as e:
-            QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
-    
-    def export_clients_hmo_individual_to_csv(self):
-        path, _ = QFileDialog.getSaveFileName(
-            self, "Save CSV", "clients.csv", "CSV Files (*.csv)"
-        )
+            print("Error loading grouped notifications:", e)
 
-        if not path:
-            return  # User canceled
+    def clear_notifications(self):
+        container = self.notifications_center.widget()
+        if container is not None:
+            layout = container.layout()
+            if layout is not None:
+                while layout.count():
+                    item = layout.takeAt(0)
+                    widget = item.widget()
+                    if widget is not None:
+                        widget.deleteLater()
 
-        try:
-            rows, headers = db_func.fetch_all_clients_hmo_individual()
-            with open(path, "w", newline="", encoding="utf-8") as f:
-                writer = csv.writer(f)
-                writer.writerow(headers)
-                writer.writerows(rows)
-
-            QMessageBox.information(self, "Export Complete", f"Clients exported to:\n{path}")
-        except Exception as e:
-            QMessageBox.critical(self, "Error", f"Export failed:\n{e}")
-        
-    def export_clients_hmo_individual_to_xls(self):
-        path, _ = QFileDialog.getSaveFileName(
-            self, "Save Excel File", "clients.xlsx", "Excel Files (*.xlsx)"
-        )
-
-        if not path:
-            return  # user canceled
-
-        try:
-            rows, headers = db_func.fetch_all_clients_hmo_individual()
-
-            wb = Workbook()
-            ws = wb.active
-            ws.title = "Clients"
-
-            # Write headers
-            ws.append(headers)
-
-            # Write data rows
-            for row in rows:
-                ws.append(row)
-
-            wb.save(path)
-            QMessageBox.information(self, "Export Successful", f"Excel file saved:\n{path}")
-        except Exception as e:
-            QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
-    
-    def export_clients_hmo_individual_to_pdf(self):
-        path, _ = QFileDialog.getSaveFileName(
-            self, "Save PDF", "clients.pdf", "PDF Files (*.pdf)"
-        )
-
-        if not path:
-            return
-
-        try:
-            rows, headers = db_func.fetch_all_clients_hmo_individual()
-
-            c = canvas.Canvas(path, pagesize=A4)
-            width, height = A4
-            c.setFont("Helvetica", 10)
-
-            y = height - 40  # Start 40 pts from top
-            x_offset = 40
-            line_height = 20
-
-            # Draw headers
-            for i, header in enumerate(headers):
-                c.drawString(x_offset + i * 100, y, str(header))
-            y -= line_height
-
-            # Draw rows
-            for row in rows:
-                for i, cell in enumerate(row):
-                    c.drawString(x_offset + i * 100, y, str(cell))
-                y -= line_height
-
-                # Page break if needed
-                if y < 40:
-                    c.showPage()
-                    y = height - 40
-                    c.setFont("Helvetica", 10)
-
-            c.save()
-            QMessageBox.information(self, "Export Successful", f"PDF saved to:\n{path}")
-
-        except Exception as e:
-            QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
-
-    def export_clients_hmo_corporate_to_csv(self):
-        path, _ = QFileDialog.getSaveFileName(
-            self, "Save CSV", "clients.csv", "CSV Files (*.csv)"
-        )
-
-        if not path:
-            return  # User canceled
-
-        try:
-            rows, headers = db_func.fetch_all_clients_hmo_corporate()
-            with open(path, "w", newline="", encoding="utf-8") as f:
-                writer = csv.writer(f)
-                writer.writerow(headers)
-                writer.writerows(rows)
-
-            QMessageBox.information(self, "Export Complete", f"Clients exported to:\n{path}")
-        except Exception as e:
-            QMessageBox.critical(self, "Error", f"Export failed:\n{e}")
-        
-    def export_clients_hmo_corporate_to_xls(self):
-        path, _ = QFileDialog.getSaveFileName(
-            self, "Save Excel File", "clients.xlsx", "Excel Files (*.xlsx)"
-        )
-
-        if not path:
-            return  # user canceled
-
-        try:
-            rows, headers = db_func.fetch_all_clients_hmo_corporate()
-
-            wb = Workbook()
-            ws = wb.active
-            ws.title = "Clients"
-
-            # Write headers
-            ws.append(headers)
-
-            # Write data rows
-            for row in rows:
-                ws.append(row)
-
-            wb.save(path)
-            QMessageBox.information(self, "Export Successful", f"Excel file saved:\n{path}")
-        except Exception as e:
-            QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
-    
-    def export_clients_hmo_corporate_to_pdf(self):
-        path, _ = QFileDialog.getSaveFileName(
-            self, "Save PDF", "clients.pdf", "PDF Files (*.pdf)"
-        )
-
-        if not path:
-            return
-
-        try:
-            rows, headers = db_func.fetch_all_clients_hmo_corporate()
-
-            c = canvas.Canvas(path, pagesize=A4)
-            width, height = A4
-            c.setFont("Helvetica", 10)
-
-            y = height - 40  # Start 40 pts from top
-            x_offset = 40
-            line_height = 20
-
-            # Draw headers
-            for i, header in enumerate(headers):
-                c.drawString(x_offset + i * 100, y, str(header))
-            y -= line_height
-
-            # Draw rows
-            for row in rows:
-                for i, cell in enumerate(row):
-                    c.drawString(x_offset + i * 100, y, str(cell))
-                y -= line_height
-
-                # Page break if needed
-                if y < 40:
-                    c.showPage()
-                    y = height - 40
-                    c.setFont("Helvetica", 10)
-
-            c.save()
-            QMessageBox.information(self, "Export Successful", f"PDF saved to:\n{path}")
-
-        except Exception as e:
-            QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
