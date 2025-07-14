@@ -47,6 +47,7 @@ def load_table_data(db_table_name: str, qt_table_widget, columns_to_display: lis
         query += f" {condition}"
         cursor.execute(query)
         records = cursor.fetchall()
+        qt_table_widget.setColumnHidden(0, True)
 
         # Clear existing rows
         if clear_rows:
@@ -73,23 +74,23 @@ def load_table_data(db_table_name: str, qt_table_widget, columns_to_display: lis
             conn.close()
 
 def fetch_client_table_data(self):
-    load_table_data("clients_nonlife", self.clients_non_life_dashboard_table, ["assured_name", "type_of_insurance", "policy_number", "expiry_date"], "WHERE status = 'active'")
-    load_table_data("clients_hmo_individual", self.clients_hmo_dashboard_table, ["assured_name", "'Individual' AS type_of_hmo", "policy_number", "expiry_date"], "WHERE status = 'active'")
-    load_table_data("clients_hmo_corporate", self.clients_hmo_dashboard_table, ["company_name", "'Corporate' AS type_of_hmo", "policy_number", "expiry_date"], "WHERE status = 'active'", False)
+    load_table_data("clients_nonlife", self.clients_non_life_dashboard_table, ["id", "assured_name", "type_of_insurance", "policy_number", "expiry_date"], "WHERE status = 'active'")
+    load_table_data("clients_hmo_individual", self.clients_hmo_dashboard_table, ["id", "assured_name", "'Individual' AS type_of_hmo", "policy_number", "expiry_date"], "WHERE status = 'active'")
+    load_table_data("clients_hmo_corporate", self.clients_hmo_dashboard_table, ["id", "company_name", "'Corporate' AS type_of_hmo", "policy_number", "expiry_date"], "WHERE status = 'active'", False)
     self.clients_non_life_dashboard_count.setText( str(self.clients_non_life_dashboard_table.rowCount()) )
     self.clients_hmo_dashboard_count.setText( str(self.clients_hmo_dashboard_table.rowCount()) )
 
 def fetch_company_table_data(self):
-    load_table_data("clients_nonlife", self.companies_non_life_dashboard_table, ["assured_name", "type_of_insurance", "insurance_company", "expiry_date"], "WHERE status = 'active'")
-    load_table_data("clients_hmo_individual", self.companies_hmo_dashboard_table, ["assured_name", "'Individual' AS type_of_hmo", "hmo_company", "expiry_date"], "WHERE status = 'active'")
-    load_table_data("clients_hmo_corporate", self.companies_hmo_dashboard_table, ["company_name", "'Corporate' AS type_of_hmo", "hmo_company", "expiry_date"], "WHERE status = 'active'", False)
+    load_table_data("clients_nonlife", self.companies_non_life_dashboard_table, ["id", "assured_name", "type_of_insurance", "insurance_company", "expiry_date"], "WHERE status = 'active'")
+    load_table_data("clients_hmo_individual", self.companies_hmo_dashboard_table, ["id", "assured_name", "'Individual' AS type_of_hmo", "hmo_company", "expiry_date"], "WHERE status = 'active'")
+    load_table_data("clients_hmo_corporate", self.companies_hmo_dashboard_table, ["id", "company_name", "'Corporate' AS type_of_hmo", "hmo_company", "expiry_date"], "WHERE status = 'active'", False)
     self.companies_non_life_dashboard_count.setText( str(self.companies_non_life_dashboard_table.rowCount()) )
     self.companies_hmo_dashboard_count.setText( str(self.companies_hmo_dashboard_table.rowCount()) )
 
 def fetch_archive_table_data(self):
-    load_table_data("clients_nonlife", self.archives_non_life_dashboard_table, ["assured_name", "type_of_insurance", "policy_number", "expiry_date"], "WHERE status = 'archived'")
-    load_table_data("clients_hmo_individual", self.archives_hmo_dashboard_table, ["assured_name", "'Individual' AS type_of_hmo", "policy_number", "expiry_date"], "WHERE status = 'archived'")
-    load_table_data("clients_hmo_corporate", self.archives_hmo_dashboard_table, ["company_name", "'Corporate' AS type_of_hmo", "policy_number", "expiry_date"], "WHERE status = 'archived'", False)
+    load_table_data("clients_nonlife", self.archives_non_life_dashboard_table, ["id", "assured_name", "type_of_insurance", "policy_number", "expiry_date"], "WHERE status = 'archived'")
+    load_table_data("clients_hmo_individual", self.archives_hmo_dashboard_table, ["id", "assured_name", "'Individual' AS type_of_hmo", "policy_number", "expiry_date"], "WHERE status = 'archived'")
+    load_table_data("clients_hmo_corporate", self.archives_hmo_dashboard_table, ["id", "company_name", "'Corporate' AS type_of_hmo", "policy_number", "expiry_date"], "WHERE status = 'archived'", False)
     self.archives_non_life_dashboard_count.setText( str(self.archives_non_life_dashboard_table.rowCount()) )
     self.archives_hmo_dashboard_count.setText( str(self.archives_hmo_dashboard_table.rowCount()) )
 
@@ -1343,3 +1344,83 @@ def update_hmo_corporate_policy(self):
         if conn:
             cursor.close()
             conn.close()
+
+def fetch_clients_nonlife_by_ids(client_ids):
+    if not client_ids:
+        return [], []
+
+    conn = connect()
+    try:
+        cursor = conn.cursor()
+        #print(len(client_ids))
+        placeholders = ','.join(['%s'] * len(client_ids))
+        #print(placeholders)
+        query = f"SELECT * FROM clients_nonlife WHERE id IN ({placeholders})"
+        #print(query)
+        cursor.execute(query, client_ids)
+        rows = cursor.fetchall()
+        headers = [desc[0] for desc in cursor.description]
+        return rows, headers
+    finally:
+        cursor.close()
+        conn.close()
+
+def fetch_clients_hmo_individual_by_ids(client_ids):
+    if not client_ids:
+        return [], []
+
+    conn = connect()
+    try:
+        cursor = conn.cursor()
+        #print(len(client_ids))
+        placeholders = ','.join(['%s'] * len(client_ids))
+        #print(placeholders)
+        query = f"SELECT * FROM clients_hmo_individual WHERE id IN ({placeholders})"
+        #print(query)
+        cursor.execute(query, client_ids)
+        rows = cursor.fetchall()
+        headers = [desc[0] for desc in cursor.description]
+        return rows, headers
+    finally:
+        cursor.close()
+        conn.close()
+
+def fetch_clients_nonlife_corporate_by_ids(client_ids):
+    if not client_ids:
+        return [], []
+
+    conn = connect()
+    try:
+        cursor = conn.cursor()
+        #print(len(client_ids))
+        placeholders = ','.join(['%s'] * len(client_ids))
+        #print(placeholders)
+        query = f"SELECT * FROM clients_nonlife WHERE id IN ({placeholders})"
+        #print(query)
+        cursor.execute(query, client_ids)
+        rows = cursor.fetchall()
+        headers = [desc[0] for desc in cursor.description]
+        return rows, headers
+    finally:
+        cursor.close()
+        conn.close()
+
+def fetch_clients_hmo_corporate_by_ids(client_ids):
+    if not client_ids:
+        return [], []
+
+    conn = connect()
+    try:
+        cursor = conn.cursor()
+        #print(len(client_ids))
+        placeholders = ','.join(['%s'] * len(client_ids))
+        #print(placeholders)
+        query = f"SELECT * FROM clients_hmo_corporate WHERE id IN ({placeholders})"
+        #print(query)
+        cursor.execute(query, client_ids)
+        rows = cursor.fetchall()
+        headers = [desc[0] for desc in cursor.description]
+        return rows, headers
+    finally:
+        cursor.close()
+        conn.close()
