@@ -690,6 +690,37 @@ class MainWindow(QWidget):
             QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
     
     def export_clients_nonlife_to_pdf(self):
+        ids = self.get_visible_row_ids(self.clients_non_life_dashboard_table, id_column=0)
+        if not ids:
+            QMessageBox.information(self, "No Data", "No visible rows to export.")
+            return
+            
+        rows, headers = db_func.fetch_clients_nonlife_by_ids(ids)
+        
+        export_columns = [
+            ("Assured Name", "assured_name"),
+            ("Contact No.", "contact_number"),
+            ("Email", "email"),
+            ("Type of Insurance", "type_of_insurance"),
+            ("Insurance Company", "insurance_company"),
+            ("Inception Date", "inception_date"),
+            ("Expiry Date", "expiry_date"),
+            ("Policy Number", "policy_number"),
+            ("Gross Premium", "gross_premium"),
+            ("Commission", "commission"),
+            ("Coverage", "amount_covered"),
+        ]
+
+        # Map header to column index
+        header_index_map = {header: i for i, header in enumerate(headers)}
+
+        # Build filtered headers and data rows
+        filtered_headers = [label for label, _ in export_columns]
+        filtered_rows = [
+            [row[header_index_map[col]] for _, col in export_columns]
+            for row in rows
+        ]
+
         path, _ = QFileDialog.getSaveFileName(
             self, "Save PDF", "clients-nonlife.pdf", "PDF Files (*.pdf)"
         )
@@ -698,40 +729,41 @@ class MainWindow(QWidget):
             return
 
         try:
-            ids = self.get_visible_row_ids(self.clients_non_life_dashboard_table, id_column=0)
-            if not ids:
-                QMessageBox.information(self, "No Data", "No visible rows to export.")
-                return
-            
-            rows, headers = db_func.fetch_clients_nonlife_by_ids(ids)
+            doc = SimpleDocTemplate(path, pagesize=landscape(A4))
+            page_width, _ = landscape(A4)
+            usable_width = page_width - 72  # 0.5 inch margins left & right
+            col_width = usable_width / len(filtered_headers)
+            col_widths = [col_width] * len(filtered_headers)
 
             styles = getSampleStyleSheet()
             cell_style = styles["BodyText"]
-            cell_style.fontSize = 7
-            cell_style.leading = 9
+            cell_style.fontSize = 5
+            cell_style.leading = 7
 
-            # Format rows
-            table_data = [headers]
-            for row in rows:
+            table_data = [filtered_headers]
+            for row in filtered_rows:
                 table_data.append([Paragraph(str(cell), cell_style) for cell in row])
-            
-            page_width, _ = landscape(A4)
-            usable_width = page_width - 72  # 1 inch total margin
-            col_width = usable_width / len(headers)
-            col_widths = [col_width] * len(headers)
 
             table = Table(table_data, colWidths=col_widths, repeatRows=1)
             table.setStyle(TableStyle([
-                ('FONTSIZE', (0, 0), (-1, -1), 7),
                 ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
                 ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-                ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
-                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.whitesmoke, colors.lightgrey]),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, -1), 5),
                 ('LEFTPADDING', (0, 0), (-1, -1), 2),
                 ('RIGHTPADDING', (0, 0), (-1, -1), 2),
                 ('TOPPADDING', (0, 0), (-1, -1), 2),
                 ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
+                ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.whitesmoke, colors.lightgrey]),
             ]))
+
+            elements = [
+                Paragraph("Client HMO Individual", styles["Title"]),
+                Spacer(1, 7),
+                table
+            ]
+            doc.build(elements)
 
             QMessageBox.information(self, "Export Successful", f"PDF saved to:\n{path}")
 
@@ -798,6 +830,35 @@ class MainWindow(QWidget):
             QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
     
     def export_clients_hmo_individual_to_pdf(self):
+        ids = self.get_visible_row_ids(self.clients_hmo_dashboard_table, id_column=0)
+        if not ids:
+            QMessageBox.information(self, "No Data", "No visible rows to export.")
+            return
+        
+        rows, headers = db_func.fetch_clients_hmo_individual_by_ids(ids)
+
+        export_columns = [
+            ("Assured Name", "assured_name"),
+            ("Contact No.", "contact_number"),
+            ("Email", "email"),
+            ("HMO Company", "hmo_company"),
+            ("Inception Date", "inception_date"),
+            ("Expiry Date", "expiry_date"),
+            ("Policy Number", "policy_number"),
+            ("Gross Premium", "gross_premium"),
+            ("Commission", "commission"),
+        ]
+
+        # Map header to column index
+        header_index_map = {header: i for i, header in enumerate(headers)}
+
+        # Build filtered headers and data rows
+        filtered_headers = [label for label, _ in export_columns]
+        filtered_rows = [
+            [row[header_index_map[col]] for _, col in export_columns]
+            for row in rows
+        ]
+
         path, _ = QFileDialog.getSaveFileName(
             self, "Save PDF", "clients-hmo-ind.pdf", "PDF Files (*.pdf)"
         )
@@ -806,39 +867,42 @@ class MainWindow(QWidget):
             return
 
         try:
-            ids = self.get_visible_row_ids(self.clients_hmo_dashboard_table, id_column=0)
-            if not ids:
-                QMessageBox.information(self, "No Data", "No visible rows to export.")
-                return
-            
-            rows, headers = db_func.fetch_clients_hmo_individual_by_ids(ids)
+            doc = SimpleDocTemplate(path, pagesize=landscape(A4))
+            page_width, _ = landscape(A4)
+            usable_width = page_width - 72  # 0.5 inch margins left & right
+            col_width = usable_width / len(filtered_headers)
+            col_widths = [col_width] * len(filtered_headers)
 
-            c = canvas.Canvas(path, pagesize=A4)
-            width, height = A4
-            c.setFont("Helvetica", 10)
+            styles = getSampleStyleSheet()
+            cell_style = styles["BodyText"]
+            cell_style.fontSize = 5
+            cell_style.leading = 7
 
-            y = height - 40  # Start 40 pts from top
-            x_offset = 40
-            line_height = 20
+            table_data = [filtered_headers]
+            for row in filtered_rows:
+                table_data.append([Paragraph(str(cell), cell_style) for cell in row])
 
-            # Draw headers
-            for i, header in enumerate(headers):
-                c.drawString(x_offset + i * 100, y, str(header))
-            y -= line_height
+            table = Table(table_data, colWidths=col_widths, repeatRows=1)
+            table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, -1), 5),
+                ('LEFTPADDING', (0, 0), (-1, -1), 2),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 2),
+                ('TOPPADDING', (0, 0), (-1, -1), 2),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
+                ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.whitesmoke, colors.lightgrey]),
+            ]))
 
-            # Draw rows
-            for row in rows:
-                for i, cell in enumerate(row):
-                    c.drawString(x_offset + i * 100, y, str(cell))
-                y -= line_height
+            elements = [
+                Paragraph("Client HMO Individual", styles["Title"]),
+                Spacer(1, 7),
+                table
+            ]
+            doc.build(elements)
 
-                # Page break if needed
-                if y < 40:
-                    c.showPage()
-                    y = height - 40
-                    c.setFont("Helvetica", 10)
-
-            c.save()
             QMessageBox.information(self, "Export Successful", f"PDF saved to:\n{path}")
 
         except Exception as e:
