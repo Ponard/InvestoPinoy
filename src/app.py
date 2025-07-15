@@ -1,10 +1,17 @@
 import os
 import sys
 import db_func
-from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView, QAbstractItemView, QMessageBox, QSizePolicy, QTableWidget, QLabel, QFrame, QPushButton, QHBoxLayout
+import csv
+from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView, QAbstractItemView, QMessageBox, QSizePolicy, QTableWidget, QLabel, QFrame, QPushButton, QHBoxLayout, QFileDialog
 from PyQt6.QtCore import QMetaObject
 from PyQt6 import uic
 from datetime import datetime
+from openpyxl import Workbook
+from reportlab.lib.pagesizes import A4, landscape
+from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 
 if sys.platform.startswith('linux'):
     print("Running on Linux")
@@ -180,6 +187,20 @@ class MainWindow(QWidget):
 
         # change password button
         self.change_password_button.clicked.connect(self.change_password)
+
+        # export buttons
+        self.export_clients_nonlife_csv_button.clicked.connect(self.export_clients_nonlife_to_csv)
+        self.export_clients_nonlife_xls_button.clicked.connect(self.export_clients_nonlife_to_xls)
+        self.export_clients_nonlife_pdf_button.clicked.connect(self.export_clients_nonlife_to_pdf)
+        self.export_clients_hmo_individual_csv_button.clicked.connect(self.export_clients_hmo_individual_to_csv)
+        self.export_clients_hmo_individual_xls_button.clicked.connect(self.export_clients_hmo_individual_to_xls)
+        self.export_clients_hmo_individual_pdf_button.clicked.connect(self.export_clients_hmo_individual_to_pdf)
+        #self.export_clients_nonlife_corporate_csv_button.clicked.connect(self.export_clients_nonlife_corporate_to_csv)
+        #self.export_clients_nonlife_corporate_xls_button.clicked.connect(self.export_clients_nonlife_corporate_to_xls)
+        #self.export_clients_nonlife_corporate_pdf_button.clicked.connect(self.export_clients_nonlife_corporate_to_pdf)
+        #self.export_clients_hmo_corporate_csv_button.clicked.connect(self.export_clients_hmo_corporate_to_csv)
+        #self.export_clients_hmo_corporate_xls_button.clicked.connect(self.export_clients_hmo_corporate_to_xls)
+        #self.export_clients_hmo_corporate_pdf_button.clicked.connect(self.export_clients_hmo_corporate_to_pdf)
 
 
     #### Navigation Tab Button Functions
@@ -599,7 +620,229 @@ class MainWindow(QWidget):
                     widget = item.widget()
                     if widget is not None:
                         widget.deleteLater()
+    
+    def get_visible_row_ids(self, table_widget, id_column=0):
+        ids = []
+        for row in range(table_widget.rowCount()):
+            if not table_widget.isRowHidden(row):
+                item = table_widget.item(row, id_column)
+                if item:
+                    ids.append(item.text())
+        return ids
+    
+    def export_clients_nonlife_to_csv(self):
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save CSV", "clients-nonlife.csv", "CSV Files (*.csv)"
+        )
 
+        if not path:
+            return  # User canceled
+
+        try:
+            #print("search for ids")
+            ids = self.get_visible_row_ids(self.clients_non_life_dashboard_table, id_column=0)
+            #print("Exporting the following client IDs:", ids)
+            if not ids:
+                QMessageBox.information(self, "No Data", "No visible rows to export.")
+                return
+            
+            rows, headers = db_func.fetch_clients_nonlife_by_ids(ids)
+
+            with open(path, "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                writer.writerow(headers)
+                writer.writerows(rows)
+
+            QMessageBox.information(self, "Export Complete", f"CSV exported to:\n{path}")
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Export failed:\n{e}")
+        
+    def export_clients_nonlife_to_xls(self):
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save Excel File", "clients-nonlife.xlsx", "Excel Files (*.xlsx)"
+        )
+
+        if not path:
+            return  # user canceled
+
+        try:
+            ids = self.get_visible_row_ids(self.clients_non_life_dashboard_table, id_column=0)
+            if not ids:
+                QMessageBox.information(self, "No Data", "No visible rows to export.")
+                return
+            
+            rows, headers = db_func.fetch_clients_nonlife_by_ids(ids)
+
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Clients"
+
+            # Write headers
+            ws.append(headers)
+
+            # Write data rows
+            for row in rows:
+                ws.append(row)
+
+            wb.save(path)
+            QMessageBox.information(self, "Export Successful", f"Excel file saved:\n{path}")
+        except Exception as e:
+            QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
+    
+    def export_clients_nonlife_to_pdf(self):
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save PDF", "clients-nonlife.pdf", "PDF Files (*.pdf)"
+        )
+
+        if not path:
+            return
+
+        try:
+            ids = self.get_visible_row_ids(self.clients_non_life_dashboard_table, id_column=0)
+            if not ids:
+                QMessageBox.information(self, "No Data", "No visible rows to export.")
+                return
+            
+            rows, headers = db_func.fetch_clients_nonlife_by_ids(ids)
+
+            styles = getSampleStyleSheet()
+            cell_style = styles["BodyText"]
+            cell_style.fontSize = 7
+            cell_style.leading = 9
+
+            # Format rows
+            table_data = [headers]
+            for row in rows:
+                table_data.append([Paragraph(str(cell), cell_style) for cell in row])
+            
+            page_width, _ = landscape(A4)
+            usable_width = page_width - 72  # 1 inch total margin
+            col_width = usable_width / len(headers)
+            col_widths = [col_width] * len(headers)
+
+            table = Table(table_data, colWidths=col_widths, repeatRows=1)
+            table.setStyle(TableStyle([
+                ('FONTSIZE', (0, 0), (-1, -1), 7),
+                ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+                ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.whitesmoke, colors.lightgrey]),
+                ('LEFTPADDING', (0, 0), (-1, -1), 2),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 2),
+                ('TOPPADDING', (0, 0), (-1, -1), 2),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
+            ]))
+
+            QMessageBox.information(self, "Export Successful", f"PDF saved to:\n{path}")
+
+        except Exception as e:
+            QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
+
+    def export_clients_hmo_individual_to_csv(self):
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save CSV", "clients-hmo-ind.csv", "CSV Files (*.csv)"
+        )
+
+        if not path:
+            return  # User canceled
+
+        try:
+            #print("search for ids")
+            ids = self.get_visible_row_ids(self.clients_hmo_dashboard_table, id_column=0)
+            #print("Exporting the following client IDs:", ids)
+            if not ids:
+                QMessageBox.information(self, "No Data", "No visible rows to export.")
+                return
+            
+            rows, headers = db_func.fetch_clients_hmo_individual_by_ids(ids)
+
+            with open(path, "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                writer.writerow(headers)
+                writer.writerows(rows)
+
+            QMessageBox.information(self, "Export Complete", f"CSV exported to:\n{path}")
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Export failed:\n{e}")
+        
+    def export_clients_hmo_individual_to_xls(self):
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save Excel File", "clients-hmo-ind.xlsx", "Excel Files (*.xlsx)"
+        )
+
+        if not path:
+            return  # user canceled
+
+        try:
+            ids = self.get_visible_row_ids(self.clients_hmo_dashboard_table, id_column=0)
+            if not ids:
+                QMessageBox.information(self, "No Data", "No visible rows to export.")
+                return
+            
+            rows, headers = db_func.fetch_clients_hmo_individual_by_ids(ids)
+
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Clients"
+
+            # Write headers
+            ws.append(headers)
+
+            # Write data rows
+            for row in rows:
+                ws.append(row)
+
+            wb.save(path)
+            QMessageBox.information(self, "Export Successful", f"Excel file saved:\n{path}")
+        except Exception as e:
+            QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
+    
+    def export_clients_hmo_individual_to_pdf(self):
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save PDF", "clients-hmo-ind.pdf", "PDF Files (*.pdf)"
+        )
+
+        if not path:
+            return
+
+        try:
+            ids = self.get_visible_row_ids(self.clients_hmo_dashboard_table, id_column=0)
+            if not ids:
+                QMessageBox.information(self, "No Data", "No visible rows to export.")
+                return
+            
+            rows, headers = db_func.fetch_clients_hmo_individual_by_ids(ids)
+
+            c = canvas.Canvas(path, pagesize=A4)
+            width, height = A4
+            c.setFont("Helvetica", 10)
+
+            y = height - 40  # Start 40 pts from top
+            x_offset = 40
+            line_height = 20
+
+            # Draw headers
+            for i, header in enumerate(headers):
+                c.drawString(x_offset + i * 100, y, str(header))
+            y -= line_height
+
+            # Draw rows
+            for row in rows:
+                for i, cell in enumerate(row):
+                    c.drawString(x_offset + i * 100, y, str(cell))
+                y -= line_height
+
+                # Page break if needed
+                if y < 40:
+                    c.showPage()
+                    y = height - 40
+                    c.setFont("Helvetica", 10)
+
+            c.save()
+            QMessageBox.information(self, "Export Successful", f"PDF saved to:\n{path}")
+
+        except Exception as e:
+            QMessageBox.critical(self, "Export Failed", f"Error:\n{e}")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
