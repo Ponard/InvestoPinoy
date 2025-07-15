@@ -2010,6 +2010,27 @@ border: 0px solid white;
                             </property>
                            </spacer>
                           </item>
+                                                    <item>
+                           <widget class="QPushButton" name="export_clients_nonlife_csv_button">
+                            <property name="text">
+                             <string>Export as CSV</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="export_clients_nonlife_xls_button">
+                            <property name="text">
+                             <string>Export as Excel</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="export_clients_nonlife_pdf_button">
+                            <property name="text">
+                             <string>Export as PDF</string>
+                            </property>
+                           </widget>
+                          </item>
                           <item>
                            <widget class="QPushButton" name="clients_non_life_dashboard_archive_button">
                             <property name="sizePolicy">
@@ -3565,6 +3586,27 @@ border: 0px solid white;
                              </size>
                             </property>
                            </spacer>
+                          </item>
+                                                    <item>
+                           <widget class="QPushButton" name="export_clients_hmo_individual_csv_button">
+                            <property name="text">
+                             <string>Export as CSV</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="export_clients_hmo_individual_xls_button">
+                            <property name="text">
+                             <string>Export as Excel</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="export_clients_hmo_individual_pdf_button">
+                            <property name="text">
+                             <string>Export as PDF</string>
+                            </property>
+                           </widget>
                           </item>
                           <item>
                            <widget class="QPushButton" name="clients_hmo_dashboard_archive_button">
