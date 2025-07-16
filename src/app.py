@@ -525,13 +525,32 @@ class MainWindow(QWidget):
         message = f"Policy number {policy_number} insured to {client_name} is about to expire on {expiry_date}."
         if days_left <= 0:
             message = f"Policy number {policy_number} insured to {client_name} expired on {expiry_date}."
+
         label = QLabel(message)
         label.setWordWrap(True)
-        label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)  # stretch label horizontally
+        label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
 
         dismiss_button = QPushButton("Dismiss")
         dismiss_button.setFixedWidth(80)
-        dismiss_button.clicked.connect(lambda _, f=frame: f.setParent(None))
+
+        def dismiss_policy():
+            try:
+                conn = db_func.connect()
+                cursor = conn.cursor()
+                cursor.execute("""
+                    INSERT INTO dismissed_notifications (policy_number, dismissed_at)
+                    VALUES (%s, CURRENT_TIMESTAMP)
+                    ON CONFLICT (policy_number) DO NOTHING;
+                """, (policy_number,))
+                conn.commit()
+                cursor.close()
+                conn.close()
+            except Exception as e:
+                print(f"❌ Failed to insert dismissed policy: {e}")
+            finally:
+                frame.setParent(None)
+
+        dismiss_button.clicked.connect(dismiss_policy)
 
         frame_layout.addWidget(label)
         frame_layout.addStretch()
@@ -552,18 +571,27 @@ class MainWindow(QWidget):
                 SELECT policy_number, assured_name AS client_name, expiry_date
                 FROM clients_nonlife
                 WHERE status = 'active'
+                  AND policy_number NOT IN (
+                      SELECT policy_number FROM dismissed_notifications
+                  )
                 """,
                 # HMO Individual
                 """
                 SELECT policy_number, assured_name AS client_name, expiry_date
                 FROM clients_hmo_individual
                 WHERE status = 'active'
+                  AND policy_number NOT IN (
+                      SELECT policy_number FROM dismissed_notifications
+                  )
                 """,
                 # HMO Corporate
                 """
                 SELECT policy_number, company_name AS client_name, expiry_date
                 FROM clients_hmo_corporate
                 WHERE status = 'active'
+                  AND policy_number NOT IN (
+                      SELECT policy_number FROM dismissed_notifications
+                  )
                 """
             ]
 
@@ -601,6 +629,7 @@ class MainWindow(QWidget):
 
                 for policy_number, client_name, expiry_date in items:
                     color = {
+                        "Expired Policies": "#ebadad",
                         "This Week": "#ffcccc",
                         "Next Week": "#fff0cc",
                         "This Month": "#e0f0ff"
