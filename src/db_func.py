@@ -376,7 +376,7 @@ def archive_nonlife_client(self):
 
         for model_index in selected_rows:
             row = model_index.row()
-            policy_number_item = self.clients_non_life_dashboard_table.item(row, 2)  # Assuming column 2 is policy_number
+            policy_number_item = self.clients_non_life_dashboard_table.item(row, 3)  # Assuming column 3 is policy_number
 
             if not policy_number_item:
                 continue
@@ -420,8 +420,8 @@ def archive_hmo_client(self):
 
         for model_index in selected_rows:
             row = model_index.row()
-            type_item = self.clients_hmo_dashboard_table.item(row, 1)  # Type column
-            policy_number_item = self.clients_hmo_dashboard_table.item(row, 2)  # Policy number column
+            type_item = self.clients_hmo_dashboard_table.item(row, 2)  # Type column
+            policy_number_item = self.clients_hmo_dashboard_table.item(row, 3)  # Policy number column
 
             if not type_item or not policy_number_item:
                 continue
@@ -475,7 +475,7 @@ def restore_nonlife_client(self):
 
         for model_index in selected_rows:
             row = model_index.row()
-            policy_number_item = self.archives_non_life_dashboard_table.item(row, 2)  # Column 3 = policy number
+            policy_number_item = self.archives_non_life_dashboard_table.item(row, 3)  # Column 3 = policy number
 
             if not policy_number_item:
                 continue
@@ -518,7 +518,7 @@ def delete_nonlife_client(self):
 
         for model_index in selected_rows:
             row = model_index.row()
-            policy_number_item = self.archives_non_life_dashboard_table.item(row, 2)  # Column 3 = policy number
+            policy_number_item = self.archives_non_life_dashboard_table.item(row, 3)  # Column 3 = policy number
 
             if not policy_number_item:
                 continue
@@ -561,7 +561,7 @@ def restore_hmo_client(self):
 
         for model_index in selected_rows:
             row = model_index.row()
-            policy_number_item = self.archives_hmo_dashboard_table.item(row, 2)  # Column 3 = policy number
+            policy_number_item = self.archives_hmo_dashboard_table.item(row, 3)  # Column 3 = policy number
 
             if not policy_number_item:
                 continue
@@ -606,7 +606,7 @@ def delete_hmo_client(self):
 
         for model_index in selected_rows:
             row = model_index.row()
-            policy_number_item = self.archives_hmo_dashboard_table.item(row, 2)  # Column 3 = policy number
+            policy_number_item = self.archives_hmo_dashboard_table.item(row, 3)  # Column 3 = policy number
 
             if not policy_number_item:
                 continue
@@ -650,7 +650,7 @@ def record_policy_payment_nonlife(self):
             return
 
         row = selected_rows[0].row()
-        policy_number = self.clients_non_life_dashboard_table.item(row, 2).text().strip()
+        policy_number = self.clients_non_life_dashboard_table.item(row, 3).text().strip()
 
         # Get gross premium from clients_nonlife
         cursor.execute("""
@@ -724,7 +724,7 @@ def record_policy_payment_hmo(self):
             return
 
         row = selected_rows[0].row()
-        policy_number = self.clients_hmo_dashboard_table.item(row, 2).text().strip()
+        policy_number = self.clients_hmo_dashboard_table.item(row, 3).text().strip()
 
         # Try fetching from individual first
         cursor.execute("""
@@ -983,7 +983,7 @@ def change_user_password(username, old_password, new_password):
 
 def handle_nonlife_row_double_click(self, row, column):
     try:
-        policy_number_item = self.clients_non_life_dashboard_table.item(row, 2)  # Assuming col 2 is policy_number
+        policy_number_item = self.clients_non_life_dashboard_table.item(row, 3)  # Assuming col 3 is policy_number
         if not policy_number_item:
             return
 
@@ -1037,7 +1037,7 @@ def handle_nonlife_row_double_click(self, row, column):
 
 def handle_hmo_row_double_click(self, row, column):
     try:
-        policy_number_item = self.clients_hmo_dashboard_table.item(row, 2)
+        policy_number_item = self.clients_hmo_dashboard_table.item(row, 3)
         if not policy_number_item:
             return
 
