@@ -521,7 +521,10 @@ class MainWindow(QWidget):
         """)
         frame_layout = QHBoxLayout(frame)
 
+        days_left = (expiry_date - datetime.now().date()).days
         message = f"Policy number {policy_number} insured to {client_name} is about to expire on {expiry_date}."
+        if days_left <= 0:
+            message = f"Policy number {policy_number} insured to {client_name} expired on {expiry_date}."
         label = QLabel(message)
         label.setWordWrap(True)
         label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)  # stretch label horizontally
@@ -532,7 +535,7 @@ class MainWindow(QWidget):
 
         frame_layout.addWidget(label)
         frame_layout.addStretch()
-        #frame_layout.addWidget(dismiss_button)
+        frame_layout.addWidget(dismiss_button)
 
         return frame
     
@@ -575,11 +578,13 @@ class MainWindow(QWidget):
             layout = ui.notifications_center.findChild(QWidget, "scrollAreaWidgetContents").layout()
 
             # Group policies
-            grouped = {"This Week": [], "Next Week": [], "This Month": [], "Upcoming Months": []}
+            grouped = {"Expired Policies": [], "This Week": [], "Next Week": [], "This Month": [], "Upcoming Months": []}
 
             for policy_number, client_name, expiry_date in all_results:
                 days_left = (expiry_date - datetime.now().date()).days
-                if days_left <= 7:
+                if days_left <= 0:
+                    grouped["Expired Policies"].append((policy_number, client_name, expiry_date))
+                elif days_left <= 7:
                     grouped["This Week"].append((policy_number, client_name, expiry_date))
                 elif 8 <= days_left <= 14:
                     grouped["Next Week"].append((policy_number, client_name, expiry_date))
