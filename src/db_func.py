@@ -1345,6 +1345,63 @@ def update_hmo_corporate_policy(self):
             cursor.close()
             conn.close()
 
+def fetch_company_expenses(self):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        select_query = """
+            SELECT amount, expense_category, payment_method, department, expense_date
+            FROM company_expenses
+            ORDER BY expense_date ASC
+        """
+        cursor.execute(select_query)
+        rows = cursor.fetchall()
+
+        # Clear existing rows
+        self.company_expenses_table.setRowCount(0)
+
+        for row_idx, row_data in enumerate(rows):
+            self.company_expenses_table.insertRow(row_idx)
+            for col_idx, value in enumerate(row_data):
+                item = QTableWidgetItem(str(value))
+                item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)  # make cells read-only
+                self.company_expenses_table.setItem(row_idx, col_idx, item)
+
+        cursor.close()
+        conn.close()
+
+    except Exception as e:
+        QMessageBox.critical(self, "Database Error", f"Failed to fetch company expenses: {e}")
+
+def insert_company_expense(self, data):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+
+        insert_query = """
+            INSERT INTO company_expenses (amount, expense_category, payment_method, department, expense_date)
+            VALUES (%s, %s, %s, %s, %s)
+        """
+        cursor.execute(insert_query, (
+            data["amount"],
+            data["expense_category"],
+            data["payment_method"],
+            data["department"],
+            data["expense_date"]
+        ))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        QMessageBox.information(self, "Success", "Expense added successfully!")
+
+        fetch_company_expenses(self)
+
+    except Exception as e:
+        QMessageBox.critical(self, "Database Error", f"Failed to insert expense: {e}")
+
 def fetch_clients_nonlife_by_ids(client_ids):
     if not client_ids:
         return [], []

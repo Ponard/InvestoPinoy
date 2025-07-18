@@ -2,8 +2,15 @@ import os
 import sys
 import db_func
 import csv
-from PyQt6.QtWidgets import QApplication, QWidget, QHeaderView, QAbstractItemView, QMessageBox, QSizePolicy, QTableWidget, QLabel, QFrame, QPushButton, QHBoxLayout, QFileDialog
-from PyQt6.QtCore import QMetaObject
+from PyQt6.QtWidgets import (
+   QApplication, QWidget, QHeaderView,
+   QAbstractItemView, QMessageBox, QSizePolicy,
+   QTableWidget, QLabel, QFrame,
+   QPushButton, QHBoxLayout, QVBoxLayout,
+   QFileDialog, QFormLayout, QLineEdit,
+   QComboBox, QDateEdit, QDialog
+)
+from PyQt6.QtCore import QMetaObject, QDate
 from PyQt6 import uic
 from datetime import datetime
 from openpyxl import Workbook
@@ -12,6 +19,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from decimal import Decimal
 
 if sys.platform.startswith('linux'):
     print("Running on Linux")
@@ -68,6 +76,57 @@ class LoginPage(QWidget):
         else:
             QMessageBox.warning(self, "Register", "Registration failed. Username may already exist.")
 
+class AddExpenseDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Add Expense")
+
+        layout = QVBoxLayout(self)
+        form_layout = QFormLayout()
+
+        self.amount_input = QLineEdit()
+        self.expense_category_input = QLineEdit()
+
+        self.payment_method_input = QComboBox()
+        self.payment_method_input.addItems(["Cash", "Bank Transfer", "GCash", "Check", "Others"])  # example methods
+
+        self.department_input = QLineEdit()
+        self.date_input = QDateEdit()
+        self.date_input.setCalendarPopup(True)
+        self.date_input.setDate(QDate.currentDate())
+
+        form_layout.addRow("Amount:", self.amount_input)
+        form_layout.addRow("Expense Category:", self.expense_category_input)
+        form_layout.addRow("Payment Method:", self.payment_method_input)
+        form_layout.addRow("Department:", self.department_input)
+        form_layout.addRow("Date:", self.date_input)
+
+        layout.addLayout(form_layout)
+
+        button_layout = QHBoxLayout()
+        add_button = QPushButton("Add")
+        cancel_button = QPushButton("Cancel")
+        button_layout.addWidget(add_button)
+        button_layout.addWidget(cancel_button)
+        layout.addLayout(button_layout)
+
+        add_button.clicked.connect(self.accept)
+        cancel_button.clicked.connect(self.reject)
+
+    def get_data(self):
+        try:
+            amount = Decimal(self.amount_input.text())
+        except:
+            QMessageBox.warning(self, "Input Error", "Amount must be a valid number.")
+            return None
+
+        return {
+            "amount": amount,
+            "expense_category": self.expense_category_input.text(),
+            "payment_method": self.payment_method_input.currentText(),
+            "department": self.department_input.text(),
+            "expense_date": self.date_input.date().toPyDate()
+        }
 
 class MainWindow(QWidget):
     def __init__(self, current_username=None):
@@ -127,6 +186,9 @@ class MainWindow(QWidget):
         self.archives_non_life_dashboard_table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.archives_hmo_dashboard_table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
 
+        # add company expense button
+        self.company_expenses_add_expense_push_button.clicked.connect(self.on_company_expenses_add_expense_push_button_clicked)
+
         # archive client buttons
         self.clients_non_life_dashboard_archive_button.clicked.connect(self.on_clients_non_life_dashboard_archive_button_clicked)
         self.clients_hmo_dashboard_archive_button.clicked.connect(self.on_clients_hmo_dashboard_archive_button_clicked)
@@ -160,7 +222,7 @@ class MainWindow(QWidget):
         self.client_payments_table.resizeColumnsToContents()
         self.client_payments_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         self.company_expenses_table.resizeColumnsToContents()
-        self.company_expenses_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        self.company_expenses_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
 
         # sort data when header is clicked
         self.archives_non_life_dashboard_table.setSortingEnabled(True)
@@ -264,6 +326,14 @@ class MainWindow(QWidget):
     def on_collection_button_clicked(self):
         self.current_active_tab.setCurrentIndex(3)
         db_func.fetch_all_client_payments(self)
+        db_func.fetch_company_expenses(self)
+
+    def on_company_expenses_add_expense_push_button_clicked(self):
+        dialog = AddExpenseDialog(self)
+        if dialog.exec():
+            data = dialog.get_data()
+            if data:
+                db_func.insert_company_expense(self, data)
       
     def on_archives_button_clicked(self):
         self.current_active_tab.setCurrentIndex(4)
