@@ -47,7 +47,10 @@ def load_table_data(db_table_name: str, qt_table_widget, columns_to_display: lis
         query += f" {condition}"
         cursor.execute(query)
         records = cursor.fetchall()
-        qt_table_widget.setColumnHidden(0, True)
+        if db_table_name != "company_expenses":
+            qt_table_widget.setColumnHidden(0, True)
+
+        qt_table_widget.setSortingEnabled(False)  # Freeze sort order
 
         # Clear existing rows
         if clear_rows:
@@ -58,10 +61,14 @@ def load_table_data(db_table_name: str, qt_table_widget, columns_to_display: lis
         # Populate the table
         for row_idx, row_data in enumerate(records):
             for col_idx, cell_data in enumerate(row_data):
-                qt_table_widget.setItem(row_idx + row_count, col_idx, QTableWidgetItem(str(cell_data)))
+                item = QTableWidgetItem(str(cell_data))
+                item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)  # Make item read-only
+                qt_table_widget.setItem(row_idx + row_count, col_idx, item)
 
         header = qt_table_widget.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        
+        qt_table_widget.setSortingEnabled(True)  # Re-enable sorting 
 
         cursor.close()
         conn.close()
@@ -823,6 +830,8 @@ def fetch_all_client_payments(self):
         self.client_payments_table.setRowCount(0)
         self.client_payments_table.setRowCount(len(rows))
 
+        self.client_payments_table.setSortingEnabled(False)  # Freeze sort order
+
         for row_index, row_data in enumerate(rows):
             for col_index, value in enumerate(row_data):
                 item = QTableWidgetItem(str(value) if value is not None else "")
@@ -830,7 +839,9 @@ def fetch_all_client_payments(self):
                 self.client_payments_table.setItem(row_index, col_index, item)
 
         self.client_payments_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.client_payments_count.setText( str(self.client_payments_table.rowCount()) )
 
+        self.client_payments_table.setSortingEnabled(True)  # Re-enable sorting
 
     except Exception as e:
         QMessageBox.critical(self, "Error", f"Failed to fetch client payments:\n{e}")
@@ -1346,33 +1357,8 @@ def update_hmo_corporate_policy(self):
             conn.close()
 
 def fetch_company_expenses(self):
-    try:
-        conn = connect()
-        cursor = conn.cursor()
-
-        select_query = """
-            SELECT amount, expense_category, payment_method, department, expense_date
-            FROM company_expenses
-            ORDER BY expense_date ASC
-        """
-        cursor.execute(select_query)
-        rows = cursor.fetchall()
-
-        # Clear existing rows
-        self.company_expenses_table.setRowCount(0)
-
-        for row_idx, row_data in enumerate(rows):
-            self.company_expenses_table.insertRow(row_idx)
-            for col_idx, value in enumerate(row_data):
-                item = QTableWidgetItem(str(value))
-                item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)  # make cells read-only
-                self.company_expenses_table.setItem(row_idx, col_idx, item)
-
-        cursor.close()
-        conn.close()
-
-    except Exception as e:
-        QMessageBox.critical(self, "Database Error", f"Failed to fetch company expenses: {e}")
+    load_table_data("company_expenses", self.company_expenses_table, ["amount", "expense_category", "payment_method", "department", "expense_date"])
+    self.company_expenses_count.setText( str(self.company_expenses_table.rowCount()) )
 
 def insert_company_expense(self, data):
     try:
